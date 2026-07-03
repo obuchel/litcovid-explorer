@@ -1,0 +1,82 @@
+name: fetch-doc-info
+
+# Three ways this runs:
+#  1. schedule  — regular refresh, picks up any new PMIDs in the committed TSV
+#  2. push      — a new/updated data/search_results_litcovid.tsv lands on main
+#                 (this is what a plain "drag a file into the GitHub UI" upload triggers)
+#  3. workflow_dispatch — triggered on demand, including by the React app's
+#                 "Commit & run" button via the Actions API
+on:
+  schedule:
+    - cron: '0 6 * * 1' # every Monday 06:00 UTC — edit to taste
+  push:
+    branches: [main]
+    paths:
+      - 'data/search_results_litcovid.tsv'
+      - 'data/search_results_litcovid.csv'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Only process the first N PMIDs (leave empty for all)'
+        required: false
+        default: ''
+      force_refresh:
+        description: 'Re-fetch every PMID even if a cached record exists'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-doc-info
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install pandas
+
+      - name: Restore PubTator record cache
+        uses: actions/cache@v4
+        with:
+          path: data/pubtator_records
+          key: pubtator-records-${{ github.run_id }}
+          restore-keys: pubtator-records-
+
+      - name: Locate input file
+        id: input
+        run: |
+          if [ -f data/search_results_litcovid.tsv ]; then
+            echo "path=data/search_results_litcovid.tsv" >> "$GITHUB_OUTPUT"
+          elif [ -f data/search_results_litcovid.csv ]; then
+            echo "path=data/search_results_litcovid.csv" >> "$GITHUB_OUTPUT"
+          else
+            echo "No data/search_results_litcovid.(tsv|csv) found in the repo." >&2
+            exit 1
+          fi
+
+      - name: Run pipeline
+        run: |
+          python scripts/fetch_pubmed_doc_info.py \
+            --tsv "${{ steps.input.outputs.path }}" \
+            ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }} \
+            ${{ github.event.inputs.force_refresh == 'true' && '--force-refresh' || '' }}
+
+      - name: Commit results
+        run: |
+          git config user.name "doc-info-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/doc_all_info.csv
+          git add data/failed_pmids_all_info*.txt 2>/dev/null || true
+          git diff --cached --quiet && echo "No changes to commit." && exit 0
+          git commit -m "Update doc_all_info.csv [automated]"
+          git push

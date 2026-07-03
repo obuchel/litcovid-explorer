@@ -1,0 +1,45 @@
+name: deploy-pages
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'data/**' # don't redeploy the site just because the Action updated the CSV
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build
+        # Uses the repo name as the base path, matching a GitHub Pages project site
+        # (https://<owner>.github.io/<repo>/). Edit if you're using a custom domain.
+        run: VITE_BASE=/${{ github.event.repository.name }}/ npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
