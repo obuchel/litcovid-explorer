@@ -109,7 +109,7 @@ def read_litcovid_tsv(path: str, skiprows: int) -> pd.DataFrame:
                     continue
                 break
 
-    df = pd.read_csv(path, sep=sep, skiprows=skiprows, engine="python")
+    df = pd.read_csv(path, sep=sep, skiprows=skiprows, engine="python", quoting=csv.QUOTE_NONE)
     if "pmid" not in df.columns:
         raise ValueError(f"{path} does not contain a 'pmid' column")
     df["pmid"] = df["pmid"].astype(str)
