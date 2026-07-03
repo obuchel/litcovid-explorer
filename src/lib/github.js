@@ -76,16 +76,16 @@ export async function dispatchWorkflow({ token, owner, repo, branch, workflowFil
 }
 
 /** Find the run that was just dispatched (GitHub doesn't return a run id from the dispatch call itself). */
-export async function findDispatchedRun({ token, owner, repo, workflowFile, since, timeoutMs = 20000 }) {
+export async function findDispatchedRun({ token, owner, repo, workflowFile, since, timeoutMs = 45000 }) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const data = await apiFetch(
       `${API}/repos/${owner}/${repo}/actions/workflows/${workflowFile}/runs?event=workflow_dispatch&per_page=5`,
       token,
     );
-    const run = (data.workflow_runs || []).find((r) => new Date(r.created_at) >= new Date(since.getTime() - 5000));
+    const run = (data.workflow_runs || []).find((r) => new Date(r.created_at) >= new Date(since.getTime() - 10000));
     if (run) return run;
-    await sleep(1500);
+    await sleep(2500);
   }
   return null;
 }
