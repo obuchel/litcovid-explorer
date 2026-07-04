@@ -78,11 +78,20 @@ MESH_ID_PATTERN = re.compile(r"^[CD]\d{6,9}$")
 # Download
 # ---------------------------------------------------------------------------
 
+def ensure_parent_dir(path: str) -> None:
+    """os.makedirs(os.path.dirname(path)) blows up with FileNotFoundError when
+    path has no directory component at all (e.g. a bare 'custom.csv') — dirname
+    returns '' in that case, which isn't a valid path to create."""
+    d = os.path.dirname(path)
+    if d:
+        os.makedirs(d, exist_ok=True)
+
+
 def download(url: str, dest_path: str) -> str:
     if os.path.exists(dest_path):
         print(f"Using cached download: {dest_path}")
         return dest_path
-    os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+    ensure_parent_dir(dest_path)
     print(f"Downloading {url} ...")
     urllib.request.urlretrieve(url, dest_path)
     size_mb = os.path.getsize(dest_path) / (1024 * 1024)
@@ -334,7 +343,7 @@ def main() -> None:
                     if tree_counts[key]["first"] is None:
                         tree_counts[key]["first"] = branch["path"]
 
-    os.makedirs(os.path.dirname(args.out_annotations), exist_ok=True)
+    ensure_parent_dir(args.out_annotations)
     fieldnames = [
         "file_name", "id", "mesh_id", "ann_id", "key_category", "key_name", "key_text",
         "key_text1", "mesh_path", "web_id", "tree_id", "branch_index",
@@ -351,6 +360,7 @@ def main() -> None:
         {"mesh_id": mesh_id, "web_id": info["web_id"], "tree_id": info["tree_id"], "count(*)": info["count"], "first": info["first"]}
         for (mesh_id, _path), info in sorted(tree_counts.items(), key=lambda kv: -kv[1]["count"])
     ]
+    ensure_parent_dir(args.out_tree)
     with open(args.out_tree, "w", encoding="utf-8") as fp:
         json.dump({"tree": tree}, fp, ensure_ascii=False, indent=2)
     print(f"Wrote {len(tree)} tree entries to {args.out_tree}")
