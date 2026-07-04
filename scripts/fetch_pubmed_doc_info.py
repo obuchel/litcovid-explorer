@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import json
 import os
 import re
@@ -47,7 +48,7 @@ DEFAULT_TSV = os.path.join(DATA_DIR, "search_results_litcovid.tsv")
 DEFAULT_DOCS3 = os.path.join(DATA_DIR, "docs3.csv")
 DEFAULT_OUT = os.path.join(DATA_DIR, "doc_all_info.csv")
 DEFAULT_FAILED = os.path.join(DATA_DIR, "failed_pmids_all_info.txt")
-DEFAULT_PUBTATOR_CACHE = os.path.join(DATA_DIR, "pubtator_records.jsonl")
+DEFAULT_PUBTATOR_CACHE = os.path.join(DATA_DIR, "pubtator_records.jsonl.gz")
 
 TSV_SKIPROWS = -1  # -1 = auto-detect: skip leading '#' comment / blank lines
 BATCH_SIZE = 20
@@ -351,12 +352,14 @@ def fetch_batch(pmids: list[str], api_key: str = "") -> tuple[list[dict[str, Any
 
 
 def load_pubtator_cache(path: str) -> dict[str, Any]:
-    """Load the JSONL cache into memory: {pmid: record}. Later lines win, so a
-    re-fetched PMID's newest record is used even if an older line exists."""
+    """Load the gzip-compressed JSONL cache into memory: {pmid: record}.
+    Later lines win, so a re-fetched PMID's newest record is used even if an
+    older line exists. Falls back to reading an old uncompressed .jsonl file
+    at the same base name once, for repos that had the cache from before
+    compression was added."""
     cache: dict[str, Any] = {}
-    if not os.path.exists(path):
-        return cache
-    with open(path, "r", encoding="utf-8") as fp:
+
+    def _consume(fp):
         for line in fp:
             line = line.strip()
             if not line:
@@ -368,15 +371,33 @@ def load_pubtator_cache(path: str) -> dict[str, Any]:
             pmid = str(entry.get("pmid", ""))
             if pmid:
                 cache[pmid] = entry.get("record")
+
+    if os.path.exists(path):
+        with gzip.open(path, "rt", encoding="utf-8") as fp:
+            _consume(fp)
+
+    if path.endswith(".gz"):
+        legacy_path = path[:-3]
+        if os.path.exists(legacy_path):
+            print(f"Loading legacy uncompressed cache too: {legacy_path}")
+            with open(legacy_path, "r", encoding="utf-8") as fp:
+                _consume(fp)
+
     return cache
 
 
 def append_pubtator_cache(path: str, pmid: str, record: dict[str, Any]) -> None:
-    """Append one record. Cheap (no rewrite), and safe to commit incrementally —
-    unlike one-file-per-PMID, this is a single file git can actually track."""
+    """Append one record as its own gzip member (Python's gzip reader
+    transparently decompresses concatenated members, so this is a real
+    append — no need to decompress-rewrite-recompress the whole file)."""
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-    with open(path, "a", encoding="utf-8") as fp:
-        fp.write(json.dumps({"pmid": pmid, "record": record}, ensure_ascii=False) + "\n")
+    line = (json.dumps({"pmid": pmid, "record": record}, ensure_ascii=False) + "\n").encode("utf-8")
+    with open(path, "ab") as raw:
+        with gzip.GzipFile(fileobj=raw, mode="wb") as gz:
+            gz.write(line)
+
+
+MAX_GIT_FILE_BYTES = 90 * 1024 * 1024  # stay under GitHub's hard 100MB push limit with headroom
 
 
 def write_rows(path: str, rows: list[dict[str, str]]) -> None:
@@ -385,6 +406,17 @@ def write_rows(path: str, rows: list[dict[str, str]]) -> None:
         writer = csv.DictWriter(fp, fieldnames=OUTPUT_COLUMNS)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def running_interactively() -> bool:
+    """True only for a real local terminal. isatty() alone isn't a reliable
+    enough guard in CI — some runners report unexpected tty state — so this
+    also explicitly rules out any environment exporting common CI markers,
+    to make absolutely sure this never blocks forever waiting for input()
+    that will never come in an automated run."""
+    if os.environ.get("CI") or os.environ.get("GITHUB_ACTIONS"):
+        return False
+    return sys.stdin.isatty()
 
 
 def read_existing_output(path: str) -> dict[str, dict[str, str]]:
@@ -399,9 +431,28 @@ def read_existing_output(path: str) -> dict[str, dict[str, str]]:
 def git_checkpoint(*paths: str, message: str) -> None:
     """Commit and push whatever's changed at `paths` so far, so a killed or
     cancelled run still leaves real progress behind instead of nothing. Never
-    raises — a checkpoint failing shouldn't abort hours of fetching."""
+    raises — a checkpoint failing shouldn't abort hours of fetching.
+
+    Also never commits a file over MAX_GIT_FILE_BYTES: GitHub hard-rejects any
+    push containing a file over 100MB, and that rejection would otherwise take
+    down the *entire* job (this is what caused the real workflow failures —
+    not a hang), so oversized files are skipped with a loud warning instead."""
     try:
-        existing = [p for p in paths if os.path.exists(p)]
+        existing = []
+        for p in paths:
+            if not os.path.exists(p):
+                continue
+            size = os.path.getsize(p)
+            if size > MAX_GIT_FILE_BYTES:
+                print(
+                    f"WARNING: {p} is {size / 1024 / 1024:.1f}MB, over the "
+                    f"{MAX_GIT_FILE_BYTES / 1024 / 1024:.0f}MB safe limit — "
+                    "skipping it this checkpoint so the push doesn't fail outright. "
+                    "This file needs to shrink (e.g. compression, sharding) or move to Git LFS.",
+                    flush=True,
+                )
+                continue
+            existing.append(p)
         if not existing:
             return
         subprocess.run(["git", "add", *existing], cwd=BASE_DIR, check=True)
@@ -469,7 +520,7 @@ def main() -> None:
 
     if not remaining_pmids and not args.force_refresh:
         print(f"Every PMID already has a successful row in {args.out} — nothing to fetch.")
-        if sys.stdin.isatty():
+        if running_interactively():
             answer = input("Re-fetch everything from scratch anyway? [y/N]: ").strip().lower()
             if answer in ("y", "yes"):
                 print("Restarting from scratch as requested.")
@@ -616,6 +667,8 @@ def main() -> None:
 
     write_rows(args.out, rows)
     print(f"Wrote {len(rows)} rows to {args.out} (expected {len(pmids)})")
+    if not args.no_checkpoint_commit:
+        git_checkpoint(args.out, args.pubtator_cache, message=f"Final: {len(rows)}/{len(pmids)} PMIDs processed [skip ci]")
     if len(rows) != len(pmids):
         print(f"WARNING: row count mismatch — {len(rows)} rows vs {len(pmids)} PMIDs", flush=True)
 

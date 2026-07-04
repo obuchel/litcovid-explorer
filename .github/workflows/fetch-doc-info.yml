@@ -7,10 +7,14 @@ name: fetch-doc-info
 #  3. workflow_dispatch — triggered on demand, including by the React app's
 #                 "Commit & run" button via the Actions API
 #
-# The script itself commits progress (doc_all_info.csv + pubtator_records.jsonl)
-# every few batches while it runs — see --checkpoint-every in the script — so a
-# cancelled or timed-out run still leaves real, usable progress in the repo
-# instead of nothing.
+# The script itself safely commits progress (doc_all_info.csv +
+# pubtator_records.jsonl.gz) every few batches while it runs, AND at the end —
+# see --checkpoint-every and git_checkpoint() in the script. It refuses to
+# commit any file over 90MB (GitHub hard-rejects pushes over 100MB), so an
+# oversized cache file can no longer take down the whole job the way it used
+# to. The cache is gzip-compressed for the same reason: a plain-text
+# pubtator_records.jsonl was approaching 100MB well before the full corpus was
+# processed.
 on:
   schedule:
     - cron: '0 6 * * 1' # every Monday 06:00 UTC — edit to taste
@@ -74,12 +78,14 @@ jobs:
             ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }} \
             ${{ github.event.inputs.force_refresh == 'true' && '--force-refresh' || '' }}
 
-      - name: Commit final results
-        if: always() # run even if the pipeline step above failed partway, to keep whatever it managed
+      - name: Commit any remaining files (failed-PMID lists etc.)
+        # The script already safely commits doc_all_info.csv and the .jsonl.gz
+        # cache itself (with a size guard). This just sweeps up the small
+        # failed-PMID text files, which are never at risk of the size issue.
+        if: always()
         run: |
-          git add data/doc_all_info.csv data/pubtator_records.jsonl
           git add data/failed_pmids_all_info*.txt 2>/dev/null || true
           git diff --cached --quiet && echo "No changes to commit." && exit 0
-          git commit -m "Update doc_all_info.csv [automated]"
+          git commit -m "Update failed-PMID list [skip ci]"
           git pull --rebase --autostash
           git push
