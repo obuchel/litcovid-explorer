@@ -27,6 +27,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -386,6 +387,15 @@ def write_rows(path: str, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
+def read_existing_output(path: str) -> dict[str, dict[str, str]]:
+    """Read a previous run's output CSV, keyed by pmid. Used to resume: any
+    pmid already marked fetch_status=ok here doesn't need to be redone."""
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r", encoding="utf-8", newline="") as fp:
+        return {row["pmid"]: row for row in csv.DictReader(fp) if row.get("pmid")}
+
+
 def git_checkpoint(*paths: str, message: str) -> None:
     """Commit and push whatever's changed at `paths` so far, so a killed or
     cancelled run still leaves real progress behind instead of nothing. Never
@@ -447,73 +457,130 @@ def main() -> None:
 
     existing_dates = read_existing_dates(args.docs3)
     pubtator_cache = {} if args.force_refresh else load_pubtator_cache(args.pubtator_cache)
-    rows: list[dict[str, str]] = []
-    failed: dict[str, str] = {}
 
-    print(f"PMIDs to process: {len(pmids)}")
-    print(f"Output: {args.out}")
+    existing_output = {} if args.force_refresh else read_existing_output(args.out)
+    already_ok = {p for p, row in existing_output.items() if row.get("fetch_status") == "ok"}
+    remaining_pmids = [p for p in pmids if p not in already_ok]
+
+    print(f"Total PMIDs in input: {len(pmids)}")
+    print(f"Already completed in {args.out}: {len(already_ok)}")
+    print(f"Remaining to process: {len(remaining_pmids)}")
     print(f"PubTator cache: {args.pubtator_cache} ({len(pubtator_cache)} records loaded)")
 
-    for start in range(0, len(pmids), args.batch_size):
-        batch = pmids[start : start + args.batch_size]
+    if not remaining_pmids and not args.force_refresh:
+        print(f"Every PMID already has a successful row in {args.out} — nothing to fetch.")
+        if sys.stdin.isatty():
+            answer = input("Re-fetch everything from scratch anyway? [y/N]: ").strip().lower()
+            if answer in ("y", "yes"):
+                print("Restarting from scratch as requested.")
+                args.force_refresh = True
+                existing_output = {}
+                already_ok = set()
+                remaining_pmids = list(pmids)
+                pubtator_cache = {}
+            else:
+                print("Leaving existing output untouched. Exiting.")
+                return
+        else:
+            print("Non-interactive run (e.g. GitHub Actions) — leaving existing output untouched.")
+            print("Pass --force-refresh explicitly if you really want to redo everything.")
+            return
+
+    # rows starts with everything already-successful from a prior run, so a
+    # resumed run's checkpoints/output are always a complete, correct snapshot
+    # — not just the delta being processed this time.
+    rows: list[dict[str, str]] = [existing_output[p] for p in pmids if p in already_ok]
+    failed: dict[str, str] = {}
+
+    for start in range(0, len(remaining_pmids), args.batch_size):
+        batch = remaining_pmids[start : start + args.batch_size]
         batch_num = start // args.batch_size + 1
-        total_batches = (len(pmids) + args.batch_size - 1) // args.batch_size
+        total_batches = (len(remaining_pmids) + args.batch_size - 1) // args.batch_size
         print(f"Batch {batch_num}/{total_batches}: {len(batch)} PMIDs", flush=True)
 
-        pending: list[str] = []
-        for pmid in batch:
-            cached = pubtator_cache.get(pmid) if not args.force_refresh else None
-            if cached:
-                rows.append(
-                    extract_record_info(
-                        pmid,
-                        cached,
-                        litcovid_by_pmid.get(pmid, {}),
-                        existing_dates,
-                        source="cache",
-                        status="ok",
+        handled_this_batch: set[str] = set()
+        try:
+            pending: list[str] = []
+            for pmid in batch:
+                cached = pubtator_cache.get(pmid) if not args.force_refresh else None
+                if cached:
+                    rows.append(
+                        extract_record_info(
+                            pmid,
+                            cached,
+                            litcovid_by_pmid.get(pmid, {}),
+                            existing_dates,
+                            source="cache",
+                            status="ok",
+                        )
                     )
-                )
-            else:
-                pending.append(pmid)
+                    handled_this_batch.add(pmid)
+                else:
+                    pending.append(pmid)
 
-        if not pending:
-            continue
+            if pending:
+                records, reason = fetch_batch(pending, args.api_key)
+                records_by_pmid = {str(rec.get("pmid", rec.get("id", ""))): rec for rec in records if rec}
 
-        records, reason = fetch_batch(pending, args.api_key)
-        records_by_pmid = {str(rec.get("pmid", rec.get("id", ""))): rec for rec in records if rec}
+                for pmid in pending:
+                    record = records_by_pmid.get(pmid)
+                    try:
+                        if record:
+                            append_pubtator_cache(args.pubtator_cache, pmid, record)
+                            pubtator_cache[pmid] = record
+                            rows.append(
+                                extract_record_info(
+                                    pmid,
+                                    record,
+                                    litcovid_by_pmid.get(pmid, {}),
+                                    existing_dates,
+                                    source="pubtator",
+                                    status="ok",
+                                )
+                            )
+                        else:
+                            failure_reason = reason or "absent_from_response"
+                            failed[pmid] = failure_reason
+                            rows.append(
+                                extract_record_info(
+                                    pmid,
+                                    None,
+                                    litcovid_by_pmid.get(pmid, {}),
+                                    existing_dates,
+                                    source="litcovid",
+                                    status="failed",
+                                    reason=failure_reason,
+                                )
+                            )
+                    except Exception as exc:  # a single malformed record must not kill the whole run
+                        print(f"WARNING: failed to process pmid {pmid}: {exc}", flush=True)
+                        failed[pmid] = f"processing_error:{exc}"
+                        rows.append(
+                            extract_record_info(
+                                pmid,
+                                None,
+                                litcovid_by_pmid.get(pmid, {}),
+                                existing_dates,
+                                source="litcovid",
+                                status="failed",
+                                reason=f"processing_error:{exc}",
+                            )
+                        )
+                    finally:
+                        handled_this_batch.add(pmid)
 
-        for pmid in pending:
-            record = records_by_pmid.get(pmid)
-            if record:
-                append_pubtator_cache(args.pubtator_cache, pmid, record)
-                pubtator_cache[pmid] = record
-                rows.append(
-                    extract_record_info(
-                        pmid,
-                        record,
-                        litcovid_by_pmid.get(pmid, {}),
-                        existing_dates,
-                        source="pubtator",
-                        status="ok",
+            time.sleep(args.sleep)
+        except Exception as exc:  # a whole bad batch (e.g. unexpected API shape) must not kill the run either
+            print(f"WARNING: batch {batch_num} failed entirely, continuing: {exc}", flush=True)
+            for pmid in batch:
+                if pmid not in handled_this_batch:
+                    failed[pmid] = f"batch_error:{exc}"
+                    rows.append(
+                        extract_record_info(
+                            pmid, None, litcovid_by_pmid.get(pmid, {}), existing_dates,
+                            source="litcovid", status="failed", reason=f"batch_error:{exc}",
+                        )
                     )
-                )
-            else:
-                failure_reason = reason or "absent_from_response"
-                failed[pmid] = failure_reason
-                rows.append(
-                    extract_record_info(
-                        pmid,
-                        None,
-                        litcovid_by_pmid.get(pmid, {}),
-                        existing_dates,
-                        source="litcovid",
-                        status="failed",
-                        reason=failure_reason,
-                    )
-                )
-
-        time.sleep(args.sleep)
 
         # Always write the CSV to disk so progress survives a crash even between
         # checkpoints; only commit/push every `checkpoint_every` batches to avoid
