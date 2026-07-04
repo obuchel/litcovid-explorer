@@ -26,6 +26,7 @@ import csv
 import json
 import os
 import re
+import subprocess
 import time
 import urllib.error
 import urllib.request
@@ -45,8 +46,7 @@ DEFAULT_TSV = os.path.join(DATA_DIR, "search_results_litcovid.tsv")
 DEFAULT_DOCS3 = os.path.join(DATA_DIR, "docs3.csv")
 DEFAULT_OUT = os.path.join(DATA_DIR, "doc_all_info.csv")
 DEFAULT_FAILED = os.path.join(DATA_DIR, "failed_pmids_all_info.txt")
-DEFAULT_PUBTATOR_OUT_DIR = os.path.join(DATA_DIR, "pubtator_records")
-DEFAULT_JSON_DIR = os.path.join(DATA_DIR, "pubtator_records")
+DEFAULT_PUBTATOR_CACHE = os.path.join(DATA_DIR, "pubtator_records.jsonl")
 
 TSV_SKIPROWS = -1  # -1 = auto-detect: skip leading '#' comment / blank lines
 BATCH_SIZE = 20
@@ -349,19 +349,33 @@ def fetch_batch(pmids: list[str], api_key: str = "") -> tuple[list[dict[str, Any
     return [], "network_error"
 
 
-def load_cached_record(json_dir: str, pmid: str) -> dict[str, Any] | None:
-    path = os.path.join(json_dir, f"{pmid}.json")
+def load_pubtator_cache(path: str) -> dict[str, Any]:
+    """Load the JSONL cache into memory: {pmid: record}. Later lines win, so a
+    re-fetched PMID's newest record is used even if an older line exists."""
+    cache: dict[str, Any] = {}
     if not os.path.exists(path):
-        return None
+        return cache
     with open(path, "r", encoding="utf-8") as fp:
-        return json.load(fp)
+        for line in fp:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            pmid = str(entry.get("pmid", ""))
+            if pmid:
+                cache[pmid] = entry.get("record")
+    return cache
 
 
-def save_cached_record(json_dir: str, pmid: str, record: dict[str, Any]) -> None:
-    os.makedirs(json_dir, exist_ok=True)
-    path = os.path.join(json_dir, f"{pmid}.json")
-    with open(path, "w", encoding="utf-8") as fp:
-        json.dump(record, fp, indent=2, ensure_ascii=False)
+def append_pubtator_cache(path: str, pmid: str, record: dict[str, Any]) -> None:
+    """Append one record. Cheap (no rewrite), and safe to commit incrementally —
+    unlike one-file-per-PMID, this is a single file git can actually track."""
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "a", encoding="utf-8") as fp:
+        fp.write(json.dumps({"pmid": pmid, "record": record}, ensure_ascii=False) + "\n")
 
 
 def write_rows(path: str, rows: list[dict[str, str]]) -> None:
@@ -372,17 +386,36 @@ def write_rows(path: str, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
+def git_checkpoint(*paths: str, message: str) -> None:
+    """Commit and push whatever's changed at `paths` so far, so a killed or
+    cancelled run still leaves real progress behind instead of nothing. Never
+    raises — a checkpoint failing shouldn't abort hours of fetching."""
+    try:
+        existing = [p for p in paths if os.path.exists(p)]
+        if not existing:
+            return
+        subprocess.run(["git", "add", *existing], cwd=BASE_DIR, check=True)
+        diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=BASE_DIR)
+        if diff.returncode == 0:
+            return  # nothing changed since the last checkpoint
+        subprocess.run(["git", "commit", "-m", message], cwd=BASE_DIR, check=True)
+        subprocess.run(["git", "pull", "--rebase", "--autostash"], cwd=BASE_DIR, check=True)
+        subprocess.run(["git", "push"], cwd=BASE_DIR, check=True)
+        print(f"Checkpoint committed: {message}", flush=True)
+    except subprocess.CalledProcessError as exc:
+        print(f"Checkpoint commit failed (continuing the run): {exc}", flush=True)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fetch all PubMed/PubTator document metadata into a separate CSV.")
     parser.add_argument("--tsv", default=DEFAULT_TSV, help="LitCovid TSV/CSV path")
     parser.add_argument("--skiprows", type=int, default=TSV_SKIPROWS, help="Header rows to skip (-1 = auto-detect)")
     parser.add_argument("--docs3", default=DEFAULT_DOCS3, help="Optional docs3.csv date cache path")
     parser.add_argument("--out", default=DEFAULT_OUT, help="Output CSV path")
-    parser.add_argument("--json-dir", default=DEFAULT_JSON_DIR, help="Directory for cached PubTator JSON files")
     parser.add_argument(
-        "--pubtator-out-dir",
-        default=DEFAULT_PUBTATOR_OUT_DIR,
-        help="Directory where PubTator BioC-JSON records are saved as <pmid>.json",
+        "--pubtator-cache",
+        default=DEFAULT_PUBTATOR_CACHE,
+        help="JSONL file caching every PubTator record fetched, keyed by PMID",
     )
     parser.add_argument("--failed-out", default=DEFAULT_FAILED, help="Failed PMID output path")
     parser.add_argument("--retry-failed", help="Read PMIDs from this file instead of the TSV")
@@ -391,6 +424,13 @@ def main() -> None:
     parser.add_argument("--sleep", type=float, default=SLEEP_BETWEEN)
     parser.add_argument("--limit", type=int, help="Fetch only the first N PMIDs for testing")
     parser.add_argument("--force-refresh", action="store_true", help="Re-fetch records even if cached JSON exists")
+    parser.add_argument(
+        "--checkpoint-every",
+        type=int,
+        default=10,
+        help="Commit & push doc_all_info.csv and the PubTator cache every N batches (0 disables)",
+    )
+    parser.add_argument("--no-checkpoint-commit", action="store_true", help="Write checkpoints to disk but skip git commit/push")
     args = parser.parse_args()
 
     tsv_df = read_litcovid_tsv(args.tsv, args.skiprows)
@@ -406,12 +446,13 @@ def main() -> None:
         pmids = pmids[: args.limit]
 
     existing_dates = read_existing_dates(args.docs3)
+    pubtator_cache = {} if args.force_refresh else load_pubtator_cache(args.pubtator_cache)
     rows: list[dict[str, str]] = []
     failed: dict[str, str] = {}
 
     print(f"PMIDs to process: {len(pmids)}")
     print(f"Output: {args.out}")
-    print(f"PubTator JSON records: {args.pubtator_out_dir}")
+    print(f"PubTator cache: {args.pubtator_cache} ({len(pubtator_cache)} records loaded)")
 
     for start in range(0, len(pmids), args.batch_size):
         batch = pmids[start : start + args.batch_size]
@@ -421,9 +462,8 @@ def main() -> None:
 
         pending: list[str] = []
         for pmid in batch:
-            cached = None if args.force_refresh else load_cached_record(args.json_dir, pmid)
+            cached = pubtator_cache.get(pmid) if not args.force_refresh else None
             if cached:
-                save_cached_record(args.pubtator_out_dir, pmid, cached)
                 rows.append(
                     extract_record_info(
                         pmid,
@@ -446,8 +486,8 @@ def main() -> None:
         for pmid in pending:
             record = records_by_pmid.get(pmid)
             if record:
-                save_cached_record(args.json_dir, pmid, record)
-                save_cached_record(args.pubtator_out_dir, pmid, record)
+                append_pubtator_cache(args.pubtator_cache, pmid, record)
+                pubtator_cache[pmid] = record
                 rows.append(
                     extract_record_info(
                         pmid,
@@ -474,6 +514,17 @@ def main() -> None:
                 )
 
         time.sleep(args.sleep)
+
+        # Always write the CSV to disk so progress survives a crash even between
+        # checkpoints; only commit/push every `checkpoint_every` batches to avoid
+        # hammering the git remote on every single batch.
+        write_rows(args.out, rows)
+        if args.checkpoint_every and batch_num % args.checkpoint_every == 0 and not args.no_checkpoint_commit:
+            git_checkpoint(
+                args.out,
+                args.pubtator_cache,
+                message=f"Checkpoint: {len(rows)}/{len(pmids)} PMIDs processed [skip ci]",
+            )
 
     # Safety net: ensure every PMID from the source list has exactly one row.
     # Catches any edge cases where a PMID was neither processed nor recorded as failed.

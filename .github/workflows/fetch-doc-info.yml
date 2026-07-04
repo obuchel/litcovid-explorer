@@ -6,6 +6,11 @@ name: fetch-doc-info
 #                 (this is what a plain "drag a file into the GitHub UI" upload triggers)
 #  3. workflow_dispatch — triggered on demand, including by the React app's
 #                 "Commit & run" button via the Actions API
+#
+# The script itself commits progress (doc_all_info.csv + pubtator_records.jsonl)
+# every few batches while it runs — see --checkpoint-every in the script — so a
+# cancelled or timed-out run still leaves real, usable progress in the repo
+# instead of nothing.
 on:
   schedule:
     - cron: '0 6 * * 1' # every Monday 06:00 UTC — edit to taste
@@ -45,12 +50,10 @@ jobs:
 
       - run: pip install pandas
 
-      - name: Restore PubTator record cache
-        uses: actions/cache@v4
-        with:
-          path: data/pubtator_records
-          key: pubtator-records-${{ github.run_id }}
-          restore-keys: pubtator-records-
+      - name: Configure git for checkpoint commits
+        run: |
+          git config user.name "doc-info-bot"
+          git config user.email "actions@users.noreply.github.com"
 
       - name: Locate input file
         id: input
@@ -71,12 +74,12 @@ jobs:
             ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }} \
             ${{ github.event.inputs.force_refresh == 'true' && '--force-refresh' || '' }}
 
-      - name: Commit results
+      - name: Commit final results
+        if: always() # run even if the pipeline step above failed partway, to keep whatever it managed
         run: |
-          git config user.name "doc-info-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add data/doc_all_info.csv
+          git add data/doc_all_info.csv data/pubtator_records.jsonl
           git add data/failed_pmids_all_info*.txt 2>/dev/null || true
           git diff --cached --quiet && echo "No changes to commit." && exit 0
           git commit -m "Update doc_all_info.csv [automated]"
+          git pull --rebase --autostash
           git push
