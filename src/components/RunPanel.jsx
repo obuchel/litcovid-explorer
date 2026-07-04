@@ -23,6 +23,7 @@ export default function RunPanel({
   runInfo,
   onCommitAndRun,
   onLoadLatest,
+  onCheckCurrentRun,
   onStopWatching,
   busy,
 }) {
@@ -71,6 +72,9 @@ export default function RunPanel({
         </button>
         <button className="btn secondary" disabled={busy} onClick={onLoadLatest}>
           Load latest results
+        </button>
+        <button className="btn secondary" disabled={busy} onClick={onCheckCurrentRun}>
+          Check current run
         </button>
         {running && (
           <button className="btn secondary" onClick={onStopWatching}>

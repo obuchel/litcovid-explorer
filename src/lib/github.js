@@ -94,6 +94,16 @@ export async function getRun({ token, owner, repo, runId }) {
   return apiFetch(`${API}/repos/${owner}/${repo}/actions/runs/${runId}`, token);
 }
 
+/** Find the most recent run for a workflow, regardless of how it was triggered — used to
+ * reconnect to a run that's already going even if the dispatch-tracking lookup missed it. */
+export async function getLatestRun({ token, owner, repo, workflowFile }) {
+  const data = await apiFetch(
+    `${API}/repos/${owner}/${repo}/actions/workflows/${workflowFile}/runs?per_page=1`,
+    token,
+  );
+  return data.workflow_runs?.[0] || null;
+}
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

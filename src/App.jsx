@@ -5,7 +5,7 @@ import SettingsPanel from './components/SettingsPanel.jsx';
 import RunPanel from './components/RunPanel.jsx';
 import ResultsPanel from './components/ResultsPanel.jsx';
 import { PIPELINES, getPipeline } from './pipelines/registry.js';
-import { getRepoFile, putRepoFile, dispatchWorkflow, findDispatchedRun, getRun } from './lib/github.js';
+import { getRepoFile, putRepoFile, dispatchWorkflow, findDispatchedRun, getRun, getLatestRun } from './lib/github.js';
 
 const POLL_INTERVAL_MS = 6000;
 
@@ -53,6 +53,23 @@ export default function App() {
     const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
     setRows(parsed.data);
     setCsvText(text);
+  }
+
+  async function handleCheckCurrentRun() {
+    if (!connected || !pipeline.workflowFile) return;
+    log('info', 'Looking for the most recent run on GitHub...');
+    try {
+      const run = await getLatestRun({ ...settings, workflowFile: pipeline.workflowFile });
+      if (!run) {
+        log('warn', 'No runs found for this workflow yet.');
+        return;
+      }
+      setRunInfo({ runId: run.id, htmlUrl: run.html_url });
+      log('info', `Watching run #${run.run_number} (${run.status})...`);
+      pollRun(run.id);
+    } catch (err) {
+      log('err', err.message);
+    }
   }
 
   async function handleLoadLatest() {
@@ -111,8 +128,12 @@ export default function App() {
         since: dispatchedAt,
       });
       if (!run) {
-        setStatus('error');
-        log('err', 'Could not find the dispatched run. Check the Actions tab on GitHub directly.');
+        log(
+          'warn',
+          'Started the run but lost track of it (GitHub API lag). Click "Check current run" below — ' +
+            'the run itself is unaffected and keeps going on GitHub regardless.',
+        );
+        setStatus('idle');
         return;
       }
       setRunInfo({ runId: run.id, htmlUrl: run.html_url });
@@ -190,6 +211,7 @@ export default function App() {
               runInfo={runInfo}
               onCommitAndRun={handleCommitAndRun}
               onLoadLatest={handleLoadLatest}
+              onCheckCurrentRun={handleCheckCurrentRun}
               onStopWatching={stopPolling}
               busy={!connected || ['committing', 'dispatching'].includes(status)}
             />
