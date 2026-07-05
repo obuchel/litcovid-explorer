@@ -151,9 +151,22 @@ def fetch_icite_batch(pmids: list[str]) -> dict[str, dict[str, Any]]:
 # OpenAlex
 # ---------------------------------------------------------------------------
 
-def fetch_openalex_work(pmid: str, mailto: str) -> dict[str, str] | None:
-    """Returns {"source_id": "S...", "source_name": "..."} or None if the
-    work isn't in OpenAlex / has no primary_location.source."""
+class FetchFailed:
+    """Sentinel: the request itself failed (network, timeout, non-404 HTTP
+    error) — as opposed to a confirmed, legitimate 'no data here' (404, or a
+    successful response that just lacks the field). Caching a FetchFailed
+    would permanently poison the cache for something that might succeed on
+    retry, so main() checks for this and deliberately does NOT cache it —
+    leaving it in `remaining` so the next run tries again."""
+
+
+FETCH_FAILED = FetchFailed()
+
+
+def fetch_openalex_work(pmid: str, mailto: str) -> dict[str, str] | None | FetchFailed:
+    """Returns {"source_id": "S...", "source_name": "..."}, None if the work
+    is confirmed to not exist in OpenAlex (404) or has no primary_location,
+    or FETCH_FAILED if the request itself failed and should be retried."""
     url = OPENALEX_WORKS_URL.format(pmid=pmid) + "?select=primary_location"
     if mailto:
         url += f"&mailto={mailto}"
@@ -163,11 +176,11 @@ def fetch_openalex_work(pmid: str, mailto: str) -> dict[str, str] | None:
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
             return None
-        print(f"WARNING: OpenAlex work lookup failed for pmid {pmid}: {exc}", flush=True)
-        return None
+        print(f"WARNING: OpenAlex work lookup failed for pmid {pmid}: {exc} (will retry next run)", flush=True)
+        return FETCH_FAILED
     except Exception as exc:
-        print(f"WARNING: OpenAlex work lookup failed for pmid {pmid}: {exc}", flush=True)
-        return None
+        print(f"WARNING: OpenAlex work lookup failed for pmid {pmid}: {exc} (will retry next run)", flush=True)
+        return FETCH_FAILED
 
     source = ((data.get("primary_location") or {}).get("source")) or {}
     source_id = source.get("id", "")
@@ -176,8 +189,11 @@ def fetch_openalex_work(pmid: str, mailto: str) -> dict[str, str] | None:
     return {"source_id": source_id.rsplit("/", 1)[-1], "source_name": source.get("display_name", "")}
 
 
-def fetch_openalex_source(source_id: str, mailto: str) -> dict[str, Any] | None:
-    """Returns {"display_name", "two_yr_mean_citedness"} or None."""
+def fetch_openalex_source(source_id: str, mailto: str) -> dict[str, Any] | FetchFailed:
+    """Returns {"display_name", "two_yr_mean_citedness"}, or FETCH_FAILED if
+    the request itself failed (retry next run). A successful response with no
+    2yr_mean_citedness (e.g. too new a journal) still returns a real dict —
+    that's a legitimate answer, not a failure, and gets cached as such."""
     url = OPENALEX_SOURCES_URL.format(source_id=source_id) + "?select=display_name,summary_stats"
     if mailto:
         url += f"&mailto={mailto}"
@@ -185,8 +201,8 @@ def fetch_openalex_source(source_id: str, mailto: str) -> dict[str, Any] | None:
         with urllib.request.urlopen(url, timeout=20) as resp:
             data = json.loads(resp.read().decode("utf-8"))
     except Exception as exc:
-        print(f"WARNING: OpenAlex source lookup failed for {source_id}: {exc}", flush=True)
-        return None
+        print(f"WARNING: OpenAlex source lookup failed for {source_id}: {exc} (will retry next run)", flush=True)
+        return FETCH_FAILED
 
     stats = data.get("summary_stats") or {}
     return {
@@ -206,7 +222,7 @@ def main() -> None:
     parser.add_argument("--mailto", default="", help="Email for OpenAlex's polite pool (optional but recommended)")
     parser.add_argument("--limit", type=int, help="Only process the first N PMIDs, for testing")
     parser.add_argument("--sleep", type=float, default=0.15, help="Delay between OpenAlex per-PMID requests")
-    parser.add_argument("--checkpoint-every", type=int, default=500, help="Commit cache files every N items (0 disables)")
+    parser.add_argument("--checkpoint-every", type=int, default=100, help="Commit cache files every N items (0 disables)")
     parser.add_argument("--no-checkpoint-commit", action="store_true", help="Write caches to disk but skip git commit/push")
     args = parser.parse_args()
 
@@ -242,8 +258,9 @@ def main() -> None:
     print(f"OpenAlex work lookup: {len(pmids) - len(remaining)} already cached, {len(remaining)} to fetch")
     for i, pmid in enumerate(remaining, 1):
         value = fetch_openalex_work(pmid, args.mailto)
-        append_cache(OPENALEX_WORK_CACHE, pmid, value)
-        work_cache[pmid] = value
+        if value is not FETCH_FAILED:
+            append_cache(OPENALEX_WORK_CACHE, pmid, value)
+            work_cache[pmid] = value
         time.sleep(args.sleep)
         if i % 200 == 0:
             print(f"OpenAlex work lookup: {i}/{len(remaining)}", flush=True)
@@ -257,8 +274,9 @@ def main() -> None:
     print(f"OpenAlex source lookup: {len(unique_source_ids) - len(remaining_sources)} already cached, {len(remaining_sources)} unique journals to fetch")
     for i, source_id in enumerate(remaining_sources, 1):
         value = fetch_openalex_source(source_id, args.mailto)
-        append_cache(OPENALEX_SOURCE_CACHE, source_id, value)
-        source_cache[source_id] = value
+        if value is not FETCH_FAILED:
+            append_cache(OPENALEX_SOURCE_CACHE, source_id, value)
+            source_cache[source_id] = value
         time.sleep(args.sleep)
         if i % 50 == 0:
             print(f"OpenAlex source lookup: {i}/{len(remaining_sources)}", flush=True)
