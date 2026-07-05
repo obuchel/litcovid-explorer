@@ -133,7 +133,7 @@ function Cell({ columnKey, value, expanded }) {
       </a>
     );
   }
-  if (columnKey === 'title_e' || columnKey === 'abstract' || columnKey === 'authors') {
+  if (columnKey === 'title_e' || columnKey === 'abstract' || columnKey === 'authors' || columnKey === 'first') {
     return <div className={expanded ? '' : 'cell-truncate'}>{value || '—'}</div>;
   }
   return <>{value || '—'}</>;

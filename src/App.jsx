@@ -17,12 +17,12 @@ export default function App() {
   const connected = Boolean(settings.owner && settings.repo && settings.branch && settings.token);
 
   const [file, setFile] = useState(null);
-  const [options, setOptions] = useState({ limit: '', forceRefresh: false });
+  const [options, setOptions] = useState({ limit: '', forceRefresh: false, skipEnrichment: false });
   const [status, setStatus] = useState('idle');
   const [logs, setLogs] = useState([]);
   const [runInfo, setRunInfo] = useState(null);
   const [rows, setRows] = useState([]);
-  const [csvText, setCsvText] = useState('');
+  const [resultText, setResultText] = useState('');
   const pollRef = useRef(null);
 
   // Reset the run/results view whenever the selected pipeline changes.
@@ -32,7 +32,7 @@ export default function App() {
     setLogs([]);
     setRunInfo(null);
     setRows([]);
-    setCsvText('');
+    setResultText('');
     stopPolling();
   }, [activeId]);
 
@@ -49,10 +49,15 @@ export default function App() {
     }
   }
 
-  function loadCsvIntoTable(text) {
-    const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-    setRows(parsed.data);
-    setCsvText(text);
+  function loadResultIntoTable(text) {
+    if (pipeline.resultFormat === 'json-tree') {
+      const parsed = JSON.parse(text);
+      setRows(parsed.tree || []);
+    } else {
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      setRows(parsed.data);
+    }
+    setResultText(text);
   }
 
   async function handleCheckCurrentRun() {
@@ -82,7 +87,7 @@ export default function App() {
         log('warn', `${pipeline.outputPath} doesn't exist in the repo yet — run the pipeline first.`);
         return;
       }
-      loadCsvIntoTable(file.text);
+      loadResultIntoTable(file.text);
       log('success', `Loaded ${pipeline.outputPath}.`);
     } catch (err) {
       log('err', err.message);
@@ -90,30 +95,34 @@ export default function App() {
   }
 
   async function handleCommitAndRun() {
-    if (!file || !connected || !pipeline.workflowFile) return;
+    if (!connected || !pipeline.workflowFile) return;
+    if (!pipeline.noUpload && !file) return;
     stopPolling();
     setRunInfo(null);
     setRows([]);
-    setCsvText('');
+    setResultText('');
 
     try {
-      setStatus('committing');
-      log('info', `Reading ${file.name}...`);
-      const text = await file.text();
+      if (!pipeline.noUpload) {
+        setStatus('committing');
+        log('info', `Reading ${file.name}...`);
+        const text = await file.text();
 
-      log('info', `Committing to ${pipeline.inputPath}...`);
-      await putRepoFile({
-        ...settings,
-        path: pipeline.inputPath,
-        content: text,
-        message: `Update ${pipeline.inputPath} via web uploader`,
-      });
-      log('success', 'File committed.');
+        log('info', `Committing to ${pipeline.inputPath}...`);
+        await putRepoFile({
+          ...settings,
+          path: pipeline.inputPath,
+          content: text,
+          message: `Update ${pipeline.inputPath} via web uploader`,
+        });
+        log('success', 'File committed.');
+      }
 
       setStatus('dispatching');
       const inputs = {};
       if (options.limit) inputs.limit = String(options.limit);
       if (options.forceRefresh) inputs.force_refresh = 'true';
+      if (options.skipEnrichment) inputs.skip_citation_enrichment = 'true';
 
       const dispatchedAt = await dispatchWorkflow({
         ...settings,
@@ -160,7 +169,7 @@ export default function App() {
           log('success', 'Run completed. Fetching results...');
           const out = await getRepoFile({ ...settings, path: pipeline.outputPath });
           if (out) {
-            loadCsvIntoTable(out.text);
+            loadResultIntoTable(out.text);
             log('success', `Loaded ${pipeline.outputPath}.`);
           } else {
             log('warn', `Run succeeded but ${pipeline.outputPath} wasn't found — check the workflow.`);
@@ -217,7 +226,7 @@ export default function App() {
             />
 
             {rows.length > 0 && (
-              <ResultsPanel pipeline={pipeline} rows={rows} csvText={csvText} filename={pipeline.outputPath.split('/').pop()} />
+              <ResultsPanel pipeline={pipeline} rows={rows} resultText={resultText} filename={pipeline.outputPath.split('/').pop()} />
             )}
           </>
         )}

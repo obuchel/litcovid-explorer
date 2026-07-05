@@ -288,6 +288,21 @@ def main() -> None:
         help="Comma-separated key_name values to keep in the output (empty = keep everything)",
     )
     parser.add_argument("--limit", type=int, help="Only process the first N PMIDs, for testing")
+    parser.add_argument(
+        "--one-branch",
+        action="store_true",
+        help="Keep only the first branch for a multi-branch term instead of repeating the row across all of them",
+    )
+    parser.add_argument(
+        "--doc-info-csv",
+        default=os.path.join(DATA_DIR, "doc_all_info.csv"),
+        help="Path to doc_all_info.csv, used to build the docs[] array (title/journal/authors/etc per document)",
+    )
+    parser.add_argument(
+        "--citation-csv",
+        default=os.path.join(DATA_DIR, "citation_enrichment.csv"),
+        help="Path to citation_enrichment.csv from enrich_citations.py (optional — blank fields if not found)",
+    )
     args = parser.parse_args()
 
     desc_path = download(f"{MESH_BASE_URL}/desc{args.year}.gz", os.path.join(args.scratch_dir, f"desc{args.year}.gz"))
@@ -302,6 +317,7 @@ def main() -> None:
 
     rows: list[dict[str, Any]] = []
     tree_counts: dict[tuple[str, str], dict[str, Any]] = defaultdict(lambda: {"count": 0, "first": None, "web_id": None, "tree_id": None})
+    subjects_by_pmid: dict[str, list[str]] = defaultdict(list)
 
     resolved_cache: dict[str, list[dict[str, str]]] = {}
     pmid_count = 0
@@ -330,11 +346,14 @@ def main() -> None:
                 })
                 continue
 
-            for i, branch in enumerate(branches):
+            branches_to_use = branches[:1] if args.one_branch else branches
+            for i, branch in enumerate(branches_to_use):
                 rows.append({
                     **ann, "file_name": f"{pmid}__.xml", "key_text1": branch["name"], "mesh_path": branch["path"],
                     "web_id": branch["web_id"], "tree_id": branch["tree_id"], "branch_index": i,
                 })
+                if branch["name"] and branch["name"] not in subjects_by_pmid[pmid]:
+                    subjects_by_pmid[pmid].append(branch["name"])
                 if branch["path"]:
                     key = (ann["mesh_id"], branch["path"])
                     tree_counts[key]["count"] += 1
@@ -357,12 +376,80 @@ def main() -> None:
     print(f"Wrote {len(rows)} annotation rows to {args.out_annotations}")
 
     tree = [
-        {"mesh_id": mesh_id, "web_id": info["web_id"], "tree_id": info["tree_id"], "count(*)": info["count"], "first": info["first"]}
+        {"mesh_id": mesh_id, "web_id": info["web_id"], "tree_id": info["tree_id"], "count(*)": str(info["count"]), "first": info["first"]}
         for (mesh_id, _path), info in sorted(tree_counts.items(), key=lambda kv: -kv[1]["count"])
     ]
+
+    docs: list[dict[str, str]] = []
+    citation_by_pmid: dict[str, dict[str, str]] = {}
+    if os.path.exists(args.citation_csv):
+        import csv as csv_module
+
+        with open(args.citation_csv, "r", encoding="utf-8", newline="") as fp:
+            citation_by_pmid = {row["pmid"]: row for row in csv_module.DictReader(fp) if row.get("pmid")}
+        print(f"Loaded citation enrichment for {len(citation_by_pmid)} PMIDs from {args.citation_csv}")
+    else:
+        print(f"No citation enrichment found at {args.citation_csv} — factor/number_citations will be blank. Run enrich_citations.py first if you want them.")
+
+    if os.path.exists(args.doc_info_csv):
+        import csv as csv_module
+
+        with open(args.doc_info_csv, "r", encoding="utf-8", newline="") as fp:
+            for row in csv_module.DictReader(fp):
+                if row.get("fetch_status") != "ok":
+                    continue
+                pmid = row.get("pmid", "")
+                subjects = " | ".join(subjects_by_pmid.get(pmid, []))
+                if subjects:
+                    subjects += " | "
+                citation = citation_by_pmid.get(pmid, {})
+                docs.append({
+                    # Populated from our own pipeline (doc_all_info.csv + the MeSH resolution above):
+                    "pmid": pmid,
+                    "title_e": row.get("title_e", ""),
+                    "journal": row.get("journal", ""),
+                    "doi": row.get("doi", ""),
+                    "year": row.get("year", ""),
+                    "month": row.get("month", ""),
+                    "day": row.get("day", ""),
+                    "authors": row.get("authors", ""),
+                    "subjects": subjects,
+                    "assigned_subjects1": subjects,
+                    "file_name": pmid,
+                    # From enrich_citations.py (iCite citations + OpenAlex journal metric) —
+                    # blank if that script hasn't been run yet:
+                    "number_citations": citation.get("citation_count", ""),
+                    "factor": citation.get("openalex_2yr_mean_citedness", ""),
+                    "relative_citation_ratio": citation.get("relative_citation_ratio", ""),
+                    "nih_percentile": citation.get("nih_percentile", ""),
+                    # Not produced anywhere in this pipeline — left blank rather than
+                    # fabricated. Reference files source these from a separate
+                    # enrichment step (manual document classification) this project
+                    # doesn't have.
+                    "art_id": "",
+                    "yearR": "", "monthR": "", "dayR": "",
+                    "volumeJI": "", "yearJI": "", "monthJI": "", "dayJI": "",
+                    "lang": "",
+                    "doi2": "",
+                    "id": "",
+                    "cat": "",
+                    "hard_category": "",
+                    "format": "",
+                })
+        print(f"Built docs[] for {len(docs)} successfully-fetched documents")
+    else:
+        print(f"WARNING: {args.doc_info_csv} not found — docs[] will be empty. Pass --doc-info-csv to point at it.")
+
     ensure_parent_dir(args.out_tree)
     with open(args.out_tree, "w", encoding="utf-8") as fp:
-        json.dump({"tree": tree}, fp, ensure_ascii=False, indent=2)
+        json.dump({
+            "tree": tree,
+            "docs": docs,
+            "factors": [{"factor": d["factor"]} for d in docs],
+            "citations": [{"number_citations": d["number_citations"]} for d in docs],
+            "hard_category": [{"hard_category": d["hard_category"]} for d in docs],
+            "formats": [{"format": d["format"]} for d in docs],
+        }, fp, ensure_ascii=False, indent=2)
     print(f"Wrote {len(tree)} tree entries to {args.out_tree}")
 
 

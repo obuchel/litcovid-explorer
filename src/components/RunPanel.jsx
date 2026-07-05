@@ -28,18 +28,21 @@ export default function RunPanel({
   busy,
 }) {
   const running = ['committing', 'dispatching', 'queued', 'in_progress'].includes(status);
+  const canRun = pipeline.noUpload ? !busy : Boolean(file) && !busy;
 
   return (
     <div className="card">
-      <h2><span className="step">2</span> Upload &amp; run</h2>
+      <h2><span className="step">2</span> {pipeline.noUpload ? 'Run' : 'Upload & run'}</h2>
 
-      <FileDropzone
-        accept={pipeline.acceptedFileTypes}
-        hint={pipeline.inputHint}
-        file={file}
-        onFile={onFile}
-        disabled={busy}
-      />
+      {!pipeline.noUpload && (
+        <FileDropzone
+          accept={pipeline.acceptedFileTypes}
+          hint={pipeline.inputHint}
+          file={file}
+          onFile={onFile}
+          disabled={busy}
+        />
+      )}
 
       <div className="field-grid">
         <div className="field">
@@ -53,22 +56,37 @@ export default function RunPanel({
             onChange={(e) => onOptionsChange({ ...options, limit: e.target.value })}
           />
         </div>
-        <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
-          <input
-            id="force"
-            type="checkbox"
-            checked={options.forceRefresh}
-            onChange={(e) => onOptionsChange({ ...options, forceRefresh: e.target.checked })}
-          />
-          <label htmlFor="force" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
-            Re-fetch cached PMIDs
-          </label>
-        </div>
+        {pipeline.id === 'litcovid_docs' && (
+          <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
+            <input
+              id="force"
+              type="checkbox"
+              checked={options.forceRefresh}
+              onChange={(e) => onOptionsChange({ ...options, forceRefresh: e.target.checked })}
+            />
+            <label htmlFor="force" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
+              Re-fetch cached PMIDs
+            </label>
+          </div>
+        )}
+        {pipeline.id === 'mesh_tree' && (
+          <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
+            <input
+              id="skip-enrichment"
+              type="checkbox"
+              checked={options.skipEnrichment}
+              onChange={(e) => onOptionsChange({ ...options, skipEnrichment: e.target.checked })}
+            />
+            <label htmlFor="skip-enrichment" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
+              Skip citation enrichment (iCite/OpenAlex), just rebuild the tree
+            </label>
+          </div>
+        )}
       </div>
 
       <div className="btn-row">
-        <button className="btn" disabled={!file || busy} onClick={onCommitAndRun}>
-          {running ? 'Running...' : 'Commit & run'}
+        <button className="btn" disabled={!canRun} onClick={onCommitAndRun}>
+          {running ? 'Running...' : pipeline.noUpload ? 'Run' : 'Commit & run'}
         </button>
         <button className="btn secondary" disabled={busy} onClick={onLoadLatest}>
           Load latest results

@@ -30,6 +30,28 @@ export const PIPELINES = [
     defaultSortKey: 'pmid',
   },
   {
+    id: 'mesh_tree',
+    label: 'MeSH category tree',
+    shortLabel: 'MeSH Tree',
+    description:
+      'Runs against whatever is already fetched in data/doc_all_info.csv and pubtator_records.jsonl.gz — ' +
+      'no upload needed. Enriches citations via NIH iCite + an OpenAlex journal metric, then resolves every ' +
+      'Disease/Chemical MeSH annotation to its full tree lineage and aggregates counts per branch.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'build-mesh-tree.yml',
+    columns: [
+      { key: 'mesh_id', label: 'MeSH ID', width: 110 },
+      { key: 'web_id', label: 'Web ID', width: 110 },
+      { key: 'tree_id', label: 'Tree ID', width: 140 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['mesh_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
     id: 'authors',
     label: 'Author network (template)',
     shortLabel: 'Authors',
