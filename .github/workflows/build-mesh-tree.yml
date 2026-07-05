@@ -23,6 +23,11 @@ on:
         required: false
         default: 'false'
         type: boolean
+      one_branch:
+        description: 'Keep only one branch per MeSH term instead of repeating it across every branch it occupies'
+        required: false
+        default: 'true'
+        type: boolean
 
 permissions:
   contents: write
@@ -57,7 +62,8 @@ jobs:
       - name: Build MeSH annotations and category tree
         run: |
           python scripts/build_mesh_annotations.py \
-            ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }}
+            ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }} \
+            ${{ github.event.inputs.one_branch != 'false' && '--one-branch' || '' }}
 
       - name: Commit final tree (annotations CSV is gitignored — too large, regenerate locally if needed)
         if: always()
