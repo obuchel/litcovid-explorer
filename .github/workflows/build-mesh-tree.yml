@@ -1,0 +1,77 @@
+name: build-mesh-tree
+
+# Builds the MeSH category tree + citation enrichment. Runs after fetch-doc-info
+# has real data to work with, so this is separate rather than chained onto it —
+# there's no reason to rebuild the tree every single time a handful of new
+# PMIDs get fetched.
+#
+# Both scripts here are resumable and checkpoint their own progress via git
+# commits every so often (see --checkpoint-every in each script), so a
+# cancelled or timed-out run doesn't lose everything — same pattern as
+# fetch-doc-info.yml, learned the hard way there.
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Monday 08:00 UTC — a couple hours after fetch-doc-info's Monday 06:00 run
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Only process the first N PMIDs (leave empty for all)'
+        required: false
+        default: ''
+      skip_citation_enrichment:
+        description: 'Skip enrich_citations.py (iCite/OpenAlex) and just rebuild the tree from what is already cached'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-mesh-tree
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install pandas
+
+      - name: Configure git for checkpoint commits
+        run: |
+          git config user.name "mesh-tree-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+      - name: Enrich citations (iCite + OpenAlex)
+        if: ${{ github.event.inputs.skip_citation_enrichment != 'true' }}
+        run: |
+          python scripts/enrich_citations.py \
+            ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }}
+
+      - name: Build MeSH annotations and category tree
+        run: |
+          python scripts/build_mesh_annotations.py \
+            ${{ github.event.inputs.limit != '' && format('--limit {0}', github.event.inputs.limit) || '' }}
+
+      - name: Commit final tree (annotations CSV is gitignored — too large, regenerate locally if needed)
+        if: always()
+        run: |
+          FILE=data/mesh_category_tree.json
+          if [ -f "$FILE" ]; then
+            SIZE=$(stat -c%s "$FILE" 2>/dev/null || stat -f%z "$FILE")
+            if [ "$SIZE" -gt 94371840 ]; then
+              echo "WARNING: $FILE is $((SIZE / 1024 / 1024))MB, over the safe 90MB limit — not committing it. GitHub hard-rejects pushes over 100MB; this needs sharding/compression if it keeps growing."
+              exit 0
+            fi
+          fi
+          git add data/mesh_category_tree.json
+          git diff --cached --quiet && echo "No changes to commit." && exit 0
+          git commit -m "Update mesh_category_tree.json [automated]"
+          git pull --rebase --autostash
+          git push

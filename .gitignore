@@ -1,4 +1,3 @@
-
 # Logs
 logs
 *.log
@@ -24,8 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# PubTator record cache is kept via actions/cache, not committed
-#data/pubtator_records/
 
+# MeSH descriptor/SCR downloads — large, permanently hosted by NLM, never committed
 .mesh_cache/
+
+# Per-annotation detail — regeneratable, and can exceed GitHub's 100MB push limit
 data/mesh_annotations.csv
+
