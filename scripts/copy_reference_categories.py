@@ -90,7 +90,9 @@ def ensure_parent_dir(path: str) -> None:
         os.makedirs(d, exist_ok=True)
 
 
-def download_reference(url: str, dest_path: str) -> str:
+def download_reference(url: str, dest_path: str, force_refresh: bool = False) -> str:
+    if force_refresh and os.path.exists(dest_path):
+        os.remove(dest_path)
     if os.path.exists(dest_path):
         print(f"Using cached reference download: {dest_path}")
         return dest_path
@@ -128,6 +130,7 @@ def main() -> None:
     parser.add_argument("--reference-cache", default=DEFAULT_REFERENCE_CACHE, help="Where the (large) downloaded reference JSON is cached")
     parser.add_argument("--limit", type=int, help="Only check the first N of this repo's PMIDs, for testing")
     parser.add_argument("--dry-run", action="store_true", help="Report what would change without writing tree-json or committing")
+    parser.add_argument("--force-refresh", action="store_true", help="Ignore the cached reference download and re-fetch")
     parser.add_argument("--checkpoint-every", type=int, default=0, help="Unused placeholder for symmetry with the other scripts (this is a single-pass merge, not batched)")
     parser.add_argument("--no-checkpoint-commit", action="store_true", help="Write tree-json to disk but skip git commit/push")
     args = parser.parse_args()
@@ -147,7 +150,7 @@ def main() -> None:
     wanted = set(pmids)
     print(f"{len(wanted)} PMIDs in this repo to check against the reference", flush=True)
 
-    ref_path = download_reference(args.reference_url, args.reference_cache)
+    ref_path = download_reference(args.reference_url, args.reference_cache, force_refresh=args.force_refresh)
     matches = stream_reference_matches(ref_path, wanted)
     print(f"Reference has a non-empty cat/hard_category/format for {len(matches)} of those PMIDs", flush=True)
 

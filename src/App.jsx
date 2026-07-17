@@ -17,7 +17,7 @@ export default function App() {
   const connected = Boolean(settings.owner && settings.repo && settings.branch && settings.token);
 
   const [file, setFile] = useState(null);
-  const [options, setOptions] = useState({ limit: '', forceRefresh: false, skipEnrichment: false, pmids: '' });
+  const [options, setOptions] = useState({ limit: '', forceRefresh: false, skipEnrichment: false, pmids: '', dryRun: false });
   const [status, setStatus] = useState('idle');
   const [logs, setLogs] = useState([]);
   const [runInfo, setRunInfo] = useState(null);
@@ -127,6 +127,7 @@ export default function App() {
       if (options.forceRefresh) inputs.force_refresh = 'true';
       if (options.skipEnrichment) inputs.skip_citation_enrichment = 'true';
       if (options.pmids && options.pmids.trim()) inputs.pmids = options.pmids.trim();
+      if (options.dryRun) inputs.dry_run = 'true';
 
       const dispatchedAt = await dispatchWorkflow({
         ...settings,

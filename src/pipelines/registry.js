@@ -75,6 +75,28 @@ export const PIPELINES = [
     defaultSortKey: 'pmid',
   },
   {
+    id: 'copy_categories',
+    label: 'Copy reference categories',
+    shortLabel: 'Ref. categories',
+    description:
+      'Runs against the already-committed data/mesh_category_tree.json \u2014 no upload needed. Downloads the ' +
+      'whn-analytics.net reference JSON and copies its cat / hard_category / format fields in for any matching ' +
+      'PMID, wherever this repo\u2019s own value is still blank. Never overwrites a value this repo already has.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree.json',
+    resultFormat: 'json-docs',
+    workflowFile: 'copy_reference_categories.yml',
+    columns: [
+      { key: 'pmid', label: 'PMID', width: 100 },
+      { key: 'title_e', label: 'Title', width: 340 },
+      { key: 'cat', label: 'Category', width: 160 },
+      { key: 'hard_category', label: 'Hard category', width: 160 },
+      { key: 'format', label: 'Format', width: 120 },
+    ],
+    searchableColumns: ['pmid', 'title_e', 'cat', 'hard_category', 'format'],
+    defaultSortKey: 'pmid',
+  },
+  {
     id: 'authors',
     label: 'Author network (template)',
     shortLabel: 'Authors',

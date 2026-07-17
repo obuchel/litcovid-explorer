@@ -56,7 +56,7 @@ export default function RunPanel({
             onChange={(e) => onOptionsChange({ ...options, limit: e.target.value })}
           />
         </div>
-        {(pipeline.id === 'litcovid_docs' || pipeline.id === 'mesh_subjects') && (
+        {(pipeline.id === 'litcovid_docs' || pipeline.id === 'mesh_subjects' || pipeline.id === 'copy_categories') && (
           <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
             <input
               id="force"
@@ -65,7 +65,22 @@ export default function RunPanel({
               onChange={(e) => onOptionsChange({ ...options, forceRefresh: e.target.checked })}
             />
             <label htmlFor="force" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
-              {pipeline.id === 'mesh_subjects' ? 'Bypass the PubTator cache (re-fetch fresh annotations)' : 'Re-fetch cached PMIDs'}
+              {pipeline.id === 'mesh_subjects' && 'Bypass the PubTator cache (re-fetch fresh annotations)'}
+              {pipeline.id === 'copy_categories' && 'Ignore the cached reference download (re-fetch)'}
+              {pipeline.id === 'litcovid_docs' && 'Re-fetch cached PMIDs'}
+            </label>
+          </div>
+        )}
+        {pipeline.id === 'copy_categories' && (
+          <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
+            <input
+              id="dry-run"
+              type="checkbox"
+              checked={options.dryRun}
+              onChange={(e) => onOptionsChange({ ...options, dryRun: e.target.checked })}
+            />
+            <label htmlFor="dry-run" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
+              Dry run (report counts, don't write or commit)
             </label>
           </div>
         )}
