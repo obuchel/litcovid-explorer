@@ -56,7 +56,7 @@ export default function RunPanel({
             onChange={(e) => onOptionsChange({ ...options, limit: e.target.value })}
           />
         </div>
-        {pipeline.id === 'litcovid_docs' && (
+        {(pipeline.id === 'litcovid_docs' || pipeline.id === 'mesh_subjects') && (
           <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
             <input
               id="force"
@@ -65,7 +65,7 @@ export default function RunPanel({
               onChange={(e) => onOptionsChange({ ...options, forceRefresh: e.target.checked })}
             />
             <label htmlFor="force" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
-              Re-fetch cached PMIDs
+              {pipeline.id === 'mesh_subjects' ? 'Bypass the PubTator cache (re-fetch fresh annotations)' : 'Re-fetch cached PMIDs'}
             </label>
           </div>
         )}
@@ -80,6 +80,18 @@ export default function RunPanel({
             <label htmlFor="skip-enrichment" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
               Skip citation enrichment (iCite/OpenAlex), just rebuild the tree
             </label>
+          </div>
+        )}
+        {pipeline.id === 'mesh_subjects' && (
+          <div className="field" style={{ gridColumn: 'span 2' }}>
+            <label htmlFor="pmids">Target specific PMIDs (optional)</label>
+            <input
+              id="pmids"
+              type="text"
+              placeholder="e.g. 42070008,42069416 — leave blank to scan for empty subjects"
+              value={options.pmids || ''}
+              onChange={(e) => onOptionsChange({ ...options, pmids: e.target.value })}
+            />
           </div>
         )}
       </div>
