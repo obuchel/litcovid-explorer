@@ -1,0 +1,76 @@
+name: Enrich MeSH subjects
+
+# Fills in mesh_category_tree.json's docs[].subjects / assigned_subjects1 for
+# any document PubTator3 has now annotated but hadn't when
+# build_mesh_annotations.py last ran. Dispatched from the React uploader app
+# (App.jsx -> dispatchWorkflow), or manually from the Actions tab.
+#
+# NOTE: rename this pipeline's "workflowFile" entry in src/pipelines/registry.js
+# to match wherever this file ends up (e.g. "enrich_mesh_subjects.yml").
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Only process the first N target PMIDs (testing)"
+        required: false
+        default: ""
+      force_refresh:
+        description: "Bypass the PubTator cache and re-fetch fresh annotations"
+        required: false
+        default: "false"
+      pmids:
+        description: "Comma-separated PMIDs to target explicitly (overrides the empty-subjects scan)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: enrich-mesh-subjects
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350 # PubTator fetches are the slow part; adjust to taste
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run enrichment
+        env:
+          LIMIT: ${{ github.event.inputs.limit }}
+          FORCE_REFRESH: ${{ github.event.inputs.force_refresh }}
+          PMIDS: ${{ github.event.inputs.pmids }}
+        run: |
+          ARGS=()
+          if [ -n "$LIMIT" ]; then ARGS+=(--limit "$LIMIT"); fi
+          if [ "$FORCE_REFRESH" = "true" ]; then ARGS+=(--force-refresh); fi
+          if [ -n "$PMIDS" ]; then ARGS+=(--pmids "$PMIDS"); fi
+          python scripts/enrich_mesh_subjects.py "${ARGS[@]}"
+
+      - name: Final commit (in case the script's own checkpoint didn't cover everything)
+        run: |
+          git add data/mesh_category_tree.json data/mesh_annotations.csv data/pubtator_records.jsonl.gz 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Final: mesh subjects enrichment run [skip ci]"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "Nothing left to commit."
+          fi
