@@ -53,6 +53,9 @@ export default function App() {
     if (pipeline.resultFormat === 'json-tree') {
       const parsed = JSON.parse(text);
       setRows(parsed.tree || []);
+    } else if (pipeline.resultFormat === 'json-docs') {
+      const parsed = JSON.parse(text);
+      setRows(parsed.docs || []);
     } else {
       const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
       setRows(parsed.data);

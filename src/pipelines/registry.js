@@ -52,6 +52,29 @@ export const PIPELINES = [
     defaultSortKey: 'count(*)',
   },
   {
+    id: 'mesh_subjects',
+    label: 'Enrich MeSH subjects',
+    shortLabel: 'MeSH subjects',
+    description:
+      'Runs against the already-committed data/mesh_category_tree.json — no upload needed. Finds every ' +
+      'document whose subjects field is still empty (PubTator3 usually just hasn\u2019t annotated it yet), ' +
+      're-fetches just those PMIDs, resolves any Disease/Chemical MeSH IDs to their tree leaf terms, and ' +
+      'writes subjects / assigned_subjects1 back in \u2014 without re-running the full tree build.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree.json',
+    resultFormat: 'json-docs',
+    workflowFile: 'enrich_mesh_subjects.yml',
+    columns: [
+      { key: 'pmid', label: 'PMID', width: 100 },
+      { key: 'title_e', label: 'Title', width: 360 },
+      { key: 'journal', label: 'Journal', width: 160 },
+      { key: 'subjects', label: 'Subjects', width: 320 },
+      { key: 'number_citations', label: 'Citations', width: 100 },
+    ],
+    searchableColumns: ['pmid', 'title_e', 'subjects'],
+    defaultSortKey: 'pmid',
+  },
+  {
     id: 'authors',
     label: 'Author network (template)',
     shortLabel: 'Authors',
