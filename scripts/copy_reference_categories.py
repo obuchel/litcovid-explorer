@@ -23,6 +23,12 @@ into memory whole. Only PMIDs already present in this repo's docs[] are
 looked up; only non-empty reference values are copied; an existing non-blank
 value in this repo is never overwritten.
 
+After merging, this also rebuilds the top-level `categories` / `hard_category`
+/ `formats` parallel arrays (one entry per doc, same shape as the existing
+`factors`/`citations` arrays build_mesh_annotations.py produces) from the
+current state of docs[] — so they stay a true reflection of what's in docs[]
+even across repeated runs, not just a one-time snapshot.
+
 Requires: pip install ijson
 
 Usage:
@@ -175,11 +181,15 @@ def main() -> None:
         return
 
     tree_data["docs"] = docs
-    # NOTE: the top-level hard_category / formats arrays elsewhere in this
-    # JSON are deliberately left untouched here — this script only fills in
-    # docs[].cat / docs[].hard_category / docs[].format. Deriving those
-    # parallel arrays from docs[] is a separate step, for later, not part of
-    # this merge.
+    # Parallel arrays, rebuilt from the current (just-updated) docs[] — same
+    # convention build_mesh_annotations.py already uses for factors/citations.
+    # "categories" is new here (mirrors doc.cat); hard_category/formats match
+    # the existing key names in this schema. Rebuilt from ALL of docs[], not
+    # just the PMIDs this run touched, so they stay a true reflection of
+    # current state even across repeated runs.
+    tree_data["categories"] = [{"cat": d.get("cat", "")} for d in docs]
+    tree_data["hard_category"] = [{"hard_category": d.get("hard_category", "")} for d in docs]
+    tree_data["formats"] = [{"format": d.get("format", "")} for d in docs]
 
     ensure_parent_dir(args.tree_json)
     with open(args.tree_json, "w", encoding="utf-8") as fp:
