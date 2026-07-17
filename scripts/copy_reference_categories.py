@@ -175,12 +175,11 @@ def main() -> None:
         return
 
     tree_data["docs"] = docs
-    # Keep the parallel hard_category/formats arrays in lockstep with docs[]
-    # (same convention build_mesh_annotations.py uses) — there's no parallel
-    # "cats" array anywhere else in this schema, so cat only ever lives
-    # inside docs[] itself.
-    tree_data["hard_category"] = [{"hard_category": d.get("hard_category", "")} for d in docs]
-    tree_data["formats"] = [{"format": d.get("format", "")} for d in docs]
+    # NOTE: the top-level hard_category / formats arrays elsewhere in this
+    # JSON are deliberately left untouched here — this script only fills in
+    # docs[].cat / docs[].hard_category / docs[].format. Deriving those
+    # parallel arrays from docs[] is a separate step, for later, not part of
+    # this merge.
 
     ensure_parent_dir(args.tree_json)
     with open(args.tree_json, "w", encoding="utf-8") as fp:
