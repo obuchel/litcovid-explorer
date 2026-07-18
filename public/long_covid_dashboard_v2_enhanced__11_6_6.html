@@ -419,6 +419,16 @@
             // leaf its subjects_array matches, so it still shows up — "repeats"
             // — under every branch it belongs to in this single combined view.
             'combined': { computed: true, sources: ['disease', 'chemical', 'other'], label: 'All', shortLabel: 'All', icon: '🌐', isPrimary: false },
+            // Gene category trees (extract_genes.py / scripts/extract-genes.yml) —
+            // a different classification axis entirely (Gene Ontology / HGNC /
+            // KEGG, not MeSH disease-chemical-other), so these deliberately stay
+            // out of "combined" rather than getting merged into it. Marked
+            // `optional` because these files are produced by a separate,
+            // newer pipeline that may not have been run yet on any given
+            // deployment — see the `optional` handling in init() below.
+            'gene_go':   { file: 'data/gene_category_tree_go.json',   label: 'Genes — Gene Ontology', shortLabel: 'Genes: GO',   icon: '🧬', isPrimary: false, optional: true },
+            'gene_hgnc': { file: 'data/gene_category_tree_hgnc.json', label: 'Genes — HGNC groups',   shortLabel: 'Genes: HGNC', icon: '🧬', isPrimary: false, optional: true },
+            'gene_kegg': { file: 'data/gene_category_tree_kegg.json', label: 'Genes — KEGG pathways', shortLabel: 'Genes: KEGG', icon: '🧬', isPrimary: false, optional: true },
         };
         const PRIMARY_ID = Object.keys(DATASETS).find(id => DATASETS[id].isPrimary);
 
@@ -450,19 +460,39 @@
 
         async function init() {
             try {
-                const ids = Object.keys(DATASETS).filter(id => !DATASETS[id].computed);
-                const responses = await Promise.all(ids.map(id => fetch(DATASETS[id].file)));
+                const requiredIds = Object.keys(DATASETS).filter(id => !DATASETS[id].computed && !DATASETS[id].optional);
+                const responses = await Promise.all(requiredIds.map(id => fetch(DATASETS[id].file)));
 
                 // Fail fast with a clear message naming the specific file, rather
                 // than a generic "failed to fetch" that doesn't say which one.
                 for (let i = 0; i < responses.length; i++) {
                     if (!responses[i].ok) {
-                        throw new Error(`${DATASETS[ids[i]].file} → HTTP ${responses[i].status}`);
+                        throw new Error(`${DATASETS[requiredIds[i]].file} → HTTP ${responses[i].status}`);
                     }
                 }
 
                 const jsons = await Promise.all(responses.map(r => r.json()));
-                ids.forEach((id, i) => { datasets[id] = jsons[i]; });
+                requiredIds.forEach((id, i) => { datasets[id] = jsons[i]; });
+
+                // Optional datasets (currently: the gene trees) — a missing or
+                // failed file just disables that one tree button instead of
+                // taking down the whole dashboard the way a required dataset
+                // failing does. Lets this page keep working before the
+                // gene-extraction pipeline has been run for the first time,
+                // or if one specific approach's file is briefly stale/absent.
+                const optionalIds = Object.keys(DATASETS).filter(id => !DATASETS[id].computed && DATASETS[id].optional);
+                await Promise.all(optionalIds.map(async (id) => {
+                    try {
+                        const res = await fetch(DATASETS[id].file);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        datasets[id] = await res.json();
+                    } catch (err) {
+                        console.warn(`Optional dataset "${id}" (${DATASETS[id].file}) unavailable — hiding its tree button. ${err.message}`);
+                        DATASETS[id].unavailable = true;
+                    }
+                }));
+
+                const ids = [...requiredIds, ...optionalIds.filter((id) => !DATASETS[id].unavailable)];
 
                 // Build the "combined" datasets by merging their sources' tree[]
                 // (concatenated) and docs[] (deduped by pmid — see the comment on
@@ -484,7 +514,8 @@
                 });
 
                 Object.keys(DATASETS).forEach(id => {
-                    console.log(`${DATASETS[id].label} loaded:`, datasets[id].docs?.length, 'articles,', datasets[id].tree?.length, 'tree nodes');
+                    if (DATASETS[id].unavailable) { console.log(`${DATASETS[id].label}: unavailable, skipped`); return; }
+                    console.log(`${DATASETS[id].label} loaded:`, datasets[id]?.docs?.length, 'articles,', datasets[id]?.tree?.length, 'tree nodes');
                 });
 
                 renderUI();
@@ -501,7 +532,7 @@
 
             } catch (error) {
                 console.error('Error loading data:', error);
-                const fileList = Object.values(DATASETS).filter(d => !d.computed).map(d => `<code>${d.file}</code>`).join(', ');
+                const fileList = Object.values(DATASETS).filter(d => !d.computed && !d.optional).map(d => `<code>${d.file}</code>`).join(', ');
                 document.querySelector('.container').innerHTML = `
                     <div style="padding: 3rem; text-align: center; background: white; border-radius: 0.5rem; margin: 2rem;">
                         <h2 style="color: #ef4444; margin-bottom: 1rem;">⚠️ Data Files Required</h2>
@@ -604,7 +635,7 @@
                     <div class="tree-header">
                         <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem;">
                             <div class="tree-toggle">
-                                ${['disease', 'chemical', 'other', 'combined'].map(id => `<button id="tree-btn-${id}" class="${id === currentTree ? 'active' : ''}" onclick="switchTree('${id}')">${DATASETS[id].icon} ${DATASETS[id].shortLabel}</button>`).join('')}
+                                ${['disease', 'chemical', 'other', 'combined', 'gene_go', 'gene_hgnc', 'gene_kegg'].filter(id => !DATASETS[id].unavailable).map(id => `<button id="tree-btn-${id}" class="${id === currentTree ? 'active' : ''}" onclick="switchTree('${id}')">${DATASETS[id].icon} ${DATASETS[id].shortLabel}</button>`).join('')}
                             </div>
                             <div class="tree-toggle" style="border-left: 2px solid #e5e7eb; padding-left: 0.5rem;">
                                 <button class="control-btn" onclick="expandAll()" title="Expand all nodes">➕ Expand All</button>
