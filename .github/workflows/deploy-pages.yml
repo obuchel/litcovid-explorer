@@ -33,6 +33,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Sync data to public/data
+        run: python3 scripts/sync_public_data.py
+
       - name: Build
         # Uses the repo name as the base path, matching a GitHub Pages project site
         # (https://<owner>.github.io/<repo>/). Edit if you're using a custom domain.

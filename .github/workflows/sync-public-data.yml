@@ -1,0 +1,46 @@
+name: Sync data to public/data
+
+# Copies every file in data/ into public/data/, and writes a manifest of
+# what was synced. Runs automatically as a step in deploy-pages.yml before
+# every build; this workflow exists so the same sync can also be triggered
+# on its own from the app or the Actions tab, without doing a full deploy.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-public-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync data to public/data
+        run: python3 scripts/sync_public_data.py
+
+      - name: Commit
+        run: |
+          git add public/data
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync data/ into public/data/ [automated]"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "Nothing to sync."
+          fi

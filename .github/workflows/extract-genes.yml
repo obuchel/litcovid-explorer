@@ -1,0 +1,79 @@
+name: Extract gene category trees
+
+# Pulls Gene-type PubTator annotations out of data/pubtator_records.jsonl.gz
+# (build_mesh_annotations.py discards these — genes use NCBI Entrez IDs, a
+# namespace MeSH doesn't cover) and builds a mesh_category_tree.json-shaped
+# {tree, docs} file for genes, using up to four external classifications to
+# supply the hierarchy Entrez IDs don't have on their own: Gene Ontology,
+# HGNC gene groups, KEGG BRITE pathways, and NCBI's flat type_of_gene field.
+# Dispatched from the React uploader app, or manually from the Actions tab.
+
+on:
+  workflow_dispatch:
+    inputs:
+      approach:
+        description: "Comma-separated subset of go,hgnc,kegg,type"
+        required: false
+        default: "go,hgnc,kegg,type"
+      tax_id:
+        description: "NCBI taxonomy ID to filter gene2go/gene_info to"
+        required: false
+        default: "9606"
+      kegg_organism:
+        description: "KEGG organism code"
+        required: false
+        default: "hsa"
+      limit:
+        description: "Only process the first N PMIDs (testing)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: extract-genes
+  cancel-in-progress: false
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90 # gene2go.gz + go-basic.obo are the slow downloads; adjust to taste
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract gene category trees
+        env:
+          APPROACH: ${{ github.event.inputs.approach }}
+          TAX_ID: ${{ github.event.inputs.tax_id }}
+          KEGG_ORGANISM: ${{ github.event.inputs.kegg_organism }}
+          LIMIT: ${{ github.event.inputs.limit }}
+        run: |
+          ARGS=(--approach "${APPROACH:-go,hgnc,kegg,type}" --tax-id "${TAX_ID:-9606}" --kegg-organism "${KEGG_ORGANISM:-hsa}")
+          if [ -n "$LIMIT" ]; then ARGS+=(--limit "$LIMIT"); fi
+          python scripts/extract_genes.py "${ARGS[@]}"
+
+      - name: Final commit (in case the script's own checkpoint didn't cover everything)
+        run: |
+          git add data/gene_category_tree_go.json data/gene_category_tree_hgnc.json data/gene_category_tree_kegg.json data/gene_category_tree_type.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Update gene category trees [automated]"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "Nothing left to commit."
+          fi

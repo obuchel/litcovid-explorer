@@ -185,6 +185,115 @@ export const PIPELINES = [
     defaultSortKey: 'count(*)',
   },
   {
+    id: 'gene_tree_go',
+    label: 'Gene tree \u2014 Gene Ontology',
+    shortLabel: 'Genes (GO)',
+    description:
+      'Runs against data/pubtator_records.jsonl.gz \u2014 no upload needed. Pulls out Gene-type PubTator ' +
+      'annotations (build_mesh_annotations.py discards these, since genes use NCBI Entrez IDs rather than ' +
+      'MeSH) and classifies them via Gene Ontology: three root namespaces (Biological Process / Molecular ' +
+      'Function / Cellular Component) with GO\u2019s own is_a hierarchy underneath. Running it also produces ' +
+      'the HGNC, KEGG, and type_of_gene trees in the same run.',
+    noUpload: true,
+    outputPath: 'data/gene_category_tree_go.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'extract-genes.yml',
+    columns: [
+      { key: 'gene_id', label: 'Gene ID', width: 100 },
+      { key: 'web_id', label: 'GO ID', width: 120 },
+      { key: 'tree_id', label: 'Tree ID', width: 120 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['gene_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
+    id: 'gene_tree_hgnc',
+    label: 'Gene tree \u2014 HGNC groups',
+    shortLabel: 'Genes (HGNC)',
+    description:
+      'Same run as "Gene tree \u2014 Gene Ontology" \u2014 this entry shows the HGNC gene-group split: a ' +
+      'shallow, human-only, two-level lineage (locus_group \u2192 gene_group, e.g. protein-coding gene \u2192 ' +
+      'Interleukins) sourced from HGNC\u2019s complete gene set.',
+    noUpload: true,
+    outputPath: 'data/gene_category_tree_hgnc.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'extract-genes.yml',
+    columns: [
+      { key: 'gene_id', label: 'Gene ID', width: 100 },
+      { key: 'tree_id', label: 'Group path', width: 260 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['gene_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
+    id: 'gene_tree_kegg',
+    label: 'Gene tree \u2014 KEGG pathways',
+    shortLabel: 'Genes (KEGG)',
+    description:
+      'Same run as "Gene tree \u2014 Gene Ontology" \u2014 this entry shows the KEGG split: genes classified ' +
+      'by the KEGG BRITE pathway hierarchy (Metabolism, Human Diseases, Organismal Systems, etc.) down to ' +
+      'individual pathways, via a live rest.kegg.jp lookup at run time.',
+    noUpload: true,
+    outputPath: 'data/gene_category_tree_kegg.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'extract-genes.yml',
+    columns: [
+      { key: 'gene_id', label: 'Gene ID', width: 100 },
+      { key: 'web_id', label: 'KEGG pathway', width: 130 },
+      { key: 'tree_id', label: 'Pathway ID', width: 110 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['gene_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
+    id: 'gene_tree_type',
+    label: 'Gene tree \u2014 Gene type',
+    shortLabel: 'Genes (type)',
+    description:
+      'Same run as "Gene tree \u2014 Gene Ontology" \u2014 this entry shows the flattest split: NCBI\u2019s own ' +
+      'type_of_gene field (protein-coding, ncRNA, pseudogene, etc.), one level deep, sourced from gene_info.gz.',
+    noUpload: true,
+    outputPath: 'data/gene_category_tree_type.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'extract-genes.yml',
+    columns: [
+      { key: 'gene_id', label: 'Gene ID', width: 100 },
+      { key: 'tree_id', label: 'Gene type', width: 160 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['gene_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
+    id: 'sync_public_data',
+    label: 'Sync data to public/data',
+    shortLabel: 'Sync public data',
+    description:
+      'Copies every file in data/ into public/data/ \u2014 no upload needed. The standalone dashboard HTML ' +
+      'files (long_covid_dashboard_v2_enhanced*.html, gene_category_trees.html) fetch from a relative ' +
+      './data/ path once deployed, so they only see whatever was in public/data/ at the last build. This ' +
+      'already runs automatically before every deploy; use this entry to force a resync without doing a ' +
+      'full deploy. Never deletes \u2014 files that exist only under public/data/ are left alone.',
+    noUpload: true,
+    outputPath: 'public/data/_sync_manifest.json',
+    resultFormat: 'json-docs',
+    workflowFile: 'sync-public-data.yml',
+    columns: [
+      { key: 'file', label: 'File', width: 320 },
+      { key: 'size_bytes', label: 'Size (bytes)', width: 120 },
+      { key: 'synced_at', label: 'Synced at (UTC)', width: 200 },
+    ],
+    searchableColumns: ['file'],
+    defaultSortKey: 'file',
+  },
+  {
     id: 'authors',
     label: 'Author network (template)',
     shortLabel: 'Authors',

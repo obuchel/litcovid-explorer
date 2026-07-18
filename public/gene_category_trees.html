@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gene category trees — GO, HGNC, KEGG</title>
+<style>
+  :root {
+    --surface-0: #f0efe8; --surface-1: #f5f4f0; --surface-2: #ffffff;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --text-accent: #0c447c; --border: rgba(11,11,11,0.12); --border-strong: rgba(11,11,11,0.28);
+    --radius: 8px; --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-0: #17171a; --surface-1: #1e1e21; --surface-2: #232326;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --text-accent: #85B7EB; --border: rgba(255,255,255,0.14); --border-strong: rgba(255,255,255,0.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans); background: var(--surface-0); color: var(--text-primary);
+    margin: 0; padding: 2rem 1.5rem 4rem; line-height: 1.6;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 500; margin: 0 0 4px; }
+  .subtitle { font-size: 14px; color: var(--text-secondary); margin: 0 0 2rem; }
+  h2.section { font-size: 16px; font-weight: 500; margin: 2.5rem 0 1rem; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  button {
+    font-family: inherit; font-size: 13px; padding: 8px 12px; border-radius: var(--radius);
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-primary);
+    cursor: pointer;
+  }
+  button:hover { background: var(--surface-1); }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .stat-card { background: var(--surface-1); border-radius: var(--radius); padding: 1rem; }
+  .stat-label { font-size: 13px; color: var(--text-secondary); margin: 0 0 4px; }
+  .stat-value { font-size: 24px; font-weight: 500; margin: 0; }
+  .t { fill: var(--text-primary); font-size: 12px; }
+  .c-purple { fill: #7F77DD; } .c-teal { fill: #1D9E75; } .c-coral { fill: #D85A30; }
+  .c-pink { fill: #D4537E; } .c-amber { fill: #BA7517; } .c-blue { fill: #378ADD; }
+  .c-green { fill: #639922; } .c-gray { fill: #888780; }
+  #breadcrumb { font-size: 13px; color: var(--text-secondary); margin: 0 0 8px; min-height: 18px; }
+  #tooltip {
+    position: absolute; pointer-events: none; background: var(--surface-2);
+    border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 6px 10px; font-size: 12px; display: none;
+  }
+  #load-status { font-size: 13px; color: var(--text-secondary); padding: 2rem 0; }
+  #load-error { font-size: 13px; color: #b3261e; padding: 1rem; background: var(--surface-1); border-radius: var(--radius); display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Gene category trees</h1>
+<p class="subtitle">Long COVID corpus gene mentions, classified three ways: Gene Ontology, HGNC gene groups, KEGG pathways.</p>
+
+<p id="load-status">Loading data/gene_category_tree_*.json&hellip;</p>
+<div id="load-error"></div>
+
+<div id="content" style="display:none;">
+
+<h2 class="sr-only">Zoomable tree of gene categories</h2>
+<div style="display:flex;gap:8px;margin-bottom:1rem;">
+<button id="tab-go" style="flex:1;">Gene Ontology</button>
+<button id="tab-hgnc" style="flex:1;">HGNC groups</button>
+<button id="tab-kegg" style="flex:1;">KEGG pathways</button>
+</div>
+<p id="breadcrumb"></p>
+<div style="width:100%;position:relative;">
+<svg id="icicle" width="100%" style="display:block;"></svg>
+</div>
+<div id="tooltip"></div>
+
+<h2 class="section">Category composition and top associations</h2>
+
+<div style="display:flex;gap:8px;margin-bottom:1rem;">
+<button id="btn-go" style="flex:1;">Gene Ontology</button>
+<button id="btn-hgnc" style="flex:1;">HGNC groups</button>
+<button id="btn-kegg" style="flex:1;">KEGG pathways</button>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem;">
+<div class="stat-card"><p class="stat-label">Distinct genes</p><p id="stat-genes" class="stat-value">-</p></div>
+<div class="stat-card"><p class="stat-label">Distinct categories</p><p id="stat-cats" class="stat-value">-</p></div>
+<div class="stat-card"><p class="stat-label">Top-level branches</p><p id="stat-branches" class="stat-value">-</p></div>
+</div>
+
+<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Mentions by top-level category</p>
+<div style="position:relative;height:180px;margin-bottom:2rem;">
+<canvas id="chart-composition" role="img" aria-label="Bar chart of mention counts by top-level category"></canvas>
+</div>
+
+<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Top gene-function associations by mention count</p>
+<div style="position:relative;height:360px;">
+<canvas id="chart-associations" role="img" aria-label="Horizontal bar chart of top gene to function associations by mention count"></canvas>
+</div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const SOURCES = {
+  go:   "data/gene_category_tree_go.json",
+  hgnc: "data/gene_category_tree_hgnc.json",
+  kegg: "data/gene_category_tree_kegg.json",
+};
+const APPROACH_LABELS = { go: "Gene Ontology", hgnc: "HGNC gene groups", kegg: "KEGG pathways" };
+
+// ---- Aggregation (mirrors the Python build_hierarchy / to_pruned / top_level_composition / top_associations) ----
+
+function buildHierarchy(treeEntries) {
+  const root = { name: "root", children: new Map(), value: 0, genes: new Set() };
+  for (const e of treeEntries) {
+    const path = e.first || "";
+    if (!path) continue;
+    const parts = path.split(".");
+    let node = root;
+    const count = Number(e["count(*)"] || 0);
+    const gene = e.gene_id;
+    for (const p of parts) {
+      node.value += count;
+      node.genes.add(gene);
+      if (!node.children.has(p)) node.children.set(p, { name: p, children: new Map(), value: 0, genes: new Set() });
+      node = node.children.get(p);
+    }
+    node.value += count;
+    node.genes.add(gene);
+  }
+  return root;
+}
+
+function toPruned(node, topK = 10, maxDepth = 6, depth = 0) {
+  const children = [...node.children.values()].sort((a, b) => b.value - a.value);
+  const out = { name: node.name, value: node.value, genes: node.genes.size };
+  if (children.length && depth < maxDepth) {
+    const kept = children.slice(0, topK);
+    const rest = children.slice(topK);
+    const kids = kept.map((c) => toPruned(c, topK, maxDepth, depth + 1));
+    if (rest.length) {
+      const restVal = rest.reduce((s, r) => s + r.value, 0);
+      const restGenes = new Set();
+      rest.forEach((r) => { for (const g of r.genes) restGenes.add(g); });
+      kids.push({ name: `${rest.length} more categories`, value: restVal, genes: restGenes.size });
+    }
+    out.children = kids;
+  }
+  return out;
+}
+
+function topLevelComposition(treeEntries) {
+  const totals = new Map();
+  for (const e of treeEntries) {
+    const path = e.first || "";
+    if (!path) continue;
+    const top = path.split(".")[0];
+    totals.set(top, (totals.get(top) || 0) + Number(e["count(*)"] || 0));
+  }
+  return [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([name, value]) => ({ name, value }));
+}
+
+function topAssociations(treeEntries, n = 12) {
+  const rows = treeEntries
+    .filter((e) => e.first)
+    .map((e) => ({ gene_id: e.gene_id, leaf: e.first.split(".").pop(), value: Number(e["count(*)"] || 0) }))
+    .sort((a, b) => b.value - a.value);
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    const key = r.gene_id + "|" + r.leaf;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(r);
+    if (out.length >= n) break;
+  }
+  return out;
+}
+
+// ---- Fetch + assemble ----
+
+async function loadAll() {
+  const entries = await Promise.all(
+    Object.entries(SOURCES).map(async ([key, file]) => {
+      const res = await fetch(file);
+      if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
+      const data = await res.json();
+      return [key, data.tree || []];
+    })
+  );
+
+  const ICICLE_DATA = {};
+  const CHART_DATA = {};
+  for (const [key, tree] of entries) {
+    const pruned = toPruned(buildHierarchy(tree), 10, 6);
+    pruned.name = APPROACH_LABELS[key];
+    ICICLE_DATA[key] = pruned;
+
+    CHART_DATA[key] = {
+      composition: topLevelComposition(tree),
+      associations: topAssociations(tree, 12),
+      distinct_genes: new Set(tree.map((e) => e.gene_id)).size,
+      distinct_categories: new Set(tree.filter((e) => e.first).map((e) => e.first)).size,
+    };
+  }
+  return { ICICLE_DATA, CHART_DATA };
+}
+
+// ---- Icicle rendering ----
+
+const COLOR_RAMPS = {go:["c-purple","c-teal","c-coral","c-pink","c-amber"], hgnc:["c-blue","c-green","c-teal","c-purple","c-coral"], kegg:["c-purple","c-teal","c-coral","c-pink","c-amber","c-blue","c-green"]};
+const width = 660;
+const rowHeight = 28;
+
+function renderIcicle(ICICLE_DATA, key) {
+  document.querySelectorAll("#tab-go,#tab-hgnc,#tab-kegg").forEach((b) => (b.style.borderColor = "var(--border)"));
+  document.getElementById("tab-" + key).style.borderColor = "var(--text-accent)";
+
+  const rootData = ICICLE_DATA[key];
+  const root = d3.hierarchy(rootData).sum((d) => (d.children ? 0 : d.value)).sort((a, b) => b.value - a.value);
+  const totalDepth = root.height + 1;
+  const height = totalDepth * rowHeight;
+
+  const svg = d3.select("#icicle").attr("viewBox", [0, 0, width, height]).style("height", height + "px");
+  svg.selectAll("*").remove();
+
+  d3.partition().size([height, width]).padding(1)(root);
+
+  const colorList = COLOR_RAMPS[key];
+  const topLevelColor = new Map();
+  root.children && root.children.forEach((c, i) => topLevelColor.set(c, colorList[i % colorList.length]));
+  function colorFor(d) {
+    let n = d;
+    while (n.depth > 1) n = n.parent;
+    return topLevelColor.get(n) || "c-gray";
+  }
+
+  let focus = root;
+
+  function rectX(d) { return d.y0; }
+  function rectW(d) { return d.y1 - d.y0; }
+  function xScale(d0) {
+    const k = height / (focus.x1 - focus.x0);
+    return { x0: (d0.x0 - focus.x0) * k, x1: (d0.x1 - focus.x0) * k };
+  }
+
+  const g = svg.append("g");
+  const nodes = root.descendants().filter((d) => d.depth > 0);
+
+  const cell = g.selectAll("g").data(nodes, (d) => d.data.name + d.depth + (d.parent ? d.parent.data.name : ""))
+    .join("g")
+    .attr("transform", (d) => `translate(${rectX(d)},${xScale(d).x0})`)
+    .style("cursor", "pointer");
+
+  cell.append("rect")
+    .attr("width", (d) => rectW(d))
+    .attr("height", (d) => Math.max(0, xScale(d).x1 - xScale(d).x0 - 1))
+    .attr("rx", 3)
+    .attr("class", (d) => colorFor(d))
+    .attr("fill-opacity", (d) => (d === focus ? 0 : 0.85));
+
+  function labelFor(d) {
+    const h = xScale(d).x1 - xScale(d).x0;
+    const w = rectW(d);
+    if (h < 14 || w < 40) return "";
+    const label = d.data.name + " (" + d.data.genes + " genes)";
+    const maxChars = Math.floor(w / 6.5);
+    return label.length > maxChars ? label.slice(0, Math.max(3, maxChars - 1)) + "\u2026" : label;
+  }
+
+  cell.append("text")
+    .attr("x", 6)
+    .attr("y", (d) => (Math.max(0, xScale(d).x1 - xScale(d).x0 - 1)) / 2)
+    .attr("dy", "0.32em")
+    .attr("class", "t")
+    .style("pointer-events", "none")
+    .text(labelFor);
+
+  cell.on("click", (event, d) => {
+    focus = focus === d ? d.parent || root : d;
+    update();
+    updateBreadcrumb();
+  });
+
+  const tooltip = document.getElementById("tooltip");
+  cell.on("mousemove", (event, d) => {
+    const rect = document.getElementById("icicle").getBoundingClientRect();
+    tooltip.style.display = "block";
+    tooltip.style.left = event.clientX - rect.left + 12 + "px";
+    tooltip.style.top = event.clientY - rect.top + 12 + "px";
+    tooltip.innerHTML = `<div style="font-weight:500;">${d.data.name}</div><div style="color:var(--text-secondary);">${d.data.genes.toLocaleString()} genes &middot; ${d.data.value.toLocaleString()} mentions</div>`;
+  }).on("mouseleave", () => { tooltip.style.display = "none"; });
+
+  function update() {
+    cell.transition().duration(400)
+      .attr("transform", (d) => `translate(${rectX(d)},${xScale(d).x0})`)
+      .select("rect")
+      .attr("height", (d) => Math.max(0, xScale(d).x1 - xScale(d).x0 - 1))
+      .attr("fill-opacity", (d) => (d === focus ? 0 : 0.85));
+    cell.select("text")
+      .attr("y", (d) => (Math.max(0, xScale(d).x1 - xScale(d).x0 - 1)) / 2)
+      .text(labelFor);
+  }
+
+  function updateBreadcrumb() {
+    const chain = [];
+    let n = focus;
+    while (n) { chain.unshift(n.data.name); n = n.parent; }
+    document.getElementById("breadcrumb").textContent = chain.join(" \u203a ");
+  }
+  updateBreadcrumb();
+}
+
+// ---- Bar chart rendering ----
+
+const PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
+let chartComp, chartAssoc;
+
+function renderCharts(CHART_DATA, key) {
+  document.querySelectorAll("#btn-go,#btn-hgnc,#btn-kegg").forEach((b) => (b.style.borderColor = "var(--border)"));
+  document.getElementById("btn-" + key).style.borderColor = "var(--text-accent)";
+
+  const d = CHART_DATA[key];
+  document.getElementById("stat-genes").textContent = d.distinct_genes.toLocaleString();
+  document.getElementById("stat-cats").textContent = d.distinct_categories.toLocaleString();
+  document.getElementById("stat-branches").textContent = d.composition.length.toLocaleString();
+
+  const comp = d.composition.slice(0, 8);
+  if (chartComp) chartComp.destroy();
+  chartComp = new Chart(document.getElementById("chart-composition"), {
+    type: "bar",
+    data: { labels: comp.map((c) => c.name), datasets: [{ data: comp.map((c) => c.value), backgroundColor: PALETTE[0], borderRadius: 4, maxBarThickness: 24 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { autoSkip: false, maxRotation: 30, minRotation: 0 }, grid: { display: false } },
+        y: { grid: { color: "#e1e0d9" }, ticks: { callback: (v) => v.toLocaleString() } },
+      },
+    },
+  });
+
+  const assoc = d.associations;
+  if (chartAssoc) chartAssoc.destroy();
+  chartAssoc = new Chart(document.getElementById("chart-associations"), {
+    type: "bar",
+    data: {
+      labels: assoc.map((a) => (a.leaf.length > 38 ? a.leaf.slice(0, 37) + "\u2026" : a.leaf)),
+      datasets: [{ data: assoc.map((a) => a.value), backgroundColor: PALETTE[2], borderRadius: 4, maxBarThickness: 18 }],
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: "#e1e0d9" }, ticks: { callback: (v) => v.toLocaleString() } },
+        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      },
+    },
+  });
+}
+
+// ---- Boot ----
+
+loadAll()
+  .then(({ ICICLE_DATA, CHART_DATA }) => {
+    document.getElementById("load-status").style.display = "none";
+    document.getElementById("content").style.display = "block";
+
+    document.getElementById("tab-go").addEventListener("click", () => renderIcicle(ICICLE_DATA, "go"));
+    document.getElementById("tab-hgnc").addEventListener("click", () => renderIcicle(ICICLE_DATA, "hgnc"));
+    document.getElementById("tab-kegg").addEventListener("click", () => renderIcicle(ICICLE_DATA, "kegg"));
+    renderIcicle(ICICLE_DATA, "go");
+
+    document.getElementById("btn-go").addEventListener("click", () => renderCharts(CHART_DATA, "go"));
+    document.getElementById("btn-hgnc").addEventListener("click", () => renderCharts(CHART_DATA, "hgnc"));
+    document.getElementById("btn-kegg").addEventListener("click", () => renderCharts(CHART_DATA, "kegg"));
+    renderCharts(CHART_DATA, "go");
+  })
+  .catch((err) => {
+    document.getElementById("load-status").style.display = "none";
+    const errBox = document.getElementById("load-error");
+    errBox.style.display = "block";
+    errBox.textContent = "Couldn't load gene category data: " + err.message + ". Make sure data/gene_category_tree_go.json, _hgnc.json, and _kegg.json are present alongside this file.";
+  });
+</script>
+</body>
+</html>
