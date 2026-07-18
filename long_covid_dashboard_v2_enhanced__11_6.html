@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long COVID Research Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter2/1.5.4/crossfilter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/dc.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/dc.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9fafb;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1600px; margin: 0 auto; padding: 0.75rem 1rem; }
+
+        /* ── Compact embed header ── */
+        header {
+            text-align: center;
+            padding: 1rem 0 0.75rem;
+            margin-bottom: 0;
+        }
+        .title {
+            font-size: 1.75rem; font-weight: 700; font-style: italic;
+            background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.2rem;
+        }
+        .subtitle { color: #6b7280; font-size: 0.875rem; margin-bottom: 0.4rem; }
+        .header-instructions { color: #6b7280; font-size: 0.8rem; margin-bottom: 0; line-height: 1.5; }
+        .header-note { font-style: italic; }
+
+        /* ── Compact search bar (centered, prominent) ── */
+        .search-panel {
+            background: white; padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 0.75rem;
+        }
+        .search-panel-inner {
+            max-width: 780px; margin: 0 auto;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .search-wrapper { flex: 1; position: relative; }
+
+        .global-filters {
+            background: white; padding: 0.6rem 0.75rem; border-radius: 0.375rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08); margin-bottom: 0.75rem;
+        }
+
+        .section-title { display: none; }  /* hide "Global Filters" label */
+
+        .filters-grid {
+            display: flex; flex-wrap: wrap;
+            gap: 0.5rem; align-items: flex-end; margin-bottom: 0.5rem;
+        }
+
+        .filter-group { display: flex; flex-direction: column; min-width: 160px; flex: 1; }
+
+        .filter-label { font-weight: 600; margin-bottom: 0.25rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+        .filter-control {
+            padding: 0.4rem 0.6rem; border: 1px solid #d1d5db;
+            border-radius: 0.375rem; background-color: white; outline: none; font-size: 0.8rem;
+        }
+        .filter-control:focus { border-color: #f97316; box-shadow: 0 0 0 2px rgba(249,115,22,0.15); }
+
+        .reset-filters {
+            padding: 0.4rem 0.85rem; background: white; color: #6b7280;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem; cursor: pointer; font-weight: 500; font-size: 0.8rem; transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .reset-filters:hover { background: #fef2f2; border-color: #f97316; color: #ef4444; }
+
+        .stats-info {
+            font-size: 0.8rem; color: #6b7280; padding: 0.4rem 0.75rem;
+            background: #f9fafb; border-radius: 0.25rem;
+            border-left: 3px solid #f97316; font-weight: 500;
+        }
+        .stats-info strong { color: #f97316; }
+
+        /* ── Charts outer layout ── */
+        .charts-outer-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            align-items: start;
+        }
+        @media (max-width: 1100px) {
+            .charts-outer-grid { grid-template-columns: 1fr 1fr; }
+            .charts-left-col   { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        }
+        @media (max-width: 700px) {
+            .charts-outer-grid { grid-template-columns: 1fr; }
+            .charts-left-col   { grid-column: span 1; grid-template-columns: 1fr; }
+        }
+
+        .charts-left-col { display: flex; flex-direction: column; gap: 0.75rem; }
+
+        .chart-card {
+            background: white; padding: 0.85rem 1rem; border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08);
+        }
+        .chart-card-sm { /* used for impact & citations */ }
+
+        /* Scrollable list cards (Subjects, Doc Types) */
+        .chart-card-list {
+            display: flex; flex-direction: column;
+        }
+        /* ── Custom HTML filter lists (Subjects, Doc Types) ── */
+        .filter-list {
+            overflow-y: auto;
+            max-height: 380px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            background: white;
+        }
+        .filter-list-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            height: 28px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #f3f4f6;
+            overflow: hidden;
+        }
+        .filter-list-item:last-child { border-bottom: none; }
+        .filter-list-item:hover .filter-list-bar { filter: brightness(0.9); }
+        .filter-list-bar {
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            background: #fca5a5;
+            transition: width 0.3s ease;
+            z-index: 0;
+        }
+        .filter-list-item.selected .filter-list-bar { background: #f97316; }
+        .filter-list-item.deselected { opacity: 0.45; }
+        .filter-list-label {
+            position: relative;
+            z-index: 1;
+            font-size: 12px;
+            color: #1f2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+        .filter-list-item.selected .filter-list-label { font-weight: 600; }
+        .filter-list-count {
+            position: relative;
+            z-index: 1;
+            font-size: 11px;
+            color: #6b7280;
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+        .filter-list-item.selected .filter-list-count { color: white; font-weight: 600; }
+
+        .chart-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: #374151; text-transform: uppercase; letter-spacing: 0.04em; }
+
+        .tree-container {
+            background: white; padding: 0.75rem 1rem; border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08); margin-bottom: 0.75rem; position: relative;
+        }
+        .tree-container.fullscreen {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
+            margin: 0; border-radius: 0; max-width: 100%; width: 100%; height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        .tree-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .tree-toggle { display: flex; gap: 0.5rem; }
+
+        .tree-toggle button, .control-btn {
+            padding: 0.5rem 1rem; border: 2px solid #d1d5db; background: white;
+            border-radius: 0.375rem; cursor: pointer; font-weight: 600; transition: all 0.2s; font-size: 0.875rem;
+        }
+        .tree-toggle button.active { background: #f97316; color: white; border-color: #f97316; }
+        .control-btn:hover { background: #f3f4f6; }
+
+        .tree-border {
+            border: 2px solid #fca5a5; border-radius: 0.375rem; padding: 0;
+            overflow: auto; background: #fef2f2; position: relative; height: 480px;
+        }
+        .tree-container.fullscreen .tree-border { flex: 1; height: auto; }
+
+        #tree-svg { cursor: move; }
+
+        .node text { font-size: 11px; }
+        .link { fill: none; stroke: #ccc; stroke-width: 1.5px; }
+
+        .zoom-controls {
+            position: absolute; top: 10px; left: 10px;
+            display: flex; flex-direction: column; gap: 5px; z-index: 10;
+        }
+
+        .zoom-btn {
+            width: 40px; height: 40px; background: white; border: 2px solid #d1d5db;
+            border-radius: 0.375rem; cursor: pointer; font-size: 1.25rem; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+        }
+        .zoom-btn:hover { background: #f3f4f6; border-color: #f97316; }
+
+        .breadcrumb {
+            font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;
+            padding: 0.5rem; background: #f9fafb; border-radius: 0.25rem;
+        }
+        .breadcrumb strong { color: #f97316; }
+
+        .table-container {
+            background: white; border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08); overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;
+            display: flex; justify-content: space-between; align-items: center; background: #f9fafb;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { background: #f9fafb; font-weight: 600; color: #374151; font-size: 0.875rem; }
+        td { font-size: 0.875rem; color: #6b7280; }
+
+        .pmid-link { color: #f97316; text-decoration: none; font-weight: 600; }
+        .pmid-link:hover { text-decoration: underline; }
+
+        .pagination { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .pagination-buttons { display: flex; gap: 0.5rem; }
+        .pagination-buttons button {
+            padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: white;
+            border-radius: 0.375rem; cursor: pointer; font-size: 0.875rem;
+        }
+        .pagination-buttons button:hover:not(:disabled) { background: #f3f4f6; }
+        .pagination-buttons button.active { background: #f97316; color: white; border-color: #f97316; }
+        .pagination-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .loading { text-align: center; padding: 3rem; color: #6b7280; }
+        .dc-chart .bar { fill: #f97316; cursor: pointer; }
+        .dc-chart .bar:hover { fill: #ea580c; }
+        .dc-chart g.row rect { fill: #f97316; cursor: pointer; }
+        .dc-chart g.row rect:hover { fill: #ea580c; }
+        .dc-chart g.row.subject-selected rect { fill: #7c2d12 !important; }
+        .dc-chart g.row.subject-selected rect:hover { fill: #991b1b !important; }
+        .dc-chart g.row.subject-selected text { fill: #1f2937 !important; font-weight: 700 !important; }
+
+        /* ─── Autocomplete dropdown ─── */
+        .search-wrapper { position: relative; }
+
+        .autocomplete-dropdown {
+            position: absolute; top: 100%; left: 0; right: 0;
+            max-height: 260px; overflow-y: auto; background: white;
+            border: 1px solid #d1d5db; border-top: none;
+            border-radius: 0 0 0.375rem 0.375rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; display: none;
+        }
+        .autocomplete-dropdown.visible { display: block; }
+
+        .autocomplete-item {
+            padding: 0.5rem 0.75rem; cursor: pointer; font-size: 0.85rem;
+            color: #374151; border-bottom: 1px solid #f3f4f6;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .autocomplete-item:last-child { border-bottom: none; }
+        .autocomplete-item:hover, .autocomplete-item.highlighted { background: #fff7ed; }
+        .autocomplete-item .match-highlight { font-weight: 700; color: #ea580c; }
+        .autocomplete-item .doc-count { font-size: 0.75rem; color: #9ca3af; white-space: nowrap; margin-left: 0.75rem; }
+
+        /* ─── Selected subject tags ─── */
+        .selected-subjects { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.5rem; }
+
+        .subject-tag {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.25rem 0.6rem; background: #fff7ed; border: 1px solid #fdba74;
+            border-radius: 1rem; font-size: 0.78rem; color: #9a3412; font-weight: 500;
+        }
+        .subject-tag .remove-tag { cursor: pointer; font-weight: 700; font-size: 0.9rem; color: #c2410c; line-height: 1; }
+        .subject-tag .remove-tag:hover { color: #7c2d12; }
+
+        /* ─── Tree focus breadcrumb ─── */
+        .tree-focus-path { display: inline-flex; align-items: center; gap: 0.25rem; margin-left: 0.75rem; font-size: 0.8rem; }
+        .tree-focus-path .focus-crumb { color: #f97316; cursor: pointer; font-weight: 600; }
+        .tree-focus-path .focus-crumb:hover { text-decoration: underline; }
+        .tree-focus-path .separator { color: #d1d5db; }
+
+        .tree-focus-reset {
+            display: inline-flex; align-items: center; gap: 0.25rem; margin-left: 0.75rem;
+            padding: 0.2rem 0.6rem; background: #fef2f2; border: 1px solid #fca5a5;
+            border-radius: 0.25rem; font-size: 0.78rem; color: #dc2626; cursor: pointer; font-weight: 600;
+        }
+        .tree-focus-reset:hover { background: #fee2e2; }
+
+        /* ─── Subtree highlight ─── */
+        .node.subtree-highlight circle { stroke: #f97316 !important; stroke-width: 3px !important; }
+        .node.subtree-highlight text   { fill: #7c2d12 !important; font-weight: 700 !important; }
+        .node.subtree-dim circle       { opacity: 0.25; }
+        .node.subtree-dim text         { opacity: 0.25; }
+        .link.subtree-dim              { opacity: 0.1; }
+        .link.subtree-highlight        { stroke: #f97316 !important; stroke-width: 2px !important; opacity: 1; }
+        #tree-tooltip {
+            position: fixed;
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            z-index: 9999;
+            min-width: 200px;
+            max-width: 280px;
+            border: 1px solid #f3f4f6;
+        }
+        #tree-tooltip.visible { opacity: 1; }
+        #tree-tooltip .tt-name {
+            font-size: 1.1rem; font-weight: 700; color: #111827;
+            margin-bottom: 0.6rem; line-height: 1.3;
+            border-bottom: 2px solid #f97316; padding-bottom: 0.5rem;
+        }
+        #tree-tooltip .tt-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem; color: #6b7280; padding: 0.15rem 0;
+        }
+        #tree-tooltip .tt-row .tt-label { color: #9ca3af; }
+        #tree-tooltip .tt-row .tt-value { font-weight: 600; color: #374151; }
+        #tree-tooltip .tt-value.highlight { color: #f97316; font-size: 1rem; }
+
+        /* ─── Relevance badges ─── */
+        .relevance-badge {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 0.25rem;
+            font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+        }
+        .relevance-primary {
+            background: #dcfce7; color: #166534; border: 1px solid #86efac;
+        }
+        .relevance-first {
+            background: #fef3c7; color: #92400e; border: 1px solid #fde047;
+        }
+        .relevance-secondary {
+            background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db;
+        }
+    </style>
+</head>
+<body>
+    <div id="tree-tooltip">
+        <div class="tt-name" id="tt-name"></div>
+        <div class="tt-row"><span class="tt-label">Documents</span><span class="tt-value highlight" id="tt-docs"></span></div>
+        <div class="tt-row"><span class="tt-label">Tree Level</span><span class="tt-value" id="tt-level"></span></div>
+        <div class="tt-row"><span class="tt-label">Children</span><span class="tt-value" id="tt-children"></span></div>
+        <div class="tt-row"><span class="tt-label">Is Leaf</span><span class="tt-value" id="tt-leaf"></span></div>
+        <div class="tt-row" id="tt-path-row"><span class="tt-label">Path</span><span class="tt-value" id="tt-path" style="font-size:0.75rem;color:#9ca3af;text-align:right;max-width:160px;"></span></div>
+    </div>
+    <div class="container">
+        <div class="loading">Loading data...</div>
+    </div>
+
+    <script>
+        let diseaseData, chemicalData;
+        let ndx, treeDim, impactDim, citationsDim, subjectDim, doctypeDim;
+        let impactChart, citationsChart;
+        let currentTree = 'disease';
+        let currentPage = 1;
+        let itemsPerPage = 25;
+        let svg, g, zoom;
+        let treeLayout;
+        let nodeIdCounter = 0;
+
+        // ─── subject search state ───
+        let allSubjects = [];
+        let selectedSubjects = [];
+        let searchDim = null;
+        let highlightedIndex = -1;
+        let searchFocusMode = 'all'; // 'all', 'title', or 'first-subject'
+
+        // ─── tree state ───
+        // `rawRoot` = the plain JS object tree built from data (rebuilt on each filter change)
+        // `hierarchyRoot` = the d3.hierarchy built ONCE from rawRoot per renderTree() call
+        // `focusedNodePath` = if set, we show only this subtree
+        let rawRoot = null;
+        let fullRawRoot = null;   // before focus
+        let hierarchyRoot = null; // the d3 hierarchy — built once, mutated for collapse
+        let focusedNodePath = null;
+        let highlightedSubtreeName = null; // level-1 branch name currently highlighted
+
+        async function init() {
+            try {
+                const [diseaseResponse, chemicalResponse] = await Promise.all([
+                    fetch('php2_category_xavi_last0.json'),
+                    fetch('php2_category_xavi_last_chemical.json')
+                ]);
+
+                diseaseData = await diseaseResponse.json();
+                chemicalData = await chemicalResponse.json();
+
+                console.log('Disease data loaded:', diseaseData.docs?.length, 'articles,', diseaseData.tree?.length, 'tree nodes');
+                console.log('Chemical data loaded:', chemicalData.docs?.length, 'articles,', chemicalData.tree?.length, 'tree nodes');
+
+                renderUI();
+                processData();
+                buildSubjectIndex();
+                setupCrossfilter();
+                createCharts();
+                populateFilters();
+                setupEventListeners();
+                dc.renderAll();
+                updateDisplay();
+                // Populate subtree dropdown after tree is first built
+                setTimeout(populateSubtreeDropdown, 300);
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.querySelector('.container').innerHTML = `
+                    <div style="padding: 3rem; text-align: center; background: white; border-radius: 0.5rem; margin: 2rem;">
+                        <h2 style="color: #ef4444; margin-bottom: 1rem;">⚠️ Data Files Required</h2>
+                        <p style="color: #6b7280;">
+                            Files needed: <code>php2_category_xavi_last0.json</code> and 
+                            <code>php2_category_xavi_last_chemical.json</code>
+                        </p>
+                        <p style="color: #9ca3af; margin-top: 1rem; font-size: 0.875rem;">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderUI() {
+            document.querySelector('.container').innerHTML = `
+                <header>
+                    <h1 class="title">Long COVID Trees</h1>
+                    <p class="subtitle">Last updated Sept. 29, 2023</p>
+                    <p class="header-instructions">Start typing a symptom or disease name, and then select a relevant item from the suggested list. <span class="header-note">Currently the search works only on terms in the dropdown menu.</span></p>
+                </header>
+
+                <!-- Prominent centered search bar -->
+                <div class="search-panel">
+                    <div class="search-panel-inner">
+                        <div class="search-wrapper" style="position:relative; flex:1;">
+                            <input type="text" id="search-box" class="filter-control"
+                                   style="width:100%; padding: 0.55rem 0.85rem; font-size:0.9rem; border-radius:2rem; border:1.5px solid #d1d5db;"
+                                   placeholder="Type a symptom or disease name…"
+                                   autocomplete="off">
+                            <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+                        </div>
+                        <button class="reset-filters" onclick="resetAllFilters()"
+                                style="border-radius:2rem; padding:0.55rem 1.1rem; border:1.5px solid #d1d5db; white-space:nowrap;">
+                            Reset All
+                        </button>
+                    </div>
+                    <div id="selected-subjects" class="selected-subjects" style="max-width:780px; margin:0.4rem auto 0;"></div>
+                </div>
+
+                <!-- Secondary filters row -->
+                <div class="global-filters">
+                    <h2 class="section-title">Global Filters</h2>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Tree Category</label>
+                            <select id="tree-select" class="filter-control">
+                                <option value="">All Trees</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Search Focus</label>
+                            <select id="search-focus-filter" class="filter-control">
+                                <option value="all">All mentions (any subject position)</option>
+                                <option value="title">In title only</option>
+                                <option value="first-subject">First subject (#1) only</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="justify-content:flex-end;">
+                            <div class="stats-info" id="filter-stats"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-outer-grid">
+                    <!-- Left column: Impact + Citations stacked -->
+                    <div class="charts-left-col">
+                        <div class="chart-card chart-card-sm">
+                            <h3 class="chart-title">Impact Factor Distribution</h3>
+                            <div id="impact-chart"></div>
+                        </div>
+                        <div class="chart-card chart-card-sm">
+                            <h3 class="chart-title">Citation Count Distribution</h3>
+                            <div id="citations-chart"></div>
+                        </div>
+                    </div>
+                    <!-- Middle column: Subjects scrollable list -->
+                    <div class="chart-card chart-card-list">
+                        <h3 class="chart-title">Subjects</h3>
+                        <div id="subjects-list" class="filter-list"></div>
+                    </div>
+                    <!-- Right column: Types of documents scrollable list -->
+                    <div class="chart-card chart-card-list">
+                        <h3 class="chart-title">Types of Documents</h3>
+                        <div id="doctype-list" class="filter-list"></div>
+                    </div>
+                </div>
+
+                <div class="tree-container" id="tree-container">
+                    <div class="tree-header">
+                        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                            <div class="tree-toggle">
+                                <button id="disease-btn" class="active" onclick="switchTree('disease')">Tree of Diseases</button>
+                                <button id="chemical-btn" onclick="switchTree('chemical')">Tree of Chemicals</button>
+                            </div>
+                            <div class="tree-toggle" style="border-left: 2px solid #e5e7eb; padding-left: 0.5rem;">
+                                <button class="control-btn" onclick="expandAll()" title="Expand all nodes">➕ Expand All</button>
+                                <button class="control-btn" onclick="collapseAll()" title="Collapse all nodes">➖ Collapse All</button>
+                                <button class="control-btn" onclick="collapseToDepth(2)" title="Show only 2 levels">📊 Level 2</button>
+                            </div>
+                            <div class="tree-toggle" style="border-left: 2px solid #e5e7eb; padding-left: 0.5rem;">
+                                <select id="subtree-select" class="filter-control" style="min-width:200px; font-size:0.85rem;" onchange="onSubtreeSelect(this.value)" title="Jump to a top-level branch">
+                                    <option value="">🌿 Jump to branch…</option>
+                                </select>
+                                <button class="control-btn" id="subtree-clear-btn" onclick="clearSubtreeHighlight()" title="Clear branch highlight" style="display:none;">✕ Clear</button>
+                            </div>
+                        </div>
+                        <button class="control-btn" onclick="toggleFullscreen()">
+                            <span id="fullscreen-icon">⛶</span> Fullscreen
+                        </button>
+                    </div>
+                    <div id="breadcrumb" class="breadcrumb"></div>
+                    <div class="tree-border">
+                        <div class="zoom-controls">
+                            <button class="zoom-btn" onclick="zoomIn()" title="Zoom in">+</button>
+                            <button class="zoom-btn" onclick="zoomOut()" title="Zoom out">−</button>
+                            <button class="zoom-btn" onclick="resetZoom()" title="Reset zoom">⟲</button>
+                            <button class="zoom-btn" onclick="fitToScreen()" title="Fit to screen">⛶</button>
+                        </div>
+                        <svg id="tree-svg"></svg>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="chart-title">Research Articles</h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <label style="font-size: 0.875rem;">Show:</label>
+                            <select id="items-per-page" onchange="changeItemsPerPage()" class="filter-control">
+                                <option value="10">10</option>
+                                <option value="25" selected>25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span style="font-size: 0.875rem;">entries</span>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th style="width: 120px;">Category</th>
+                                    <th style="width: 90px;">Relevance</th>
+                                    <th style="width: 80px;">Impact</th>
+                                    <th style="width: 80px;">Citations</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <div id="table-info" style="font-size: 0.875rem; color: #6b7280;"></div>
+                        <div class="pagination-buttons" id="pagination"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  DATA PROCESSING
+        // ═══════════════════════════════════════════════════
+
+        function processData() {
+            [diseaseData, chemicalData].forEach(dataset => {
+                if (!dataset.docs) return;
+                dataset.docs.forEach(doc => {
+                    doc.impact_factor = parseFloat(doc.factor) || 0;
+                    doc.citation_count = parseInt(doc.number_citations) || 0;
+                    const rawSubjects = doc.assigned_subjects1 || doc.subjects || '';
+                    doc.subjects_array = rawSubjects.split('|').map(s => s.trim()).filter(s => s);
+                    doc.tree_category = doc.hard_category || 'Unknown';
+                });
+            });
+        }
+
+        function buildSubjectIndex() {
+            // Build index only for current tree's dataset
+            const dataset = currentTree === 'disease' ? diseaseData : chemicalData;
+            const countMap = new Map();
+            
+            if (dataset.docs) {
+                dataset.docs.forEach(doc => {
+                    (doc.subjects_array || []).forEach(subj => {
+                        countMap.set(subj, (countMap.get(subj) || 0) + 1);
+                    });
+                });
+            }
+            
+            allSubjects = Array.from(countMap.entries())
+                .map(([name, count]) => ({ name, count, nameLower: name.toLowerCase() }))
+                .sort((a, b) => b.count - a.count);
+            console.log(`Subject index for ${currentTree}: ${allSubjects.length} unique subjects`);
+        }
+
+        function setupCrossfilter() {
+            ndx = crossfilter(diseaseData.docs);
+            treeDim = ndx.dimension(d => d.tree_category);
+            impactDim = ndx.dimension(d => Math.floor(d.impact_factor));
+            citationsDim = ndx.dimension(d => Math.floor(d.citation_count / 10) * 10);
+            // Multi-value dimension: each doc contributes once per subject it has
+            subjectDim = ndx.dimension(d => d.subjects_array.length ? d.subjects_array : ['Unknown'], true);
+            doctypeDim = ndx.dimension(d => d.tree_category || 'Unknown');
+            searchDim = ndx.dimension(d => d.pmid);
+        }
+
+        function populateFilters() {
+            const treeSelect = document.getElementById('tree-select');
+            const cats = [...new Set(diseaseData.docs.map(d => d.tree_category))].sort();
+            cats.forEach(cat => {
+                if (cat) {
+                    const opt = document.createElement('option');
+                    opt.value = cat; opt.textContent = cat;
+                    treeSelect.appendChild(opt);
+                }
+            });
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  AUTOCOMPLETE SEARCH
+        // ═══════════════════════════════════════════════════
+
+        function setupEventListeners() {
+            const searchBox = document.getElementById('search-box');
+            const dropdown = document.getElementById('autocomplete-dropdown');
+
+            searchBox.addEventListener('input', function () {
+                const term = this.value.trim().toLowerCase();
+                highlightedIndex = -1;
+                if (term.length < 2) { dropdown.classList.remove('visible'); return; }
+
+                const matches = allSubjects
+                    .filter(s => s.nameLower.includes(term) && !selectedSubjects.includes(s.name))
+                    .slice(0, 20);
+
+                if (matches.length === 0) {
+                    dropdown.innerHTML = '<div class="autocomplete-item" style="color:#9ca3af;cursor:default;">No matching subjects</div>';
+                    dropdown.classList.add('visible');
+                    return;
+                }
+
+                dropdown.innerHTML = matches.map((m, idx) => {
+                    const si = m.nameLower.indexOf(term);
+                    const before = m.name.slice(0, si);
+                    const match = m.name.slice(si, si + term.length);
+                    const after = m.name.slice(si + term.length);
+                    return `<div class="autocomplete-item" data-index="${idx}" data-subject="${esc(m.name)}">
+                        <span>${esc(before)}<span class="match-highlight">${esc(match)}</span>${esc(after)}</span>
+                        <span class="doc-count">${m.count} docs</span>
+                    </div>`;
+                }).join('');
+                dropdown.classList.add('visible');
+
+                dropdown.querySelectorAll('.autocomplete-item[data-subject]').forEach(el => {
+                    el.addEventListener('mousedown', function (e) {
+                        e.preventDefault();
+                        selectSubject(this.getAttribute('data-subject'));
+                    });
+                });
+            });
+
+            searchBox.addEventListener('keydown', function (e) {
+                const items = dropdown.querySelectorAll('.autocomplete-item[data-subject]');
+                if (!items.length || !dropdown.classList.contains('visible')) {
+                    if (e.key === 'Enter') e.preventDefault();
+                    return;
+                }
+                if (e.key === 'ArrowDown') { e.preventDefault(); highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1); hilite(items); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); highlightedIndex = Math.max(highlightedIndex - 1, 0); hilite(items); }
+                else if (e.key === 'Enter') { e.preventDefault(); if (highlightedIndex >= 0) selectSubject(items[highlightedIndex].getAttribute('data-subject')); }
+                else if (e.key === 'Escape') dropdown.classList.remove('visible');
+            });
+
+            searchBox.addEventListener('blur', () => setTimeout(() => dropdown.classList.remove('visible'), 200));
+            searchBox.addEventListener('focus', function () { if (this.value.trim().length >= 2) this.dispatchEvent(new Event('input')); });
+
+            document.getElementById('tree-select').addEventListener('change', function () {
+                if (this.value) treeDim.filter(this.value); else treeDim.filterAll();
+                dc.redrawAll(); focusedNodePath = null; updateDisplay();
+            });
+
+            document.getElementById('search-focus-filter').addEventListener('change', function () {
+                searchFocusMode = this.value;
+                if (selectedSubjects.length > 0) {
+                    applySubjectFilter();
+                    dc.redrawAll();
+                    updateDisplay();
+                }
+            });
+        }
+
+        function hilite(items) {
+            items.forEach((el, i) => el.classList.toggle('highlighted', i === highlightedIndex));
+            if (highlightedIndex >= 0) items[highlightedIndex].scrollIntoView({ block: 'nearest' });
+        }
+
+        function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+        // ═══════════════════════════════════════════════════
+        //  SUBJECT SELECTION
+        // ═══════════════════════════════════════════════════
+
+        function highlightSelectedSubjectBars() {
+            // Subjects are now rendered as custom HTML filter lists — no dc row chart to highlight
+        }
+
+        function selectSubject(name) {
+            if (selectedSubjects.includes(name)) return;
+            selectedSubjects.push(name);
+            document.getElementById('search-box').value = '';
+            document.getElementById('autocomplete-dropdown').classList.remove('visible');
+            applySubjectFilter(); renderSelectedTags(); focusedNodePath = null;
+            listSelections.subjects.clear();
+            listSelections.doctype.clear();
+            subjectDim.filterAll();
+            doctypeDim.filterAll();
+            dc.redrawAll(); updateDisplay();
+            highlightSelectedSubjectBars();
+        }
+
+        function removeSubject(name) {
+            selectedSubjects = selectedSubjects.filter(s => s !== name);
+            applySubjectFilter(); renderSelectedTags(); focusedNodePath = null;
+            listSelections.subjects.clear();
+            listSelections.doctype.clear();
+            subjectDim.filterAll();
+            doctypeDim.filterAll();
+            dc.redrawAll(); updateDisplay();
+            highlightSelectedSubjectBars();
+        }
+
+        // MeSH stopwords - too generic to use for title matching
+        const MESH_STOPWORDS = new Set(['disease','diseases','disorder','disorders',
+            'syndrome','syndromes','infection','infections','chronic','acute',
+            'congenital','secondary','primary','associated','related']);
+
+        // Returns the first discriminative word from a MeSH term.
+        // "Hashimoto Disease" → "hashimoto", "Thyroid Diseases" → "thyroid"
+        function meshKeyword(meshTerm) {
+            const words = meshTerm.split(/[\s,\-]+/);
+            for (const w of words) {
+                const wl = w.toLowerCase();
+                if (wl.length > 4 && !MESH_STOPWORDS.has(wl)) return wl;
+            }
+            return meshTerm.toLowerCase(); // fallback
+        }
+
+        function titleMatchesMesh(titleLower, meshTerm) {
+            // Try full exact MeSH label first
+            if (titleLower.includes(meshTerm.toLowerCase())) return true;
+            // Then try the first discriminative keyword
+            return titleLower.includes(meshKeyword(meshTerm));
+        }
+
+        function applySubjectFilter() {
+            if (selectedSubjects.length === 0) { searchDim.filterAll(); return; }
+            const selSet = new Set(selectedSubjects);
+            const pmids = new Set();
+            
+            // Use the current tree's dataset
+            const dataset = currentTree === 'disease' ? diseaseData : chemicalData;
+            
+            dataset.docs.forEach(doc => {
+                let matches = false;
+                
+                if (searchFocusMode === 'all') {
+                    // Match if term appears anywhere in subjects
+                    matches = doc.subjects_array.some(s => selSet.has(s));
+                } else if (searchFocusMode === 'title') {
+                    // Match if any root word of any selected MeSH term appears in title
+                    const titleLower = doc.title_e.toLowerCase();
+                    matches = selectedSubjects.some(subj => titleMatchesMesh(titleLower, subj));
+                } else if (searchFocusMode === 'first-subject') {
+                    // Match only if the first subject matches
+                    const firstSubject = doc.subjects_array[0];
+                    matches = firstSubject && selSet.has(firstSubject);
+                }
+                
+                if (matches) pmids.add(doc.pmid);
+            });
+            
+            searchDim.filterFunction(pmid => pmids.has(pmid));
+        }
+
+        function renderSelectedTags() {
+            const el = document.getElementById('selected-subjects');
+            if (!selectedSubjects.length) { el.innerHTML = ''; return; }
+            el.innerHTML = selectedSubjects.map(s =>
+                `<span class="subject-tag">${esc(s)}
+                    <span class="remove-tag" onclick="removeSubject('${s.replace(/'/g, "\\'")}')">&times;</span>
+                </span>`
+            ).join('');
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  CHARTS
+        // ═══════════════════════════════════════════════════
+
+        function createCharts() {
+            // Filtered groups: exclude zero-count bins so elasticX rescales to actual data range
+            const impactRawGroup = impactDim.group();
+            const impactGroup = { all: () => impactRawGroup.all().filter(d => d.value > 0) };
+
+            const citationsRawGroup = citationsDim.group();
+            const citationsGroup = { all: () => citationsRawGroup.all().filter(d => d.value > 0) };
+
+            // Use container width for bar charts
+            const barW = 290;
+
+            impactChart = dc.barChart('#impact-chart')
+                .width(barW).height(200)
+                .x(d3.scaleLinear())
+                .brushOn(false).xAxisLabel('Impact Factor').yAxisLabel('Count')
+                .dimension(impactDim).group(impactGroup)
+                .elasticY(true).elasticX(true)
+                .xAxisPadding('10%')
+                .margins({top:10,right:10,bottom:40,left:50})
+                .on('filtered', updateDisplay);
+
+            citationsChart = dc.barChart('#citations-chart')
+                .width(barW).height(200)
+                .x(d3.scaleLinear())
+                .brushOn(false).xAxisLabel('Citations (binned by 10s)').yAxisLabel('Count')
+                .dimension(citationsDim).group(citationsGroup)
+                .elasticY(true).elasticX(true)
+                .xAxisPadding('10%')
+                .margins({top:10,right:10,bottom:40,left:50})
+                .on('filtered', updateDisplay);
+
+            // Subjects and Doc Types are rendered as custom HTML lists (see renderFilterList)
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  CUSTOM FILTER LISTS (Subjects + Doc Types)
+        // ═══════════════════════════════════════════════════
+
+        // Tracks which keys are selected in each custom list
+        const listSelections = { subjects: new Set(), doctype: new Set() };
+
+        function renderFilterList(containerId, items, listKey, dim) {
+            // items = [{key, value}] already sorted, value > 0
+            const el = document.getElementById(containerId);
+            if (!el) return;
+            const maxVal = items.length ? items[0].value : 1;
+            const selected = listSelections[listKey];
+            const anySelected = selected.size > 0;
+
+            el.innerHTML = items.map(item => {
+                const pct = Math.max(2, (item.value / maxVal) * 100);
+                const isSel = selected.has(item.key);
+                const isDim = anySelected && !isSel;
+                return `<div class="filter-list-item${isSel ? ' selected' : ''}${isDim ? ' deselected' : ''}"
+                             onclick="toggleListItem('${listKey}','${item.key.replace(/'/g,"\'")}')"
+                             title="${item.key} (${item.value})">
+                    <div class="filter-list-bar" style="width:${pct}%"></div>
+                    <span class="filter-list-label">${item.key}</span>
+                    <span class="filter-list-count">${item.value.toLocaleString()}</span>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleListItem(listKey, key) {
+            const sel = listSelections[listKey];
+            if (sel.has(key)) sel.delete(key); else sel.add(key);
+            applyListFilters();
+            dc.redrawAll();
+            updateDisplay();
+        }
+
+        function applyListFilters() {
+            // Subjects list → filter subjectDim
+            const subjSel = listSelections.subjects;
+            if (subjSel.size === 0) {
+                subjectDim.filterAll();
+            } else {
+                subjectDim.filterFunction(d => {
+                    if (Array.isArray(d)) return d.some(v => subjSel.has(v));
+                    return subjSel.has(d);
+                });
+            }
+            // Doc type list → filter doctypeDim
+            const dtSel = listSelections.doctype;
+            if (dtSel.size === 0) {
+                doctypeDim.filterAll();
+            } else {
+                doctypeDim.filterFunction(d => dtSel.has(d));
+            }
+        }
+
+        function updateFilterLists() {
+            // Build subject counts from current crossfilter state
+            const subjGroup = subjectDim.group().all().filter(d => d.value > 0)
+                .sort((a,b) => b.value - a.value);
+            renderFilterList('subjects-list', subjGroup, 'subjects', subjectDim);
+
+            // Build doc type counts
+            const dtGroup = doctypeDim.group().all().filter(d => d.value > 0)
+                .sort((a,b) => b.value - a.value);
+            renderFilterList('doctype-list', dtGroup, 'doctype', doctypeDim);
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  UPDATE PIPELINE
+        // ═══════════════════════════════════════════════════
+
+        function updateDisplay() {
+            let filteredData;
+
+            if (currentTree === 'chemical') {
+                // The crossfilter (ndx) is built on disease docs.
+                // For the chemical tree we must filter chemicalData.docs independently.
+                filteredData = getFilteredChemicalDocs();
+            } else {
+                filteredData = ndx.allFiltered();
+            }
+
+            updateFilterStats(filteredData);
+            rebuildTree(filteredData);
+            updateTable(filteredData);
+            updateFilterLists();
+        }
+
+        /**
+         * Return the subset of chemicalData.docs that pass the currently active filters:
+         *  - selectedSubjects  (+ searchFocusMode)
+         * (Impact / citations bar charts are tied to the disease crossfilter and are
+         *  hidden / irrelevant when the chemical tree is shown, so we skip them here.)
+         */
+        function getFilteredChemicalDocs() {
+            const docs = chemicalData.docs || [];
+            if (selectedSubjects.length === 0) return docs;
+
+            const selSet = new Set(selectedSubjects);
+            return docs.filter(doc => {
+                if (searchFocusMode === 'all') {
+                    return doc.subjects_array.some(s => selSet.has(s));
+                } else if (searchFocusMode === 'title') {
+                    const titleLower = (doc.title_e || '').toLowerCase();
+                    return selectedSubjects.some(subj => titleMatchesMesh(titleLower, subj));
+                } else if (searchFocusMode === 'first-subject') {
+                    return doc.subjects_array[0] && selSet.has(doc.subjects_array[0]);
+                }
+                return false;
+            });
+        }
+
+        function updateFilterStats(filteredData) {
+            const stats = document.getElementById('filter-stats');
+            const dataset = currentTree === 'disease' ? diseaseData : chemicalData;
+            const total = dataset.docs.length;
+            const filtered = filteredData.length;
+            const pct = ((filtered / total) * 100).toFixed(1);
+            let extra = selectedSubjects.length ? ` | Filtered by ${selectedSubjects.length} subject(s)` : '';
+            stats.innerHTML = `<strong>Showing ${filtered.toLocaleString()} of ${total.toLocaleString()} articles</strong> (${pct}%)${extra}`;
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        //  TREE BUILDING — match subjects against LAST level only,
+        //  single root (no Diseases→Diseases duplication)
+        // ═══════════════════════════════════════════════════════════════
+
+        function rebuildTree(filteredData) {
+            const treeData = currentTree === 'disease' ? diseaseData.tree : chemicalData.tree;
+            fullRawRoot = buildTreeFromData(treeData, filteredData);
+
+            if (focusedNodePath) {
+                const sub = findNodeByPath(fullRawRoot, focusedNodePath);
+                rawRoot = sub ? deepCopy(sub) : fullRawRoot;
+            } else {
+                rawRoot = fullRawRoot;
+            }
+            renderTree();
+            // Refresh dropdown counts after tree rebuild
+            setTimeout(populateSubtreeDropdown, 100);
+        }
+
+        function buildTreeFromData(treeData, docs) {
+            // ── 1. Collect subjects → PMIDs from filtered docs ──
+            const docsBySubject = new Map();
+            docs.forEach(doc => {
+                (doc.subjects_array || []).forEach(subj => {
+                    const s = subj.trim();
+                    if (!s) return;
+                    if (!docsBySubject.has(s)) docsBySubject.set(s, new Set());
+                    docsBySubject.get(s).add(doc.pmid);
+                });
+            });
+
+            // ── 2. For each tree row, match LAST segment against subjects ──
+            const nodesByPath = new Map();
+
+            treeData.forEach(item => {
+                const path = item.first;
+                const parts = path.split('.').map(p => p.trim()).filter(p => p);
+                if (parts.length === 0) return;
+
+                const leafName = parts[parts.length - 1];
+                if (!docsBySubject.has(leafName)) return;
+
+                // Build ancestor chain
+                let parentPath = null;
+                parts.forEach((part, idx) => {
+                    const curPath = parts.slice(0, idx + 1).join('.');
+                    if (!nodesByPath.has(curPath)) {
+                        const isLeaf = (idx === parts.length - 1);
+                        nodesByPath.set(curPath, {
+                            name: part,
+                            children: [],
+                            _path: curPath,
+                            _parentPath: parentPath,
+                            count: isLeaf ? (docsBySubject.get(part)?.size || 0) : 0,
+                            _isMatchedLeaf: isLeaf
+                        });
+                    }
+                    parentPath = curPath;
+                });
+            });
+
+            // ── 3. Assemble parent→child relationships ──
+            const topLevel = [];
+            for (const [path, node] of nodesByPath) {
+                if (node._parentPath && nodesByPath.has(node._parentPath)) {
+                    const parent = nodesByPath.get(node._parentPath);
+                    if (!parent.children.includes(node)) parent.children.push(node);
+                } else {
+                    topLevel.push(node);
+                }
+            }
+
+            // ── 4. Create a SINGLE root ──
+            // FIX: If there's exactly one top-level node, use it directly as root
+            //       (avoids Diseases→Diseases or Chemicals→Chemicals)
+            let rootNode;
+            if (topLevel.length === 1) {
+                rootNode = topLevel[0];
+            } else {
+                rootNode = {
+                    name: currentTree === 'disease' ? 'Diseases' : 'Chemicals',
+                    children: topLevel,
+                    _path: '__root__',
+                    count: 0,
+                    _isMatchedLeaf: false
+                };
+            }
+
+            // ── 5. Propagate counts upward ──
+            function propagate(node) {
+                if (!node.children || node.children.length === 0) {
+                    return docsBySubject.get(node.name) || new Set();
+                }
+                const all = new Set();
+                node.children.forEach(ch => {
+                    propagate(ch).forEach(p => all.add(p));
+                });
+                node.count = all.size;
+                return all;
+            }
+            propagate(rootNode);
+
+            // ── 6. Sort children by count ──
+            function sortKids(node) {
+                if (node.children?.length) {
+                    node.children.sort((a, b) => (b.count||0) - (a.count||0));
+                    node.children.forEach(sortKids);
+                }
+            }
+            sortKids(rootNode);
+
+            // ── 7. Clean circular refs ──
+            function clean(node) {
+                delete node._parentPath;
+                if (node.children) node.children.forEach(clean);
+            }
+            clean(rootNode);
+
+            return rootNode;
+        }
+
+        function findNodeByPath(tree, targetPath) {
+            if (tree._path === targetPath) return tree;
+            if (tree.children) {
+                for (const ch of tree.children) {
+                    const f = findNodeByPath(ch, targetPath);
+                    if (f) return f;
+                }
+            }
+            return null;
+        }
+
+        function deepCopy(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+        function countVisibleNodes(node) {
+            if (!node) return 0;
+            let count = 1;
+            if (node.children) {
+                node.children.forEach(child => {
+                    count += countVisibleNodes(child);
+                });
+            }
+            return count;
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  TREE NODE TOOLTIP
+        // ═══════════════════════════════════════════════════
+
+        function showTooltip(event, d) {
+            const tt = document.getElementById('tree-tooltip');
+            const data = d.data;
+
+            const hasChildren   = (data.children  && data.children.length  > 0);
+            const hasHidden     = (data._children && data._children.length > 0);
+            const childCount    = hasChildren ? data.children.length
+                                : hasHidden   ? data._children.length : 0;
+            const isLeaf        = !hasChildren && !hasHidden;
+            const level         = d.depth;
+
+            // Build short path (last 3 segments)
+            const pathParts = (data._path || data.name).split('.');
+            const shortPath = pathParts.length > 3
+                ? '…' + pathParts.slice(-3).join(' › ')
+                : pathParts.join(' › ');
+
+            document.getElementById('tt-name').textContent     = data.name;
+            document.getElementById('tt-docs').textContent     = (data.count || 0).toLocaleString();
+            document.getElementById('tt-level').textContent    = level;
+            document.getElementById('tt-children').textContent = isLeaf ? '—' : childCount + (hasHidden ? ' (collapsed)' : '');
+            document.getElementById('tt-leaf').textContent     = isLeaf ? 'Yes' : 'No';
+            document.getElementById('tt-path').textContent     = shortPath;
+
+            tt.classList.add('visible');
+            moveTooltip(event);
+        }
+
+        function moveTooltip(event) {
+            const tt  = document.getElementById('tree-tooltip');
+            const pad = 16;
+            const tw  = tt.offsetWidth;
+            const th  = tt.offsetHeight;
+            let   tx  = event.clientX + pad;
+            let   ty  = event.clientY + pad;
+            if (tx + tw > window.innerWidth  - pad) tx = event.clientX - tw - pad;
+            if (ty + th > window.innerHeight - pad) ty = event.clientY - th - pad;
+            tt.style.left = tx + 'px';
+            tt.style.top  = ty + 'px';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tree-tooltip').classList.remove('visible');
+        }
+        //  collapse/expand mutates raw data via d.data, update() reuses
+        //  the same hierarchy.
+        // ═══════════════════════════════════════════════════════════════
+
+        function renderTree() {
+            const container = d3.select('#tree-svg');
+            const treeBorder = document.querySelector('.tree-border');
+            const width = treeBorder.clientWidth;
+            const height = treeBorder.clientHeight;
+
+            container.selectAll('*').remove();
+            nodeIdCounter = 0;
+
+            if (!rawRoot || (!rawRoot.children?.length)) {
+                container.attr('width', width).attr('height', height)
+                    .append('text').attr('x', width/2).attr('y', height/2)
+                    .attr('text-anchor', 'middle').style('fill', '#999')
+                    .text('No matching tree data');
+                updateBreadcrumb();
+                return;
+            }
+
+            svg = container.attr('width', width).attr('height', height);
+
+            zoom = d3.zoom().scaleExtent([0.1, 10])
+                .on('zoom', (event) => g.attr('transform', event.transform));
+            svg.call(zoom);
+            g = svg.append('g').attr('transform', 'translate(40,0)');
+
+            // ── Build hierarchy FIRST to count nodes ──
+            hierarchyRoot = d3.hierarchy(rawRoot, d => d.children);
+            hierarchyRoot.each(d => { d.id = ++nodeIdCounter; });
+            
+            // Count visible nodes and adjust tree height dynamically
+            const visibleNodes = countVisibleNodes(hierarchyRoot);
+            const minNodeSpacing = 25; // minimum pixels between nodes
+            const dynamicHeight = Math.max(height - 40, visibleNodes * minNodeSpacing);
+            
+            treeLayout = d3.tree()
+                .size([dynamicHeight, width - 250])
+                .separation((a, b) => {
+                    // Dynamic separation - more space for siblings, less for cousins
+                    return (a.parent === b.parent ? 1.5 : 2);
+                });
+
+            // ── Collapse to depth 1 on initial load (show only root's direct children) ──
+            function collapseRaw(node, depth, maxDepth = 1) {
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach(ch => collapseRaw(ch, depth + 1, maxDepth));
+                    if (depth >= maxDepth) {
+                        node._children = node.children;
+                        node.children = null;
+                    }
+                }
+            }
+            // Only collapse on first render (not when user has interacted)
+            if (!window._treeInitialized) {
+                collapseRaw(rawRoot, 0, 1);
+                window._treeInitialized = true;
+            }
+
+            // Hierarchy already built above for node counting
+            hierarchyRoot.x0 = dynamicHeight / 2;
+            hierarchyRoot.y0 = 0;
+
+            treeUpdate(hierarchyRoot);
+            updateBreadcrumb();
+
+            // On initial load, fit the collapsed tree to screen and center it
+            if (!window._treeAutoFitted) {
+                window._treeAutoFitted = true;
+                setTimeout(fitToScreen, 150);
+            }
+        }
+
+        /**
+         * treeUpdate: re-layout and re-render from the EXISTING hierarchyRoot.
+         * We do NOT rebuild d3.hierarchy — we re-derive it from rawRoot
+         * which has been mutated (children ↔ _children) by click handlers.
+         */
+        function treeUpdate(source) {
+            const duration = 500;
+
+            // Re-derive hierarchy from the (mutated) rawRoot
+            const newHierarchy = d3.hierarchy(rawRoot, d => d.children);
+            
+            // Count visible nodes and adjust tree size dynamically
+            const visibleNodes = countVisibleNodes(newHierarchy);
+            const minNodeSpacing = 25;
+            const treeBorder = document.querySelector('.tree-border');
+            const width = treeBorder.clientWidth;
+            const height = treeBorder.clientHeight;
+            const dynamicHeight = Math.max(height - 40, visibleNodes * minNodeSpacing);
+            
+            // Update tree layout with new size
+            treeLayout = d3.tree()
+                .size([dynamicHeight, width - 250])
+                .separation((a, b) => (a.parent === b.parent ? 1.5 : 2));
+            
+            treeLayout(newHierarchy);
+
+            const nodes = newHierarchy.descendants();
+            const links = newHierarchy.links();
+
+            // Update SVG height if needed
+            if (dynamicHeight > height) {
+                svg.attr('height', dynamicHeight + 40);
+            }
+
+            // Fixed depth spacing
+            nodes.forEach(d => { d.y = d.depth * 200; });
+
+            // ── Assign stable IDs based on _path ──
+            const idMap = new Map();
+            nodes.forEach(d => {
+                const key = d.data._path || d.data.name;
+                if (!idMap.has(key)) idMap.set(key, ++nodeIdCounter);
+                d.id = idMap.get(key);
+            });
+
+            // ═══ NODES ═══
+            const node = g.selectAll('g.node')
+                .data(nodes, d => d.data._path || d.data.name);
+
+            // Enter
+            const nodeEnter = node.enter().append('g')
+                .attr('class', 'node')
+                .attr('transform', `translate(${source.y0 || 0},${source.x0 || 0})`)
+                .style('cursor', 'pointer');
+
+            // Circle
+            nodeEnter.append('circle')
+                .attr('r', 1e-6)
+                .style('stroke-width', '2px');
+
+            // Label
+            nodeEnter.append('text')
+                .attr('dy', '.35em')
+                .style('fill-opacity', 1e-6);
+
+            // Merge
+            const nodeUpdate = nodeEnter.merge(node);
+
+            // Bind click + tooltip events on ALL nodes (enter + update)
+            nodeUpdate
+                .on('click', onNodeLeftClick)
+                .on('contextmenu', onNodeRightClick)
+                .on('mouseover', showTooltip)
+                .on('mousemove', moveTooltip)
+                .on('mouseout',  hideTooltip);
+
+            nodeUpdate.transition().duration(duration)
+                .attr('transform', d => `translate(${d.y},${d.x})`);
+
+            nodeUpdate.select('circle')
+                .attr('r', d => Math.max(5, Math.min(20, Math.sqrt((d.data.count || 1)) * 2)))
+                .style('fill', d => {
+                    // Has hidden children? → filled
+                    return d.data._children ? '#b3d4fc' : (d.data._isMatchedLeaf ? '#fff7ed' : '#fff');
+                })
+                .style('stroke', d => d.data._isMatchedLeaf ? '#f97316' : '#4682b4')
+                .style('stroke-width', d => d.data._isMatchedLeaf ? '3px' : '2px');
+
+            nodeUpdate.select('text')
+                .attr('x', d => (d.data.children?.length || d.data._children?.length) ? -13 : 13)
+                .attr('text-anchor', d => (d.data.children?.length || d.data._children?.length) ? 'end' : 'start')
+                .text(d => `${d.data.name} (${d.data.count || 0})`)
+                .style('fill-opacity', 1)
+                .style('font-weight', d => d.data._isMatchedLeaf ? '700' : '400')
+                .style('fill', d => d.data._isMatchedLeaf ? '#9a3412' : '#374151')
+                .style('font-size', '11px');
+
+            // Exit
+            const nodeExit = node.exit().transition().duration(duration)
+                .attr('transform', `translate(${source.y || 0},${source.x || 0})`)
+                .remove();
+            nodeExit.select('circle').attr('r', 1e-6);
+            nodeExit.select('text').style('fill-opacity', 1e-6);
+
+            // ═══ LINKS ═══
+            const link = g.selectAll('path.link')
+                .data(links, d => d.target.data._path || d.target.data.name);
+
+            const linkEnter = link.enter().insert('path', 'g')
+                .attr('class', 'link')
+                .attr('d', () => {
+                    const o = { x: source.x0 || 0, y: source.y0 || 0 };
+                    return diagonal(o, o);
+                });
+
+            linkEnter.merge(link).transition().duration(duration)
+                .attr('d', d => diagonal(d.source, d.target));
+
+            link.exit().transition().duration(duration)
+                .attr('d', () => {
+                    const o = { x: source.x || 0, y: source.y || 0 };
+                    return diagonal(o, o);
+                })
+                .remove();
+
+            // ── Stash positions for next transition ──
+            nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+
+            // Update source positions for next call
+            source.x0 = source.x;
+            source.y0 = source.y;
+
+            // Re-apply subtree highlight after layout settles
+            setTimeout(applySubtreeHighlight, 520);
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        //  NODE INTERACTION
+        // ═══════════════════════════════════════════════════════════════
+
+        /**
+         * LEFT-CLICK: toggle expand / collapse of this node's children.
+         * Mutates the RAW data node (d.data), then re-renders.
+         */
+        function onNodeLeftClick(event, d) {
+            event.stopPropagation();
+            const raw = d.data;   // the raw JS object
+            if (raw.children && raw.children.length > 0) {
+                // Collapse: hide children
+                raw._children = raw.children;
+                raw.children = null;
+            } else if (raw._children && raw._children.length > 0) {
+                // Expand: show children
+                raw.children = raw._children;
+                raw._children = null;
+            }
+            // re-render from the same rawRoot
+            treeUpdate(d);
+        }
+
+        /**
+         * RIGHT-CLICK: focus / prune — re-root the tree to this node.
+         * Only this node and its descendants are shown.
+         */
+        function onNodeRightClick(event, d) {
+            event.preventDefault();
+            event.stopPropagation();
+            const path = d.data._path;
+            if (!path) return;
+            focusOnNode(path);
+        }
+
+        function focusOnNode(path) {
+            focusedNodePath = path;
+            const sub = findNodeByPath(fullRawRoot, path);
+            if (sub) {
+                rawRoot = deepCopy(sub);
+                renderTree();
+            }
+        }
+
+        function clearTreeFocus() {
+            focusedNodePath = null;
+            rawRoot = fullRawRoot;
+            renderTree();
+        }
+
+        function diagonal(s, d) {
+            return `M ${s.y} ${s.x} C ${(s.y + d.y)/2} ${s.x}, ${(s.y + d.y)/2} ${d.x}, ${d.y} ${d.x}`;
+        }
+
+        function updateBreadcrumb() {
+            const bc = document.getElementById('breadcrumb');
+            const name = currentTree === 'disease' ? 'Disease Tree' : 'Chemical Tree';
+            const count = rawRoot ? (rawRoot.count || 0) : 0;
+            let html = `Viewing: <strong>${name}</strong> (${count.toLocaleString()} documents)`;
+
+            if (focusedNodePath) {
+                const parts = focusedNodePath.split('.');
+                html += `<span class="tree-focus-path"> — Focused: `;
+                parts.forEach((p, i) => {
+                    const partial = parts.slice(0, i+1).join('.');
+                    if (i > 0) html += `<span class="separator"> › </span>`;
+                    html += `<span class="focus-crumb" onclick="focusOnNode('${partial}')">${esc(p)}</span>`;
+                });
+                html += `</span>`;
+                html += `<span class="tree-focus-reset" onclick="clearTreeFocus()">✕ Full tree</span>`;
+            } else {
+                html += ` <span style="font-size:0.78rem;color:#9ca3af;margin-left:0.5rem;">💡 Left-click = expand/collapse · Right-click = focus subtree</span>`;
+            }
+            bc.innerHTML = html;
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  TABLE
+        // ═══════════════════════════════════════════════════
+
+        function updateTable(filteredData) {
+            const tbody = document.getElementById('data-table-body');
+            const info = document.getElementById('table-info');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = Math.min(start + itemsPerPage, filteredData.length);
+            const page = filteredData.slice(start, end);
+
+            tbody.innerHTML = '';
+            page.forEach(doc => {
+                // Calculate relevance for selected subjects
+                let relevanceBadge = '<span class="relevance-badge relevance-secondary">—</span>';
+                
+                if (selectedSubjects.length > 0) {
+                    const titleLower = doc.title_e.toLowerCase();
+                    const selectedSet = new Set(selectedSubjects);
+
+                    // Check title match
+                    const inTitle = selectedSubjects.some(subj => titleMatchesMesh(titleLower, subj));
+
+                    // Find the earliest position of any selected subject in this doc's subject list
+                    let earliestPos = Infinity;
+                    doc.subjects_array.forEach((s, i) => {
+                        if (selectedSet.has(s) && (i + 1) < earliestPos) {
+                            earliestPos = i + 1;
+                        }
+                    });
+
+                    if (inTitle) {
+                        relevanceBadge = `<span class="relevance-badge relevance-primary">📌 Title</span>`;
+                    } else if (earliestPos !== Infinity) {
+                        // Show actual position — green for #1, yellow for #2-3, grey for deeper
+                        const cls = earliestPos === 1 ? 'relevance-primary'
+                                  : earliestPos <= 3  ? 'relevance-first'
+                                  :                    'relevance-secondary';
+                        relevanceBadge = `<span class="relevance-badge ${cls}" title="Subject position ${earliestPos}">#${earliestPos} Subject</span>`;
+                    }
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="max-width:400px;">${doc.authors ? `<div style="font-size:0.78rem;color:#6b7280;margin-bottom:2px;">${doc.authors}</div>` : ''}${doc.title_e} <a href="https://pubmed.ncbi.nlm.nih.gov/${doc.pmid}/" target="_blank" class="pmid-link">[PMID: ${doc.pmid}]</a></td>
+                    <td>${doc.hard_category}</td>
+                    <td>${relevanceBadge}</td>
+                    <td>${doc.impact_factor.toFixed(2)}</td>
+                    <td>${doc.citation_count}</td>`;
+                tbody.appendChild(row);
+            });
+
+            info.textContent = `Showing ${filteredData.length > 0 ? start+1 : 0} to ${end} of ${filteredData.length} entries`;
+            updatePagination(filteredData.length);
+        }
+
+        function updatePagination(total) {
+            const pg = document.getElementById('pagination');
+            const totalPages = Math.ceil(total / itemsPerPage);
+            pg.innerHTML = '';
+
+            const prev = document.createElement('button');
+            prev.textContent = 'Previous'; prev.disabled = currentPage === 1;
+            prev.onclick = () => { if (currentPage > 1) { currentPage--; updateDisplay(); } };
+            pg.appendChild(prev);
+
+            const s = Math.max(1, currentPage - 2);
+            const e = Math.min(totalPages, currentPage + 2);
+            for (let p = s; p <= e; p++) {
+                const btn = document.createElement('button');
+                btn.textContent = p;
+                if (p === currentPage) btn.classList.add('active');
+                btn.onclick = () => { currentPage = p; updateDisplay(); };
+                pg.appendChild(btn);
+            }
+
+            const next = document.createElement('button');
+            next.textContent = 'Next'; next.disabled = currentPage >= totalPages;
+            next.onclick = () => { if (currentPage < totalPages) { currentPage++; updateDisplay(); } };
+            pg.appendChild(next);
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  UTILITIES
+        // ═══════════════════════════════════════════════════
+
+        function switchTree(type) {
+            currentTree = type;
+            window._treeInitialized = false; // reset so new tree starts collapsed
+            window._treeAutoFitted = false;  // reset so new tree also auto-fits
+            document.getElementById('disease-btn').classList.toggle('active', type === 'disease');
+            document.getElementById('chemical-btn').classList.toggle('active', type === 'chemical');
+            focusedNodePath = null;
+            highlightedSubtreeName = null;
+
+            // Rebuild subject index for the new tree's dataset
+            // (keeps autocomplete relevant to the active tree)
+            buildSubjectIndex();
+
+            // ── Preserve selectedSubjects across tree switch ──
+            // The chemical tree is filtered independently via getFilteredChemicalDocs(),
+            // so we don't need to touch searchDim here.  Just re-render.
+            renderSelectedTags();
+
+            updateDisplay();
+            // Repopulate subtree dropdown for the new tree (after tree is built)
+            setTimeout(populateSubtreeDropdown, 100);
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  SUBTREE DROPDOWN + HIGHLIGHT
+        // ═══════════════════════════════════════════════════
+
+        function populateSubtreeDropdown() {
+            const sel = document.getElementById('subtree-select');
+            if (!sel || !rawRoot) return;
+            const label = currentTree === 'disease' ? '🌿 Jump to branch…' : '⚗️ Jump to branch…';
+            sel.innerHTML = `<option value="">${label}</option>`;
+
+            // rawRoot.children = level-1 nodes
+            const kids = rawRoot.children || rawRoot._children || [];
+            kids.forEach(child => {
+                const opt = document.createElement('option');
+                opt.value = child.name;
+                opt.textContent = `${child.name}  (${(child.count||0).toLocaleString()})`;
+                sel.appendChild(opt);
+            });
+        }
+
+        function onSubtreeSelect(name) {
+            highlightedSubtreeName = name || null;
+            document.getElementById('subtree-clear-btn').style.display = name ? '' : 'none';
+            applySubtreeHighlight();
+
+            // Pan/zoom to that subtree node
+            if (name && g && svg) {
+                // Find the rendered node with this name
+                const target = g.selectAll('g.node')
+                    .filter(d => d.data.name === name);
+                if (!target.empty()) {
+                    const nodeData = target.datum();
+                    const treeBorder = document.querySelector('.tree-border');
+                    const w = treeBorder.clientWidth;
+                    const h = treeBorder.clientHeight;
+                    const scale = 0.75;
+                    const tx = w / 2 - scale * nodeData.y;
+                    const ty = h / 2 - scale * nodeData.x;
+                    svg.transition().duration(600)
+                        .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+                }
+            }
+        }
+
+        function clearSubtreeHighlight() {
+            highlightedSubtreeName = null;
+            document.getElementById('subtree-select').value = '';
+            document.getElementById('subtree-clear-btn').style.display = 'none';
+            applySubtreeHighlight();
+        }
+
+        function applySubtreeHighlight() {
+            if (!g) return;
+            const name = highlightedSubtreeName;
+
+            if (!name) {
+                // Remove all highlight/dim classes
+                g.selectAll('g.node')
+                    .classed('subtree-highlight', false)
+                    .classed('subtree-dim', false);
+                g.selectAll('path.link')
+                    .classed('subtree-highlight', false)
+                    .classed('subtree-dim', false);
+                return;
+            }
+
+            // Collect all node paths that belong to this subtree
+            // A node belongs if its _path starts with the root.name segment
+            const inSubtree = (d) => {
+                if (!d.data._path) return d.data.name === name;
+                const parts = d.data._path.split('.');
+                return parts[1] === name || d.data.name === name;
+            };
+
+            g.selectAll('g.node').each(function(d) {
+                const belongs = inSubtree(d);
+                d3.select(this)
+                    .classed('subtree-highlight', belongs)
+                    .classed('subtree-dim', !belongs);
+            });
+
+            g.selectAll('path.link').each(function(d) {
+                const belongs = inSubtree(d.target);
+                d3.select(this)
+                    .classed('subtree-highlight', belongs)
+                    .classed('subtree-dim', !belongs);
+            });
+        }
+
+        function zoomIn()    { if (svg) svg.transition().call(zoom.scaleBy, 1.3); }
+        function zoomOut()   { if (svg) svg.transition().call(zoom.scaleBy, 0.7); }
+        function resetZoom() { if (svg) svg.transition().call(zoom.transform, d3.zoomIdentity); }
+
+        function fitToScreen() {
+            if (!g || !svg) return;
+            const bounds = g.node().getBBox();
+            const parent = svg.node().parentElement;
+            const fw = parent.clientWidth, fh = parent.clientHeight;
+            const midX = bounds.x + bounds.width / 2;
+            const midY = bounds.y + bounds.height / 2;
+            const scale = 0.85 / Math.max(bounds.width / fw, bounds.height / fh);
+            const tx = fw/2 - scale * midX, ty = fh/2 - scale * midY;
+            svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+        }
+
+        function toggleFullscreen() {
+            const c = document.getElementById('tree-container');
+            const icon = document.getElementById('fullscreen-icon');
+            if (c.classList.contains('fullscreen')) {
+                c.classList.remove('fullscreen'); icon.textContent = '⛶';
+            } else {
+                c.classList.add('fullscreen'); icon.textContent = '✕';
+            }
+            setTimeout(renderTree, 100);
+        }
+
+        function resetAllFilters() {
+            dc.filterAll();
+            document.getElementById('tree-select').value = '';
+            document.getElementById('search-box').value = '';
+            document.getElementById('search-focus-filter').value = 'all';
+            searchFocusMode = 'all';
+            selectedSubjects = []; renderSelectedTags();
+            searchDim.filterAll();
+            focusedNodePath = null; currentPage = 1;
+            highlightedSubtreeName = null;
+            document.getElementById('subtree-select').value = '';
+            document.getElementById('subtree-clear-btn').style.display = 'none';
+            listSelections.subjects.clear();
+            listSelections.doctype.clear();
+            subjectDim.filterAll();
+            doctypeDim.filterAll();
+            dc.redrawAll(); updateDisplay();
+            highlightSelectedSubjectBars();
+        }
+
+        function changeItemsPerPage() {
+            itemsPerPage = parseInt(document.getElementById('items-per-page').value);
+            currentPage = 1; updateDisplay();
+        }
+
+        // ═══════════════════════════════════════════════════
+        //  TREE EXPAND/COLLAPSE CONTROLS
+        // ═══════════════════════════════════════════════════
+
+        function expandAll() {
+            if (!rawRoot) return;
+            expandAllNodes(rawRoot);
+            renderTree();
+        }
+
+        function collapseAll() {
+            if (!rawRoot) return;
+            collapseAllNodes(rawRoot, 0);
+            renderTree();
+        }
+
+        function collapseToDepth(maxDepth) {
+            if (!rawRoot) return;
+            collapseAllNodes(rawRoot, 0);
+            expandToDepth(rawRoot, 0, maxDepth);
+            renderTree();
+        }
+
+        function expandAllNodes(node) {
+            if (node._children) {
+                node.children = node._children;
+                node._children = null;
+            }
+            if (node.children) {
+                node.children.forEach(expandAllNodes);
+            }
+        }
+
+        function collapseAllNodes(node, depth) {
+            if (node.children && node.children.length > 0) {
+                node.children.forEach(ch => collapseAllNodes(ch, depth + 1));
+                if (depth > 0) {
+                    node._children = node.children;
+                    node.children = null;
+                }
+            }
+        }
+
+        function expandToDepth(node, currentDepth, maxDepth) {
+            if (currentDepth < maxDepth && node._children) {
+                node.children = node._children;
+                node._children = null;
+            }
+            if (node.children) {
+                node.children.forEach(ch => expandToDepth(ch, currentDepth + 1, maxDepth));
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

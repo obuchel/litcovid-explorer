@@ -123,6 +123,68 @@ export const PIPELINES = [
     defaultSortKey: 'pmid',
   },
   {
+    id: 'split_diseases',
+    label: 'Category tree \u2014 Diseases',
+    shortLabel: 'Diseases tree',
+    description:
+      'Splits data/mesh_category_tree.json by top-level MeSH category, mirroring how whn-analytics.net splits ' +
+      'its Diseases-only and Chemicals-only reference files. This entry shows the Diseases split; running it ' +
+      'also produces the Chemicals and "other" (Anatomy / Psychiatry / etc.) splits in the same run.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree_diseases.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'split_category_trees.yml',
+    columns: [
+      { key: 'mesh_id', label: 'MeSH ID', width: 110 },
+      { key: 'tree_id', label: 'Tree ID', width: 140 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['mesh_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
+    id: 'split_chemicals',
+    label: 'Category tree \u2014 Chemicals',
+    shortLabel: 'Chemicals tree',
+    description:
+      'Same run as "Category tree \u2014 Diseases" \u2014 this entry shows the Chemicals and Drugs split of ' +
+      'data/mesh_category_tree.json.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree_chemicals.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'split_category_trees.yml',
+    columns: [
+      { key: 'mesh_id', label: 'MeSH ID', width: 110 },
+      { key: 'tree_id', label: 'Tree ID', width: 140 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['mesh_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
+    id: 'split_other',
+    label: 'Category tree \u2014 Other',
+    shortLabel: 'Other tree',
+    description:
+      'Same run as "Category tree \u2014 Diseases" \u2014 this entry shows everything outside Diseases/Chemicals ' +
+      '(Anatomy, Psychiatry and Psychology, Phenomena and Processes, etc.), lumped together unless the split-all ' +
+      'option was used.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree_other.json',
+    resultFormat: 'json-tree',
+    workflowFile: 'split_category_trees.yml',
+    columns: [
+      { key: 'mesh_id', label: 'MeSH ID', width: 110 },
+      { key: 'tree_id', label: 'Tree ID', width: 140 },
+      { key: 'count(*)', label: 'Mentions', width: 100 },
+      { key: 'first', label: 'Category path', width: 480 },
+    ],
+    searchableColumns: ['mesh_id', 'first'],
+    defaultSortKey: 'count(*)',
+  },
+  {
     id: 'authors',
     label: 'Author network (template)',
     shortLabel: 'Authors',

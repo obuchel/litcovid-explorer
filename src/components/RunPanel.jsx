@@ -45,17 +45,19 @@ export default function RunPanel({
       )}
 
       <div className="field-grid">
-        <div className="field">
-          <label htmlFor="limit">Limit (test run)</label>
-          <input
-            id="limit"
-            type="number"
-            min="1"
-            placeholder="all PMIDs"
-            value={options.limit}
-            onChange={(e) => onOptionsChange({ ...options, limit: e.target.value })}
-          />
-        </div>
+        {pipeline.workflowFile !== 'split_category_trees.yml' && (
+          <div className="field">
+            <label htmlFor="limit">Limit (test run)</label>
+            <input
+              id="limit"
+              type="number"
+              min="1"
+              placeholder="all PMIDs"
+              value={options.limit}
+              onChange={(e) => onOptionsChange({ ...options, limit: e.target.value })}
+            />
+          </div>
+        )}
         {(pipeline.id === 'litcovid_docs' || pipeline.id === 'mesh_subjects' || pipeline.id === 'copy_categories') && (
           <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
             <input
@@ -108,6 +110,31 @@ export default function RunPanel({
               onChange={(e) => onOptionsChange({ ...options, pmids: e.target.value })}
             />
           </div>
+        )}
+        {pipeline.workflowFile === 'split_category_trees.yml' && (
+          <>
+            <div className="field" style={{ gridColumn: 'span 2' }}>
+              <label htmlFor="source">Source file to split (repo-relative path)</label>
+              <input
+                id="source"
+                type="text"
+                placeholder="data/mesh_category_tree.json"
+                value={options.source || ''}
+                onChange={(e) => onOptionsChange({ ...options, source: e.target.value })}
+              />
+            </div>
+            <div className="field checkbox-field" style={{ alignSelf: 'end', paddingBottom: 8 }}>
+              <input
+                id="split-all"
+                type="checkbox"
+                checked={options.splitAll}
+                onChange={(e) => onOptionsChange({ ...options, splitAll: e.target.checked })}
+              />
+              <label htmlFor="split-all" style={{ margin: 0, textTransform: 'none', fontFamily: 'var(--sans)' }}>
+                One file per category (instead of lumping small ones into "other")
+              </label>
+            </div>
+          </>
         )}
       </div>
 

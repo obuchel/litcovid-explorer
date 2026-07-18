@@ -1,0 +1,71 @@
+name: Split category trees
+
+# Splits a combined mesh_category_tree*.json into separate per-category
+# tree+docs files (Diseases / Chemicals and Drugs / everything else),
+# mirroring how whn-analytics.net splits its own reference output.
+# Dispatched from the React uploader app, or manually from the Actions tab.
+#
+# NOTE: rename this pipeline's "workflowFile" entry in src/pipelines/registry.js
+# to match wherever this file ends up (e.g. "split_category_trees.yml").
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Which tree JSON to split (path relative to repo root)"
+        required: false
+        default: "data/mesh_category_tree.json"
+      split_all:
+        description: "One file per category instead of lumping small ones into 'other'"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: split-category-trees
+  cancel-in-progress: false
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Split
+        env:
+          SOURCE: ${{ github.event.inputs.source }}
+          SPLIT_ALL: ${{ github.event.inputs.split_all }}
+        run: |
+          SRC="${SOURCE:-data/mesh_category_tree.json}"
+          PREFIX="${SRC%.json}"
+          ARGS=(--tree-json "$SRC" --out-prefix "$PREFIX")
+          if [ "$SPLIT_ALL" = "true" ]; then ARGS+=(--split-all); fi
+          python scripts/split_category_trees.py "${ARGS[@]}"
+
+      - name: Final commit (in case the script's own checkpoint didn't cover everything)
+        run: |
+          git add data/mesh_category_tree*_diseases.json data/mesh_category_tree*_chemicals.json data/mesh_category_tree*_other.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Final: split category trees run [skip ci]"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "Nothing left to commit."
+          fi
