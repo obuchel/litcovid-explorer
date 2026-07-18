@@ -1245,14 +1245,23 @@
             }
 
             // ── 5. Propagate counts upward ──
+            // BUG FIX: a MeSH term can be BOTH a directly-matched leaf AND an
+            // ancestor of some other, more specific matched term (e.g.
+            // "COVID-19" is itself tagged on thousands of docs, but also has
+            // "Post-Acute COVID-19 Syndrome" nested under it in the tree).
+            // The old version only counted a node's OWN direct matches when
+            // it had zero children — as soon as it had even one child, it
+            // switched to counting ONLY the children's union, silently
+            // dropping every doc whose sole match was that node itself. A
+            // node's own matches and its children's matches are unioned
+            // together now, regardless of whether it has children.
             function propagate(node) {
-                if (!node.children || node.children.length === 0) {
-                    return docsBySubject.get(node.name) || new Set();
+                const all = new Set(docsBySubject.get(node.name) || []);
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach(ch => {
+                        propagate(ch).forEach(p => all.add(p));
+                    });
                 }
-                const all = new Set();
-                node.children.forEach(ch => {
-                    propagate(ch).forEach(p => all.add(p));
-                });
                 node.count = all.size;
                 return all;
             }
