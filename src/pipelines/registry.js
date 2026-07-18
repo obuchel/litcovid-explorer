@@ -97,6 +97,32 @@ export const PIPELINES = [
     defaultSortKey: 'pmid',
   },
   {
+    id: 'predict_categories',
+    label: 'Predict categories',
+    shortLabel: 'Predict cats',
+    description:
+      'Runs against the already-committed data/mesh_category_tree.json \u2014 no upload needed. Trains a text ' +
+      'classifier on whichever docs already have hard_category / format (copied from the reference), then ' +
+      'predicts values for the rest. Writes a SEPARATE file (mesh_category_tree_predicted.json) with ' +
+      '*_predicted fields and confidence scores \u2014 never overwrites the reference-sourced ground truth. ' +
+      'Accuracy is uneven (~61% / ~52% overall, much weaker on rare classes) \u2014 treat predictions as a ' +
+      'first pass, not ground truth.',
+    noUpload: true,
+    outputPath: 'data/mesh_category_tree_predicted.json',
+    resultFormat: 'json-docs',
+    workflowFile: 'predict_categories.yml',
+    columns: [
+      { key: 'pmid', label: 'PMID', width: 100 },
+      { key: 'title_e', label: 'Title', width: 320 },
+      { key: 'hard_category_predicted', label: 'Predicted hard category', width: 160 },
+      { key: 'hard_category_predicted_confidence', label: 'Confidence', width: 100 },
+      { key: 'format_predicted', label: 'Predicted format', width: 160 },
+      { key: 'format_predicted_confidence', label: 'Confidence', width: 100 },
+    ],
+    searchableColumns: ['pmid', 'title_e', 'hard_category_predicted', 'format_predicted'],
+    defaultSortKey: 'pmid',
+  },
+  {
     id: 'authors',
     label: 'Author network (template)',
     shortLabel: 'Authors',

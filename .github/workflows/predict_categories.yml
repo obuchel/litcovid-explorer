@@ -1,0 +1,69 @@
+name: Predict categories
+
+# Trains a text classifier on the hard_category/format values already copied
+# from the reference (by copy_reference_categories.py) and predicts values
+# for docs that don't have them yet, writing a SEPARATE file
+# (mesh_category_tree_predicted.json) so predictions never get confused
+# with reference-sourced ground truth. Dispatched from the React uploader
+# app, or manually from the Actions tab.
+#
+# NOTE: rename this pipeline's "workflowFile" entry in src/pipelines/registry.js
+# to match wherever this file ends up (e.g. "predict_categories.yml").
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Only use a random sample of N docs (testing)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: predict-categories
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install scikit-learn scipy
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Train + predict
+        env:
+          LIMIT: ${{ github.event.inputs.limit }}
+        run: |
+          ARGS=(--write)
+          if [ -n "$LIMIT" ]; then ARGS+=(--limit "$LIMIT"); fi
+          python scripts/predict_categories.py "${ARGS[@]}"
+
+      - name: Final commit (in case the script's own checkpoint didn't cover everything)
+        run: |
+          git add data/mesh_category_tree_predicted.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Final: predict categories run [skip ci]"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "Nothing left to commit."
+          fi
