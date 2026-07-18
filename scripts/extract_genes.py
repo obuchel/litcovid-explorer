@@ -258,38 +258,72 @@ def parse_go_obo(obo_path: str) -> dict[str, dict[str, Any]]:
     return terms
 
 
-def go_lineage(go_id: str, terms: dict[str, dict[str, Any]], max_depth: int = 20) -> list[str]:
-    """Walk is_a edges up to the namespace root, following the *first* parent
-    at each step when a term has multiple is_a edges (GO is a DAG, not a
-    strict tree, so a single canonical path is a simplification — same
-    tradeoff build_mesh_annotations.py's resolve_lineage makes implicitly by
-    just using the tree numbers NLM already assigned)."""
+def go_all_lineages(
+    go_id: str, terms: dict[str, dict[str, Any]], max_paths: int = 8, max_depth: int = 25
+) -> list[list[str]]:
+    """Walks every is_a edge up to the namespace root — GO is a DAG, so a term
+    can legitimately have more than one real ancestor chain (e.g. "apoptotic
+    process" is both a "cell death" and a "regulation of programmed cell
+    death" descendant). Returns up to max_paths distinct full lineages,
+    each a list like ["Biological Process", "biological_process", ...,
+    go_id's own name]. Previously this only followed the *first* is_a parent
+    at each step, silently collapsing every term onto one path and dropping
+    every alternate parent GO actually records.
+
+    max_paths bounds the search — most terms have 1-2 parents at any given
+    step so path count stays small in practice, but a small number of
+    heavily-cross-classified terms could otherwise branch combinatorially;
+    max_paths caps the DFS rather than the depth, so a term hitting the cap
+    still gets max_paths *complete, real* root-to-term chains rather than
+    getting truncated mid-path."""
     info = terms.get(go_id)
     if not info:
         return []
-    chain = [info["name"]]
-    seen = {go_id}
-    current = go_id
-    for _ in range(max_depth):
-        parents = terms.get(current, {}).get("is_a", [])
-        if not parents:
-            break
-        nxt = parents[0]
-        if nxt in seen or nxt not in terms:
-            break
-        seen.add(nxt)
-        chain.append(terms[nxt]["name"])
-        current = nxt
-    root_label = GO_NAMESPACE_LABELS.get(info.get("namespace", ""), "Gene Ontology")
-    return [root_label] + list(reversed(chain))
+    namespace_label = GO_NAMESPACE_LABELS.get(info.get("namespace", ""), "Gene Ontology")
+
+    results: list[list[str]] = []
+
+    def dfs(current_id: str, suffix: list[str], depth: int, visited: frozenset[str]) -> None:
+        if len(results) >= max_paths:
+            return
+        node = terms.get(current_id)
+        if not node:
+            return
+        chain = [node["name"]] + suffix
+        parents = [p for p in node.get("is_a", []) if p in terms and p not in visited]
+        if not parents or depth >= max_depth:
+            results.append([namespace_label] + chain)
+            return
+        next_visited = visited | {current_id}
+        for parent_id in parents:
+            if len(results) >= max_paths:
+                break
+            dfs(parent_id, chain, depth + 1, next_visited)
+
+    dfs(go_id, [], 0, frozenset())
+
+    seen: set[tuple[str, ...]] = set()
+    unique: list[list[str]] = []
+    for path in results:
+        key = tuple(path)
+        if key not in seen:
+            seen.add(key)
+            unique.append(path)
+    return unique
 
 
 def parse_gene2go(gene2go_path: str, tax_id: str) -> dict[str, list[str]]:
     """Returns {entrez_gene_id: [go_id, ...]}, filtered to one tax_id (NCBI's
     gene2go.gz covers every organism NCBI tracks — human alone is a small
-    fraction of the file, so filtering while streaming keeps memory sane)."""
+    fraction of the file, so filtering while streaming keeps memory sane).
+
+    NCBI's gene2go.gz has one row per (GeneID, GO_ID, Evidence, Qualifier,
+    PubMed, Category) combination — a well-studied gene's GO term can appear
+    many times, once per supporting citation/evidence code. Deduplicated
+    with a set per gene so a downstream count(*) increments once per
+    document per GO term, not once per evidence row for that term."""
     opener = gzip.open if gene2go_path.endswith(".gz") else open
-    index: dict[str, list[str]] = defaultdict(list)
+    raw_index: dict[str, set[str]] = defaultdict(set)
     with opener(gene2go_path, "rt", encoding="utf-8") as fp:
         header = fp.readline()  # "#tax_id GeneID GO_ID Evidence Qualifier GO_term PubMed Category"
         for line in fp:
@@ -299,7 +333,8 @@ def parse_gene2go(gene2go_path: str, tax_id: str) -> dict[str, list[str]]:
             row_tax, gene_id, go_id = parts[0].lstrip("#"), parts[1], parts[2]
             if row_tax != tax_id:
                 continue
-            index[gene_id].append(go_id)
+            raw_index[gene_id].add(go_id)
+    index = {gene_id: sorted(go_ids) for gene_id, go_ids in raw_index.items()}
     print(f"Loaded GO annotations for {len(index)} genes (tax_id={tax_id}) from {gene2go_path}")
     return index
 
@@ -315,7 +350,7 @@ def build_tree_go(
     gene2go = parse_gene2go(gene2go_path, tax_id)
     go_terms = parse_go_obo(obo_path)
 
-    lineage_cache: dict[str, list[str]] = {}
+    lineage_cache: dict[str, list[list[str]]] = {}
     tree_counts: dict[tuple[str, str], dict[str, Any]] = defaultdict(lambda: {"count": 0, "first": None, "web_id": None, "tree_id": None})
     names_by_pmid: dict[str, list[str]] = defaultdict(list)
 
@@ -323,19 +358,24 @@ def build_tree_go(
         for gene_id in gene_ids:
             for go_id in gene2go.get(gene_id, []):
                 if go_id not in lineage_cache:
-                    lineage_cache[go_id] = go_lineage(go_id, go_terms)
-                lineage = lineage_cache[go_id]
-                if not lineage:
+                    lineage_cache[go_id] = go_all_lineages(go_id, go_terms)
+                lineages = lineage_cache[go_id]
+                if not lineages:
                     continue
-                path = ".".join(lineage)
-                key = (gene_id, path)
-                tree_counts[key]["count"] += 1
-                tree_counts[key]["web_id"] = go_id
-                tree_counts[key]["tree_id"] = go_id
-                if tree_counts[key]["first"] is None:
-                    tree_counts[key]["first"] = path
-                if lineage[-1] not in names_by_pmid[pmid]:
-                    names_by_pmid[pmid].append(lineage[-1])
+                # One increment per real ancestor path, same as MeSH's
+                # multi-branch terms — a gene mentioned in this document
+                # contributes to every branch its GO term actually sits on,
+                # not just one arbitrarily-chosen path.
+                for lineage in lineages:
+                    path = ".".join(lineage)
+                    key = (gene_id, path)
+                    tree_counts[key]["count"] += 1
+                    tree_counts[key]["web_id"] = go_id
+                    tree_counts[key]["tree_id"] = go_id
+                    if tree_counts[key]["first"] is None:
+                        tree_counts[key]["first"] = path
+                    if lineage[-1] not in names_by_pmid[pmid]:
+                        names_by_pmid[pmid].append(lineage[-1])
 
     return assemble_output(tree_counts, names_by_pmid, docs_meta, gene_ids_by_pmid, id_label="gene_id")
 
@@ -453,8 +493,11 @@ def parse_kegg_gene_pathway_links(link_text: str, organism_prefix: str) -> dict[
     """Parses `link/pathway/<organism>` output: "hsa:672\tpath:hsa04110" per
     line. Returns {entrez_gene_id: [generic_pathway_number, ...]} — strips
     the organism prefix off both gene and pathway IDs so they join against
-    parse_kegg_brite_pathway's generic (organism-agnostic) numbering."""
-    index: dict[str, list[str]] = defaultdict(list)
+    parse_kegg_brite_pathway's generic (organism-agnostic) numbering.
+    Deduplicated per gene defensively, same reasoning as parse_gene2go —
+    KEGG's link table is normally one row per (gene, pathway) pair, but
+    there's no guarantee of that from the API contract alone."""
+    raw_index: dict[str, set[str]] = defaultdict(set)
     prefix_len = len(organism_prefix) + 1  # "hsa:"
     for line in link_text.splitlines():
         line = line.strip()
@@ -464,7 +507,8 @@ def parse_kegg_gene_pathway_links(link_text: str, organism_prefix: str) -> dict[
         gene_id = gene_col[prefix_len:] if gene_col.startswith(f"{organism_prefix}:") else gene_col
         pathway_id = path_col.replace(f"path:{organism_prefix}", "")
         if gene_id and pathway_id:
-            index[gene_id].append(pathway_id)
+            raw_index[gene_id].add(pathway_id)
+    index = {gene_id: sorted(pathway_ids) for gene_id, pathway_ids in raw_index.items()}
     print(f"Loaded KEGG pathway links for {len(index)} genes")
     return index
 

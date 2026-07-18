@@ -264,15 +264,22 @@ function topLevelComposition(treeEntries, docSets) {
 // files.
 function topSpecificCategories(hierarchyRoot, n = 12) {
   const rows = [];
-  function walk(node, depth) {
-    if (depth > 0 && node.path) rows.push({ path: node.path, name: node.name, value: node.documents });
-    for (const child of node.children.values()) walk(child, depth + 1);
+  // Only true LEAF nodes — the actual, specific term a gene was annotated
+  // with, not any of its generic ancestor categories. Walking every level
+  // (the previous version) let broad umbrella terms like "biological_process"
+  // or "binding" dominate the ranking purely because virtually every
+  // annotated gene rolls up into them eventually — true, but not
+  // informative. Leaves are where the real specificity lives.
+  function walk(node) {
+    if (node.children.size === 0) {
+      if (node.path) rows.push({ path: node.path, name: node.name, value: node.documents });
+      return;
+    }
+    for (const child of node.children.values()) walk(child);
   }
-  walk(hierarchyRoot, 0);
+  walk(hierarchyRoot);
   rows.sort((a, b) => b.value - a.value);
-  // Skip the top-level roots themselves (depth-1 nodes) since those are
-  // exactly what the composition chart above already shows.
-  return rows.filter((r) => r.path.includes(".")).slice(0, n);
+  return rows.slice(0, n);
 }
 
 // ---- Fetch + assemble ----

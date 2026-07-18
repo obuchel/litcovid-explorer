@@ -81,7 +81,7 @@
 <div id="doc-panel-header" style="font-size:14px;font-weight:500;margin:0 0 8px;"></div>
 <div id="doc-list" style="max-height:340px;overflow-y:auto;border:0.5px solid var(--border);border-radius:var(--radius);"></div>
 
-<h2 class="section">Category composition and top specific categories</h2>
+<h2 class="section">Category composition and top associations</h2>
 
 <div style="display:flex;gap:8px;margin-bottom:1rem;">
 <button id="btn-go" style="flex:1;">Gene Ontology</button>
@@ -100,9 +100,9 @@
 <canvas id="chart-composition" role="img" aria-label="Bar chart of unique document counts by top-level category"></canvas>
 </div>
 
-<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Top specific categories by document count</p>
+<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Top gene-function associations by document count</p>
 <div style="position:relative;height:360px;">
-<canvas id="chart-associations" role="img" aria-label="Horizontal bar chart of the most specific categories by unique document count"></canvas>
+<canvas id="chart-associations" role="img" aria-label="Horizontal bar chart of top gene to function associations by unique document count"></canvas>
 </div>
 
 </div>
@@ -130,18 +130,13 @@ const APPROACH_LABELS = { go: "Gene Ontology", hgnc: "HGNC gene groups", kegg: "
 // each doc's `subjects` field lists which leaf categories its gene mentions
 // touched, deduplicated per document already.
 
-// A GO term can have more than one real is_a parent (it's a DAG, not a
-// strict tree), so extract_genes.py now emits one branch per real ancestor
-// path — meaning a single leaf category name can appear under more than one
-// full path. leafToPaths therefore maps to a SET of paths, not one.
-function buildLeafToPaths(treeEntries) {
+function buildLeafToPath(treeEntries) {
   const map = new Map();
   for (const e of treeEntries) {
     const path = e.first || "";
     if (!path) continue;
     const leaf = path.split(".").pop();
-    if (!map.has(leaf)) map.set(leaf, new Set());
-    map.get(leaf).add(path);
+    if (!map.has(leaf)) map.set(leaf, path);
   }
   return map;
 }
@@ -149,24 +144,20 @@ function buildLeafToPaths(treeEntries) {
 // Returns Map(fullPathPrefix -> Set(pmid)) — one entry per node in the
 // hierarchy (root segment, root.child, root.child.grandchild, ...), each
 // holding the set of documents that touch that node or anything under it.
-// A document whose gene's term sits on multiple real DAG paths contributes
-// to every one of those paths' ancestor chains, not just one.
-function buildDocSets(docs, leafToPaths) {
+function buildDocSets(docs, leafToPath) {
   const nodeDocs = new Map();
   for (const doc of docs) {
     const pmid = doc.pmid;
     const subjects = (doc.subjects || "").split("|").map((s) => s.trim()).filter(Boolean);
     const touchedPrefixes = new Set();
     for (const leaf of subjects) {
-      const paths = leafToPaths.get(leaf);
-      if (!paths) continue;
-      for (const path of paths) {
-        const parts = path.split(".");
-        let prefix = "";
-        for (const p of parts) {
-          prefix = prefix ? prefix + "." + p : p;
-          touchedPrefixes.add(prefix);
-        }
+      const path = leafToPath.get(leaf);
+      if (!path) continue;
+      const parts = path.split(".");
+      let prefix = "";
+      for (const p of parts) {
+        prefix = prefix ? prefix + "." + p : p;
+        touchedPrefixes.add(prefix);
       }
     }
     for (const prefix of touchedPrefixes) {
@@ -177,15 +168,10 @@ function buildDocSets(docs, leafToPaths) {
   return nodeDocs;
 }
 
-// Builds the FULL category tree from tree[] — every real ancestor path, to
-// whatever depth GO's own hierarchy actually goes, with no artificial cap.
-// Where multiple genes (or multiple DAG paths for the same term) converge on
-// an identical prefix, they merge into the same node automatically (it's
-// keyed by name at each level via the children Map). Each node keeps a
-// .parent pointer so the UI can zoom back out without needing a separate
-// pre-flattened copy of the tree.
+// Builds the category shape from tree[] (for names/nesting/gene counts),
+// then attaches real unique-document counts per node from docSets by path.
 function buildHierarchy(treeEntries, docSets) {
-  const root = { name: "root", children: new Map(), genes: new Set(), path: "", parent: null };
+  const root = { name: "root", children: new Map(), genes: new Set(), path: "" };
   for (const e of treeEntries) {
     const path = e.first || "";
     if (!path) continue;
@@ -196,9 +182,7 @@ function buildHierarchy(treeEntries, docSets) {
     for (const p of parts) {
       prefix = prefix ? prefix + "." + p : p;
       node.genes.add(gene);
-      if (!node.children.has(p)) {
-        node.children.set(p, { name: p, children: new Map(), genes: new Set(), path: prefix, parent: node });
-      }
+      if (!node.children.has(p)) node.children.set(p, { name: p, children: new Map(), genes: new Set(), path: prefix });
       node = node.children.get(p);
     }
     node.genes.add(gene);
@@ -212,31 +196,24 @@ function buildHierarchy(treeEntries, docSets) {
   return root;
 }
 
-// Renders a SHALLOW view (a few levels) starting from whatever real
-// hierarchy node is currently focused, recomputed fresh every time you
-// zoom. This is what makes full-depth navigation practical: rather than
-// flattening the entire multi-thousand-node tree into one static object up
-// front (and having to arbitrarily cut it off at some fixed depth), only
-// the handful of nodes actually on screen right now get built — so you can
-// keep clicking arbitrarily deep and each click reveals the tree's REAL
-// children at that point, not a pre-truncated subset.
-//
-// Each view node carries `_raw` — a reference back to the real hierarchy
-// node it came from — so a click handler can re-root the view there. The
-// synthetic "N more categories" bucket has no single real node, so its
-// `_raw` is null and it isn't zoomable.
-function localView(node, topK = 15, viewDepth = 3, depth = 0) {
+function toPruned(node, topK = 10, maxDepth = 6, depth = 0) {
   const children = [...node.children.values()].sort((a, b) => b.documents - a.documents);
-  const out = { name: node.name, value: node.documents, genes: node.genes.size, path: node.path, _raw: node };
-  if (children.length && depth < viewDepth) {
+  const out = { name: node.name, value: node.documents, genes: node.genes.size, path: node.path };
+  if (children.length && depth < maxDepth) {
     const kept = children.slice(0, topK);
     const rest = children.slice(topK);
-    const kids = kept.map((c) => localView(c, topK, viewDepth, depth + 1));
+    const kids = kept.map((c) => toPruned(c, topK, maxDepth, depth + 1));
     if (rest.length) {
       const restGenes = new Set();
-      for (const r of rest) for (const g of r.genes) restGenes.add(g);
-      const restDocCount = Math.max(...rest.map((r) => r.documents), 0); // lower bound — true union not cheaply available without re-walking docs
-      kids.push({ name: `${rest.length} more categories`, value: restDocCount, genes: restGenes.size, path: null, _raw: null });
+      const restDocs = new Set();
+      // union rest's underlying pmid/gene sets so the "N more" bucket doesn't
+      // just re-sum (and re-inflate) child document counts either
+      function collect(n) {
+        for (const g of n.genes) restGenes.add(g);
+      }
+      rest.forEach(collect);
+      const restDocCount = Math.max(...rest.map((r) => r.documents), 0); // lower bound: at least the largest child's count, true union not available post-pruning
+      kids.push({ name: `${rest.length} more categories`, value: restDocCount, genes: restGenes.size, path: null }); // no single path — can't list documents for a catch-all bucket
     }
     out.children = kids;
   }
@@ -255,24 +232,25 @@ function topLevelComposition(treeEntries, docSets) {
     .sort((a, b) => b.value - a.value);
 }
 
-// Most specific categories by real document count, at any depth — not just
-// the 3-8 root categories the composition chart already shows. Built
-// entirely from the same trusted docSets rollup (real document identity,
-// deduplicated), not from per-gene count(*) — so, unlike a per-gene
-// breakdown, this can't show the same category name more than once and
-// can't be thrown off by duplicate evidence rows in the source annotation
-// files.
-function topSpecificCategories(hierarchyRoot, n = 12) {
-  const rows = [];
-  function walk(node, depth) {
-    if (depth > 0 && node.path) rows.push({ path: node.path, name: node.name, value: node.documents });
-    for (const child of node.children.values()) walk(child, depth + 1);
+// Leaf-level associations: count(*) here already IS a real unique-document
+// count for that one gene (every PMID mentioning the gene contributes
+// exactly once, since the gene->term mapping doesn't depend on the document)
+// — no rollup needed, just relabeled from "mentions" to "documents".
+function topAssociations(treeEntries, n = 12) {
+  const rows = treeEntries
+    .filter((e) => e.first)
+    .map((e) => ({ gene_id: e.gene_id, leaf: e.first.split(".").pop(), value: Number(e["count(*)"] || 0) }))
+    .sort((a, b) => b.value - a.value);
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    const key = r.gene_id + "|" + r.leaf;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(r);
+    if (out.length >= n) break;
   }
-  walk(hierarchyRoot, 0);
-  rows.sort((a, b) => b.value - a.value);
-  // Skip the top-level roots themselves (depth-1 nodes) since those are
-  // exactly what the composition chart above already shows.
-  return rows.filter((r) => r.path.includes(".")).slice(0, n);
+  return out;
 }
 
 // ---- Fetch + assemble ----
@@ -287,19 +265,21 @@ async function loadAll() {
     })
   );
 
-  const HIERARCHY_DATA = {}; // { [key]: full-depth raw tree root } — no pruning, rendered lazily by localView()
+  const ICICLE_DATA = {};
   const CHART_DATA = {};
   const DOC_DATA = {}; // { docSets, docsByPmid, allDocs } per approach — used by the documents panel
   for (const [key, tree, docs] of entries) {
-    const leafToPaths = buildLeafToPaths(tree);
-    const docSets = buildDocSets(docs, leafToPaths);
+    const leafToPath = buildLeafToPath(tree);
+    const docSets = buildDocSets(docs, leafToPath);
     const hierarchy = buildHierarchy(tree, docSets);
-    hierarchy.name = APPROACH_LABELS[key];
-    HIERARCHY_DATA[key] = hierarchy;
+    const pruned = toPruned(hierarchy, 10, 6);
+    pruned.name = APPROACH_LABELS[key];
+    pruned.path = ''; // root: matches the "show everything" case in renderDocuments
+    ICICLE_DATA[key] = pruned;
 
     CHART_DATA[key] = {
       composition: topLevelComposition(tree, docSets),
-      associations: topSpecificCategories(hierarchy, 12),
+      associations: topAssociations(tree, 12),
       total_documents: docs.length,
       distinct_genes: new Set(tree.map((e) => e.gene_id)).size,
       distinct_categories: new Set(tree.filter((e) => e.first).map((e) => e.first)).size,
@@ -308,7 +288,7 @@ async function loadAll() {
     const docsByPmid = new Map(docs.map((d) => [d.pmid, d]));
     DOC_DATA[key] = { docSets, docsByPmid, allDocs: docs };
   }
-  return { HIERARCHY_DATA, CHART_DATA, DOC_DATA };
+  return { ICICLE_DATA, CHART_DATA, DOC_DATA };
 }
 
 // ---- Documents panel ----
@@ -369,27 +349,17 @@ function renderDocuments(docData, path, headerLabel) {
 
 // ---- Icicle rendering ----
 
-const focusState = {}; // { [approachKey]: currently-zoomed raw hierarchy node } — persists across zooms and tab switches
-
 const COLOR_RAMPS = {go:["c-purple","c-teal","c-coral","c-pink","c-amber"], hgnc:["c-blue","c-green","c-teal","c-purple","c-coral"], kegg:["c-purple","c-teal","c-coral","c-pink","c-amber","c-blue","c-green"]};
 const width = 660;
 const rowHeight = 28;
 
-function renderIcicle(HIERARCHY_DATA, DOC_DATA, key) {
+function renderIcicle(ICICLE_DATA, DOC_DATA, key) {
   const docData = DOC_DATA[key];
-  const rawRoot = HIERARCHY_DATA[key];
   document.querySelectorAll("#tab-go,#tab-hgnc,#tab-kegg").forEach((b) => (b.style.borderColor = "var(--border)"));
   document.getElementById("tab-" + key).style.borderColor = "var(--text-accent)";
 
-  if (!focusState[key]) focusState[key] = rawRoot;
-  const rawFocus = focusState[key];
-
-  // Fresh shallow view rooted at wherever we're currently zoomed — this is
-  // what makes navigating the FULL, real tree practical: only the nodes
-  // actually on screen get built, so there's no fixed global depth/width
-  // cap on the underlying data, only on what's rendered at once.
-  const viewData = localView(rawFocus, 15, 3);
-  const root = d3.hierarchy(viewData).sum((d) => (d.children ? 0 : d.value)).sort((a, b) => b.value - a.value);
+  const rootData = ICICLE_DATA[key];
+  const root = d3.hierarchy(rootData).sum((d) => (d.children ? 0 : d.value)).sort((a, b) => b.value - a.value);
   const totalDepth = root.height + 1;
   const height = totalDepth * rowHeight;
 
@@ -407,11 +377,13 @@ function renderIcicle(HIERARCHY_DATA, DOC_DATA, key) {
     return topLevelColor.get(n) || "c-gray";
   }
 
+  let focus = root;
+
   function rectX(d) { return d.y0; }
   function rectW(d) { return d.y1 - d.y0; }
   function xScale(d0) {
-    const k = height / (root.x1 - root.x0);
-    return { x0: (d0.x0 - root.x0) * k, x1: (d0.x1 - root.x0) * k };
+    const k = height / (focus.x1 - focus.x0);
+    return { x0: (d0.x0 - focus.x0) * k, x1: (d0.x1 - focus.x0) * k };
   }
 
   const g = svg.append("g");
@@ -420,14 +392,14 @@ function renderIcicle(HIERARCHY_DATA, DOC_DATA, key) {
   const cell = g.selectAll("g").data(nodes, (d) => d.data.name + d.depth + (d.parent ? d.parent.data.name : ""))
     .join("g")
     .attr("transform", (d) => `translate(${rectX(d)},${xScale(d).x0})`)
-    .style("cursor", (d) => (d.data._raw ? "pointer" : "default"));
+    .style("cursor", "pointer");
 
   cell.append("rect")
     .attr("width", (d) => rectW(d))
     .attr("height", (d) => Math.max(0, xScale(d).x1 - xScale(d).x0 - 1))
     .attr("rx", 3)
     .attr("class", (d) => colorFor(d))
-    .attr("fill-opacity", 0.85);
+    .attr("fill-opacity", (d) => (d === focus ? 0 : 0.85));
 
   function labelFor(d) {
     const h = xScale(d).x1 - xScale(d).x0;
@@ -447,9 +419,10 @@ function renderIcicle(HIERARCHY_DATA, DOC_DATA, key) {
     .text(labelFor);
 
   cell.on("click", (event, d) => {
-    if (!d.data._raw) return; // the synthetic "N more categories" bucket isn't zoomable
-    focusState[key] = d.data._raw === rawFocus ? rawFocus.parent || rawRoot : d.data._raw;
-    renderIcicle(HIERARCHY_DATA, DOC_DATA, key);
+    focus = focus === d ? d.parent || root : d;
+    update();
+    updateBreadcrumb();
+    renderDocuments(docData, focus.data.path, focus.data.name);
   });
 
   const tooltip = document.getElementById("tooltip");
@@ -461,12 +434,25 @@ function renderIcicle(HIERARCHY_DATA, DOC_DATA, key) {
     tooltip.innerHTML = `<div style="font-weight:500;">${d.data.name}</div><div style="color:var(--text-secondary);">${d.data.value.toLocaleString()} documents &middot; ${d.data.genes.toLocaleString()} genes</div>`;
   }).on("mouseleave", () => { tooltip.style.display = "none"; });
 
-  const chain = [];
-  let n = rawFocus;
-  while (n) { chain.unshift(n.name); n = n.parent; }
-  document.getElementById("breadcrumb").textContent = chain.join(" \u203a ");
+  function update() {
+    cell.transition().duration(400)
+      .attr("transform", (d) => `translate(${rectX(d)},${xScale(d).x0})`)
+      .select("rect")
+      .attr("height", (d) => Math.max(0, xScale(d).x1 - xScale(d).x0 - 1))
+      .attr("fill-opacity", (d) => (d === focus ? 0 : 0.85));
+    cell.select("text")
+      .attr("y", (d) => (Math.max(0, xScale(d).x1 - xScale(d).x0 - 1)) / 2)
+      .text(labelFor);
+  }
 
-  renderDocuments(docData, rawFocus.path, rawFocus.name);
+  function updateBreadcrumb() {
+    const chain = [];
+    let n = focus;
+    while (n) { chain.unshift(n.data.name); n = n.parent; }
+    document.getElementById("breadcrumb").textContent = chain.join(" \u203a ");
+  }
+  updateBreadcrumb();
+  renderDocuments(docData, focus.data.path, focus.data.name);
 }
 
 // ---- Bar chart rendering ----
@@ -474,8 +460,7 @@ function renderIcicle(HIERARCHY_DATA, DOC_DATA, key) {
 const PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
 let chartComp, chartAssoc;
 
-function renderCharts(CHART_DATA, DOC_DATA, key) {
-  const docData = DOC_DATA[key];
+function renderCharts(CHART_DATA, key) {
   document.querySelectorAll("#btn-go,#btn-hgnc,#btn-kegg").forEach((b) => (b.style.borderColor = "var(--border)"));
   document.getElementById("btn-" + key).style.borderColor = "var(--text-accent)";
 
@@ -504,7 +489,7 @@ function renderCharts(CHART_DATA, DOC_DATA, key) {
   chartAssoc = new Chart(document.getElementById("chart-associations"), {
     type: "bar",
     data: {
-      labels: assoc.map((a) => (a.name.length > 38 ? a.name.slice(0, 37) + "\u2026" : a.name)),
+      labels: assoc.map((a) => (a.leaf.length > 38 ? a.leaf.slice(0, 37) + "\u2026" : a.leaf)),
       datasets: [{ data: assoc.map((a) => a.value), backgroundColor: PALETTE[2], borderRadius: 4, maxBarThickness: 18 }],
     },
     options: {
@@ -515,14 +500,6 @@ function renderCharts(CHART_DATA, DOC_DATA, key) {
         x: { grid: { color: "#e1e0d9" }, ticks: { callback: (v) => v.toLocaleString() } },
         y: { grid: { display: false }, ticks: { font: { size: 11 } } },
       },
-      onClick: (evt, elements) => {
-        if (!elements.length) return;
-        const row = assoc[elements[0].index];
-        renderDocuments(docData, row.path, row.name);
-      },
-      onHover: (evt, elements) => {
-        evt.native.target.style.cursor = elements.length ? "pointer" : "default";
-      },
     },
   });
 }
@@ -530,19 +507,19 @@ function renderCharts(CHART_DATA, DOC_DATA, key) {
 // ---- Boot ----
 
 loadAll()
-  .then(({ HIERARCHY_DATA, CHART_DATA, DOC_DATA }) => {
+  .then(({ ICICLE_DATA, CHART_DATA, DOC_DATA }) => {
     document.getElementById("load-status").style.display = "none";
     document.getElementById("content").style.display = "block";
 
-    document.getElementById("tab-go").addEventListener("click", () => renderIcicle(HIERARCHY_DATA, DOC_DATA, "go"));
-    document.getElementById("tab-hgnc").addEventListener("click", () => renderIcicle(HIERARCHY_DATA, DOC_DATA, "hgnc"));
-    document.getElementById("tab-kegg").addEventListener("click", () => renderIcicle(HIERARCHY_DATA, DOC_DATA, "kegg"));
-    renderIcicle(HIERARCHY_DATA, DOC_DATA, "go");
+    document.getElementById("tab-go").addEventListener("click", () => renderIcicle(ICICLE_DATA, DOC_DATA, "go"));
+    document.getElementById("tab-hgnc").addEventListener("click", () => renderIcicle(ICICLE_DATA, DOC_DATA, "hgnc"));
+    document.getElementById("tab-kegg").addEventListener("click", () => renderIcicle(ICICLE_DATA, DOC_DATA, "kegg"));
+    renderIcicle(ICICLE_DATA, DOC_DATA, "go");
 
-    document.getElementById("btn-go").addEventListener("click", () => renderCharts(CHART_DATA, DOC_DATA, "go"));
-    document.getElementById("btn-hgnc").addEventListener("click", () => renderCharts(CHART_DATA, DOC_DATA, "hgnc"));
-    document.getElementById("btn-kegg").addEventListener("click", () => renderCharts(CHART_DATA, DOC_DATA, "kegg"));
-    renderCharts(CHART_DATA, DOC_DATA, "go");
+    document.getElementById("btn-go").addEventListener("click", () => renderCharts(CHART_DATA, "go"));
+    document.getElementById("btn-hgnc").addEventListener("click", () => renderCharts(CHART_DATA, "hgnc"));
+    document.getElementById("btn-kegg").addEventListener("click", () => renderCharts(CHART_DATA, "kegg"));
+    renderCharts(CHART_DATA, "go");
   })
   .catch((err) => {
     document.getElementById("load-status").style.display = "none";
