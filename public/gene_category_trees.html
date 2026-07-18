@@ -58,14 +58,14 @@
 <div class="wrap">
 
 <h1>Gene category trees</h1>
-<p class="subtitle">Long COVID corpus gene mentions, classified three ways: Gene Ontology, HGNC gene groups, KEGG pathways.</p>
+<p class="subtitle">Long COVID corpus documents, grouped by gene category: Gene Ontology, HGNC gene groups, KEGG pathways. Box size and bar length are unique document counts.</p>
 
 <p id="load-status">Loading data/gene_category_tree_*.json&hellip;</p>
 <div id="load-error"></div>
 
 <div id="content" style="display:none;">
 
-<h2 class="sr-only">Zoomable tree of gene categories</h2>
+<h2 class="sr-only">Zoomable tree of gene categories, sized by unique document count</h2>
 <div style="display:flex;gap:8px;margin-bottom:1rem;">
 <button id="tab-go" style="flex:1;">Gene Ontology</button>
 <button id="tab-hgnc" style="flex:1;">HGNC groups</button>
@@ -86,19 +86,19 @@
 </div>
 
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem;">
+<div class="stat-card"><p class="stat-label">Total documents</p><p id="stat-docs" class="stat-value">-</p></div>
 <div class="stat-card"><p class="stat-label">Distinct genes</p><p id="stat-genes" class="stat-value">-</p></div>
 <div class="stat-card"><p class="stat-label">Distinct categories</p><p id="stat-cats" class="stat-value">-</p></div>
-<div class="stat-card"><p class="stat-label">Top-level branches</p><p id="stat-branches" class="stat-value">-</p></div>
 </div>
 
-<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Mentions by top-level category</p>
+<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Unique documents by top-level category</p>
 <div style="position:relative;height:180px;margin-bottom:2rem;">
-<canvas id="chart-composition" role="img" aria-label="Bar chart of mention counts by top-level category"></canvas>
+<canvas id="chart-composition" role="img" aria-label="Bar chart of unique document counts by top-level category"></canvas>
 </div>
 
-<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Top gene-function associations by mention count</p>
+<p style="font-size:14px;font-weight:500;margin:0 0 8px;">Top gene-function associations by document count</p>
 <div style="position:relative;height:360px;">
-<canvas id="chart-associations" role="img" aria-label="Horizontal bar chart of top gene to function associations by mention count"></canvas>
+<canvas id="chart-associations" role="img" aria-label="Horizontal bar chart of top gene to function associations by unique document count"></canvas>
 </div>
 
 </div>
@@ -114,58 +114,124 @@ const SOURCES = {
 };
 const APPROACH_LABELS = { go: "Gene Ontology", hgnc: "HGNC gene groups", kegg: "KEGG pathways" };
 
-// ---- Aggregation (mirrors the Python build_hierarchy / to_pruned / top_level_composition / top_associations) ----
+// ---- Aggregation: unique DOCUMENT counts per node, not summed mention counts ----
+//
+// The raw tree[] rows are per (gene, category-leaf) pairs — count(*) there is
+// already a real unique-document count for that one gene at that one leaf.
+// But summing count(*) up through parent categories double-counts: a single
+// document mentioning one gene that maps to 20 GO terms would get counted 20
+// times, and documents mentioning multiple genes under the same category
+// would be added together instead of deduplicated. Real unique-document
+// counts for parent/composition levels have to come from docs[] instead —
+// each doc's `subjects` field lists which leaf categories its gene mentions
+// touched, deduplicated per document already.
 
-function buildHierarchy(treeEntries) {
-  const root = { name: "root", children: new Map(), value: 0, genes: new Set() };
+function buildLeafToPath(treeEntries) {
+  const map = new Map();
+  for (const e of treeEntries) {
+    const path = e.first || "";
+    if (!path) continue;
+    const leaf = path.split(".").pop();
+    if (!map.has(leaf)) map.set(leaf, path);
+  }
+  return map;
+}
+
+// Returns Map(fullPathPrefix -> Set(pmid)) — one entry per node in the
+// hierarchy (root segment, root.child, root.child.grandchild, ...), each
+// holding the set of documents that touch that node or anything under it.
+function buildDocSets(docs, leafToPath) {
+  const nodeDocs = new Map();
+  for (const doc of docs) {
+    const pmid = doc.pmid;
+    const subjects = (doc.subjects || "").split("|").map((s) => s.trim()).filter(Boolean);
+    const touchedPrefixes = new Set();
+    for (const leaf of subjects) {
+      const path = leafToPath.get(leaf);
+      if (!path) continue;
+      const parts = path.split(".");
+      let prefix = "";
+      for (const p of parts) {
+        prefix = prefix ? prefix + "." + p : p;
+        touchedPrefixes.add(prefix);
+      }
+    }
+    for (const prefix of touchedPrefixes) {
+      if (!nodeDocs.has(prefix)) nodeDocs.set(prefix, new Set());
+      nodeDocs.get(prefix).add(pmid);
+    }
+  }
+  return nodeDocs;
+}
+
+// Builds the category shape from tree[] (for names/nesting/gene counts),
+// then attaches real unique-document counts per node from docSets by path.
+function buildHierarchy(treeEntries, docSets) {
+  const root = { name: "root", children: new Map(), genes: new Set(), path: "" };
   for (const e of treeEntries) {
     const path = e.first || "";
     if (!path) continue;
     const parts = path.split(".");
     let node = root;
-    const count = Number(e["count(*)"] || 0);
+    let prefix = "";
     const gene = e.gene_id;
     for (const p of parts) {
-      node.value += count;
+      prefix = prefix ? prefix + "." + p : p;
       node.genes.add(gene);
-      if (!node.children.has(p)) node.children.set(p, { name: p, children: new Map(), value: 0, genes: new Set() });
+      if (!node.children.has(p)) node.children.set(p, { name: p, children: new Map(), genes: new Set(), path: prefix });
       node = node.children.get(p);
     }
-    node.value += count;
     node.genes.add(gene);
   }
+  function attachDocs(node) {
+    const set = docSets.get(node.path);
+    node.documents = set ? set.size : 0;
+    for (const child of node.children.values()) attachDocs(child);
+  }
+  attachDocs(root);
   return root;
 }
 
 function toPruned(node, topK = 10, maxDepth = 6, depth = 0) {
-  const children = [...node.children.values()].sort((a, b) => b.value - a.value);
-  const out = { name: node.name, value: node.value, genes: node.genes.size };
+  const children = [...node.children.values()].sort((a, b) => b.documents - a.documents);
+  const out = { name: node.name, value: node.documents, genes: node.genes.size };
   if (children.length && depth < maxDepth) {
     const kept = children.slice(0, topK);
     const rest = children.slice(topK);
     const kids = kept.map((c) => toPruned(c, topK, maxDepth, depth + 1));
     if (rest.length) {
-      const restVal = rest.reduce((s, r) => s + r.value, 0);
       const restGenes = new Set();
-      rest.forEach((r) => { for (const g of r.genes) restGenes.add(g); });
-      kids.push({ name: `${rest.length} more categories`, value: restVal, genes: restGenes.size });
+      const restDocs = new Set();
+      // union rest's underlying pmid/gene sets so the "N more" bucket doesn't
+      // just re-sum (and re-inflate) child document counts either
+      function collect(n) {
+        for (const g of n.genes) restGenes.add(g);
+      }
+      rest.forEach(collect);
+      const restDocCount = Math.max(...rest.map((r) => r.documents), 0); // lower bound: at least the largest child's count, true union not available post-pruning
+      kids.push({ name: `${rest.length} more categories`, value: restDocCount, genes: restGenes.size });
     }
     out.children = kids;
   }
   return out;
 }
 
-function topLevelComposition(treeEntries) {
-  const totals = new Map();
+function topLevelComposition(treeEntries, docSets) {
+  const topNames = new Set();
   for (const e of treeEntries) {
     const path = e.first || "";
     if (!path) continue;
-    const top = path.split(".")[0];
-    totals.set(top, (totals.get(top) || 0) + Number(e["count(*)"] || 0));
+    topNames.add(path.split(".")[0]);
   }
-  return [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([name, value]) => ({ name, value }));
+  return [...topNames]
+    .map((name) => ({ name, value: (docSets.get(name) || new Set()).size }))
+    .sort((a, b) => b.value - a.value);
 }
 
+// Leaf-level associations: count(*) here already IS a real unique-document
+// count for that one gene (every PMID mentioning the gene contributes
+// exactly once, since the gene->term mapping doesn't depend on the document)
+// — no rollup needed, just relabeled from "mentions" to "documents".
 function topAssociations(treeEntries, n = 12) {
   const rows = treeEntries
     .filter((e) => e.first)
@@ -191,20 +257,24 @@ async function loadAll() {
       const res = await fetch(file);
       if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
       const data = await res.json();
-      return [key, data.tree || []];
+      return [key, data.tree || [], data.docs || []];
     })
   );
 
   const ICICLE_DATA = {};
   const CHART_DATA = {};
-  for (const [key, tree] of entries) {
-    const pruned = toPruned(buildHierarchy(tree), 10, 6);
+  for (const [key, tree, docs] of entries) {
+    const leafToPath = buildLeafToPath(tree);
+    const docSets = buildDocSets(docs, leafToPath);
+    const hierarchy = buildHierarchy(tree, docSets);
+    const pruned = toPruned(hierarchy, 10, 6);
     pruned.name = APPROACH_LABELS[key];
     ICICLE_DATA[key] = pruned;
 
     CHART_DATA[key] = {
-      composition: topLevelComposition(tree),
+      composition: topLevelComposition(tree, docSets),
       associations: topAssociations(tree, 12),
+      total_documents: docs.length,
       distinct_genes: new Set(tree.map((e) => e.gene_id)).size,
       distinct_categories: new Set(tree.filter((e) => e.first).map((e) => e.first)).size,
     };
@@ -269,7 +339,7 @@ function renderIcicle(ICICLE_DATA, key) {
     const h = xScale(d).x1 - xScale(d).x0;
     const w = rectW(d);
     if (h < 14 || w < 40) return "";
-    const label = d.data.name + " (" + d.data.genes + " genes)";
+    const label = d.data.name + " (" + d.data.value + " docs)";
     const maxChars = Math.floor(w / 6.5);
     return label.length > maxChars ? label.slice(0, Math.max(3, maxChars - 1)) + "\u2026" : label;
   }
@@ -294,7 +364,7 @@ function renderIcicle(ICICLE_DATA, key) {
     tooltip.style.display = "block";
     tooltip.style.left = event.clientX - rect.left + 12 + "px";
     tooltip.style.top = event.clientY - rect.top + 12 + "px";
-    tooltip.innerHTML = `<div style="font-weight:500;">${d.data.name}</div><div style="color:var(--text-secondary);">${d.data.genes.toLocaleString()} genes &middot; ${d.data.value.toLocaleString()} mentions</div>`;
+    tooltip.innerHTML = `<div style="font-weight:500;">${d.data.name}</div><div style="color:var(--text-secondary);">${d.data.value.toLocaleString()} documents &middot; ${d.data.genes.toLocaleString()} genes</div>`;
   }).on("mouseleave", () => { tooltip.style.display = "none"; });
 
   function update() {
@@ -327,9 +397,9 @@ function renderCharts(CHART_DATA, key) {
   document.getElementById("btn-" + key).style.borderColor = "var(--text-accent)";
 
   const d = CHART_DATA[key];
+  document.getElementById("stat-docs").textContent = d.total_documents.toLocaleString();
   document.getElementById("stat-genes").textContent = d.distinct_genes.toLocaleString();
   document.getElementById("stat-cats").textContent = d.distinct_categories.toLocaleString();
-  document.getElementById("stat-branches").textContent = d.composition.length.toLocaleString();
 
   const comp = d.composition.slice(0, 8);
   if (chartComp) chartComp.destroy();
