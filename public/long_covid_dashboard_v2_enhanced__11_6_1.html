@@ -382,11 +382,11 @@
             // public/; the data files live in data/, a sibling of public/ at the
             // repo root — hence '../data/...'. If this file ever moves to a
             // different folder depth, update these paths to match.
-            'ref-disease':  { file: '../data/php2_category_xavi_last0.json',                    label: 'Diseases (Reference)',  shortLabel: 'Diseases (Ref)',  icon: '🌿', isPrimary: true },
-            'ref-chemical': { file: '../data/php2_category_xavi_last_chemical.json',            label: 'Chemicals (Reference)', shortLabel: 'Chemicals (Ref)', icon: '⚗️', isPrimary: false },
-            'our-disease':  { file: '../data/mesh_category_tree_predicted_diseases.json',       label: 'Diseases (Ours)',       shortLabel: 'Diseases (Ours)', icon: '🧬', isPrimary: false },
-            'our-chemical': { file: '../data/mesh_category_tree_predicted_chemicals.json',      label: 'Chemicals (Ours)',      shortLabel: 'Chemicals (Ours)', icon: '🧪', isPrimary: false },
-            'our-other':    { file: '../data/mesh_category_tree_predicted_other.json',          label: 'Other (Ours)',          shortLabel: 'Other (Ours)',    icon: '🔬', isPrimary: false },
+            'ref-disease':  { file: 'data/php2_category_xavi_last0.json',                    label: 'Diseases (Reference)',  shortLabel: 'Diseases (Ref)',  icon: '🌿', isPrimary: true },
+            'ref-chemical': { file: 'data/php2_category_xavi_last_chemical.json',            label: 'Chemicals (Reference)', shortLabel: 'Chemicals (Ref)', icon: '⚗️', isPrimary: false },
+            'our-disease':  { file: 'data/mesh_category_tree_predicted_diseases.json',       label: 'Diseases (Ours)',       shortLabel: 'Diseases (Ours)', icon: '🧬', isPrimary: false },
+            'our-chemical': { file: 'data/mesh_category_tree_predicted_chemicals.json',      label: 'Chemicals (Ours)',      shortLabel: 'Chemicals (Ours)', icon: '🧪', isPrimary: false },
+            'our-other':    { file: 'data/mesh_category_tree_predicted_other.json',          label: 'Other (Ours)',          shortLabel: 'Other (Ours)',    icon: '🔬', isPrimary: false },
             // "computed" datasets aren't fetched — they're built in init() by
             // merging their `sources`' tree[] arrays (concatenated) and docs[]
             // arrays (deduped by pmid — a doc mentioning both a disease and a
