@@ -1,0 +1,174 @@
+{
+  "docs": [
+    {
+      "file": "citation_enrichment.csv",
+      "size_bytes": "1617614",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "doc_all_info.csv",
+      "size_bytes": "39330901",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260704_020743.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260704_220740.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260705_032535.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260705_034253.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260706_094816.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260713_083934.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260717_171606.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260717_180221.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260717_181821.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260718_021502.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "failed_pmids_all_info_20260718_023751.txt",
+      "size_bytes": "1043",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "gene_category_tree_go.json",
+      "size_bytes": "39589268",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "gene_category_tree_hgnc.json",
+      "size_bytes": "2672309",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "gene_category_tree_kegg.json",
+      "size_bytes": "7306791",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "gene_category_tree_type.json",
+      "size_bytes": "1991678",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "icite_cache.jsonl",
+      "size_bytes": "2543576",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "icite_cache.jsonl.gz",
+      "size_bytes": "2870547",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree.json",
+      "size_bytes": "31448571",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_chemicals.json",
+      "size_bytes": "6086396",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_diseases.json",
+      "size_bytes": "28991115",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_other.json",
+      "size_bytes": "7300000",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_predicted.json",
+      "size_bytes": "33097118",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_predicted_chemicals.json",
+      "size_bytes": "6414257",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_predicted_diseases.json",
+      "size_bytes": "30443865",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "mesh_category_tree_predicted_other.json",
+      "size_bytes": "7705151",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "openalex_source_cache.jsonl.gz",
+      "size_bytes": "522631",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "openalex_work_cache.jsonl.gz",
+      "size_bytes": "2860208",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "php2_category_xavi_last0.json",
+      "size_bytes": "13266608",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "php2_category_xavi_last_chemical.json",
+      "size_bytes": "13097343",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "pubtator_records.jsonl.gz",
+      "size_bytes": "38045586",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    },
+    {
+      "file": "search_results_litcovid.tsv",
+      "size_bytes": "2790165",
+      "synced_at": "2026-07-18T20:16:26+00:00"
+    }
+  ]
+}
