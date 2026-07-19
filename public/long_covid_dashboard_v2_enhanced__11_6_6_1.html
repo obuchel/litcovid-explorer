@@ -208,10 +208,13 @@
         .network-link.network-link-dim { opacity: 0.08; }
         .network-link.network-link-highlight { stroke: #f97316; stroke-opacity: 0.9; }
         .network-link { stroke: #94a3b8; stroke-opacity: 0.5; fill: none; }
-        .network-legend {
+        .network-legend-wrap {
             position: absolute; bottom: 10px; left: 10px; z-index: 10;
+            display: flex; flex-direction: column; gap: 6px; max-width: calc(100% - 20px);
+        }
+        .network-legend {
             background: white; border: 1px solid #d1d5db; border-radius: 0.375rem;
-            padding: 0.5rem 0.75rem; font-size: 0.75rem; display: flex; gap: 0.9rem;
+            padding: 0.5rem 0.75rem; font-size: 0.75rem; display: flex; gap: 0.9rem; flex-wrap: wrap;
         }
         .network-legend span { display: inline-flex; align-items: center; gap: 4px; }
         .network-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
@@ -219,6 +222,31 @@
             display: flex; align-items: center; justify-content: center; height: 100%;
             color: #6b7280; font-size: 0.9rem; text-align: center; padding: 2rem;
         }
+        #network-download-menu a:hover { background: #f3f4f6; }
+
+        /* Dual-thumb range slider for bridging score filtering — two
+           overlapping <input type="range"> elements, each with its own
+           track hidden (transparent) so only their thumbs are interactive;
+           a separate visual track + colored band sits underneath to show
+           the currently selected range. */
+        .dual-slider { position: relative; width: 150px; height: 20px; }
+        .dual-slider .track-bg { position: absolute; top: 8px; left: 0; right: 0; height: 4px; background: #e5e7eb; border-radius: 2px; }
+        .dual-slider .track-fill { position: absolute; top: 8px; height: 4px; background: #f97316; border-radius: 2px; }
+        .dual-slider input[type="range"] {
+            position: absolute; top: 0; left: 0; width: 100%; height: 20px; margin: 0;
+            background: none; pointer-events: none; -webkit-appearance: none; appearance: none;
+        }
+        .dual-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; pointer-events: auto; width: 14px; height: 14px; border-radius: 50%;
+            background: white; border: 2px solid #f97316; cursor: pointer; margin-top: 0;
+        }
+        .dual-slider input[type="range"]::-moz-range-thumb {
+            pointer-events: auto; width: 14px; height: 14px; border-radius: 50%;
+            background: white; border: 2px solid #f97316; cursor: pointer;
+        }
+        .dual-slider input[type="range"]::-webkit-slider-runnable-track { background: none; }
+        .dual-slider input[type="range"]::-moz-range-track { background: none; }
+
         #network-tooltip {
             position: absolute; pointer-events: none; background: white;
             border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 6px 10px;
@@ -728,13 +756,42 @@
                         </div>
                         <div style="display:flex; align-items:center; gap:0.75rem;">
                             <span id="network-subtitle" style="font-size:0.8rem; color:#6b7280;"></span>
-                            <button id="network-layout-btn" class="control-btn" onclick="networkToggleLayout()" style="font-size:0.75rem; padding:0.3rem 0.6rem;" title="Arrange by k-core: densely-connected subjects pulled toward the center, loosely-connected ones pushed to the edge">🎯 Core/Periphery</button>
-                            <button id="network-show-more-btn" class="control-btn" onclick="networkShowMore()" style="display:none; font-size:0.75rem; padding:0.3rem 0.6rem;"></button>
+                            <button id="network-size-btn" class="control-btn" onclick="networkToggleSizeMode()" style="font-size:0.75rem; padding:0.3rem 0.6rem;" title="Size nodes by raw document count, or by TF-IDF (common in this search, rare corpus-wide)">📏 Size: Documents</button>
+                            <button id="network-edgerank-btn" class="control-btn" onclick="networkToggleEdgeRankMode()" style="font-size:0.75rem; padding:0.3rem 0.6rem;" title="Which edges win when the display cap kicks in: strongest raw co-occurrence, or 'bridging' — pairs that co-occur more than their individual frequencies predict AND are individually rare corpus-wide (the literature-based-discovery signal: weak-looking but potentially real connections)">🌉 Edges: Strongest</button>
+                            <div id="network-bridging-range-wrap" style="display:none; align-items:center; gap:6px; font-size:0.75rem; color:#374151;" title="Drag either end to find low or negative bridging scores — pairs that co-occur LESS than chance would predict (conspicuously absent, not just conspicuously present)">
+                                <span>Score:</span>
+                                <div class="dual-slider">
+                                    <div class="track-bg"></div>
+                                    <div class="track-fill" id="network-bridging-track-fill"></div>
+                                    <input type="range" id="network-bridging-min-slider" step="0.01">
+                                    <input type="range" id="network-bridging-max-slider" step="0.01">
+                                </div>
+                                <span id="network-bridging-range-label" style="min-width:5em;"></span>
+                                <button id="network-bridging-reset-btn" class="control-btn" onclick="networkResetBridgingFilter()" style="font-size:0.7rem; padding:0.2rem 0.4rem;" title="Reset to unfiltered (top-by-score)">↺</button>
+                            </div>
+                            <button id="network-layout-btn" class="control-btn" onclick="networkToggleLayout()" style="font-size:0.75rem; padding:0.3rem 0.6rem;" title="Cycles: standard layout → core/periphery (k-core) → detected communities (Louvain)">🎯 Layout: Standard</button>
+                            <div id="network-node-slider-wrap" style="display:flex; align-items:center; gap:6px; font-size:0.75rem; color:#374151;">
+                                <span>Subjects:</span>
+                                <input type="range" id="network-node-slider" min="10" max="50" value="50" step="1"
+                                    oninput="document.getElementById('network-node-slider-label').textContent = this.value;"
+                                    onchange="networkSetNodeCount(this.value)" style="width:120px;">
+                                <span id="network-node-slider-label" style="min-width:2.5em;">50</span>
+                                <span id="network-node-slider-total" style="color:#9ca3af;"></span>
+                            </div>
+                            <div style="position:relative;">
+                                <button id="network-download-btn" class="control-btn" onclick="networkToggleDownloadMenu()" style="font-size:0.75rem; padding:0.3rem 0.6rem;" title="Recomputes independently of the slider above, up to 1500 subjects — usually more complete than what's currently drawn on screen">⬇ Download</button>
+                                <div id="network-download-menu" style="display:none; position:absolute; top:110%; right:0; z-index:20; background:white; border:1px solid #d1d5db; border-radius:0.375rem; box-shadow:0 2px 8px rgba(0,0,0,0.15); min-width:220px; overflow:hidden;">
+                                    <div style="padding:0.5rem 0.75rem; font-size:0.7rem; color:#9ca3af; border-bottom:1px solid #f3f4f6;">Recomputed at up to 1500 subjects — may include more than what's currently drawn</div>
+                                    <a href="#" onclick="networkDownload('nodes-csv'); return false;" style="display:block; padding:0.5rem 0.75rem; font-size:0.8rem; color:#374151; text-decoration:none;">Nodes (CSV)</a>
+                                    <a href="#" onclick="networkDownload('edges-csv'); return false;" style="display:block; padding:0.5rem 0.75rem; font-size:0.8rem; color:#374151; text-decoration:none; border-top:1px solid #f3f4f6;">Edges (CSV)</a>
+                                    <a href="#" onclick="networkDownload('graphml'); return false;" style="display:block; padding:0.5rem 0.75rem; font-size:0.8rem; color:#374151; text-decoration:none; border-top:1px solid #f3f4f6;">Full graph (GraphML — Gephi/Cytoscape)</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="network-border">
                         <div id="network-placeholder" class="network-placeholder">
-                            Search for or select a subject above to see how the diseases, chemicals, and genes in the matching documents relate to each other.
+                            No subject co-occurrences to show yet.
                         </div>
                         <div id="network-svg-wrap" style="display:none; width:100%; height:100%; position:relative;">
                             <div class="zoom-controls">
@@ -742,11 +799,14 @@
                                 <button class="zoom-btn" onclick="networkZoomOut()" title="Zoom out">−</button>
                                 <button class="zoom-btn" onclick="networkResetZoom()" title="Reset zoom">⟲</button>
                             </div>
-                            <div class="network-legend" id="network-legend">
-                                <span><i style="background:#ef4444;"></i> Disease</span>
-                                <span><i style="background:#10b981;"></i> Chemical</span>
-                                <span><i style="background:#8b5cf6;"></i> Gene</span>
-                                <span><i style="background:#9ca3af;"></i> Other</span>
+                            <div class="network-legend-wrap">
+                                <div class="network-legend" id="network-legend">
+                                    <span><i style="background:#ef4444;"></i> Disease</span>
+                                    <span><i style="background:#10b981;"></i> Chemical</span>
+                                    <span><i style="background:#8b5cf6;"></i> Gene</span>
+                                    <span><i style="background:#9ca3af;"></i> Other</span>
+                                </div>
+                                <div class="network-legend" id="network-texture-legend" style="display:none;"></div>
                             </div>
                             <svg id="network-svg"></svg>
                             <div id="network-tooltip"></div>
@@ -843,22 +903,45 @@
         //  since the incidence matrix is extremely sparse.
         // ═══════════════════════════════════════════════════
 
-        // "Show more" steps through these — each tier raises both caps, up to
-        // a hard ceiling (the last entry) chosen to stay renderable even on
-        // a broad, loosely-filtered search. Resets to tier 0 on every new
-        // search/subject-filter change (see selectSubject/removeSubject).
-        const NETWORK_LEVELS = [
-            { nodes: 50, edges: 150 },
-            { nodes: 100, edges: 400 },
-            { nodes: 200, edges: 900 },
-            { nodes: 300, edges: 1500 },
-        ];
-        let networkLevel = 0;
-        let lastNetworkDocs = null; // so "Show more" can re-render without recomputing filters
+        // The node count slider drives everything directly — no more fixed
+        // tiers. Its max adapts each render to the current filtered set's
+        // real subject count (capped at NETWORK_HARD_MAX_NODES so a broad,
+        // unfiltered search can't ask for an unrenderable graph), so for a
+        // small filtered result the slider can genuinely reach "show every
+        // subject." Edges are no longer separately capped by a tier either —
+        // once you've picked how many subjects to include, every real
+        // co-occurrence among them is shown, right up to a generous safety
+        // ceiling that only kicks in if that count gets unrenderably large.
+        const NETWORK_HARD_MAX_NODES = 1500;
+        const NETWORK_EDGE_SAFETY_CAP = 2000; // protects the SVG render — a few thousand <path> elements is about the ceiling for a smooth browser render
+        const NETWORK_DOWNLOAD_EDGE_CAP = 50000; // downloads aren't rendered as SVG, so they can hold far more — this exists only to stop a truly pathological case (e.g. every one of 1500 nodes pairwise-connected) from generating an unreasonably huge file
+        const NETWORK_DEFAULT_NODE_COUNT = 50;
+        let networkNodeCount = NETWORK_DEFAULT_NODE_COUNT;
+        let lastNetworkDocs = null; // so the slider can re-render without recomputing filters
         const NETWORK_TYPE_COLOR = { disease: '#ef4444', chemical: '#10b981', gene: '#8b5cf6', other: '#9ca3af' };
         const CORE_PERIPHERY_COLOR = { core: '#f97316', periphery: '#64748b' };
+        const COMMUNITY_COLORS = ['#2563eb', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#c026d3', '#65a30d', '#d97706', '#4f46e5'];
 
-        function buildCooccurrenceNetwork(docs, maxNodes, maxEdges) {
+        // Document frequency across the WHOLE current dataset (not just the
+        // filtered/searched subset) — the denominator TF-IDF needs to know
+        // how rare a subject is corpus-wide, not just within this search.
+        // Cached per dataset since the full tree/docs don't change between
+        // renders; only invalidated when you switch tabs (see switchTree).
+        let globalDocFreqCache = null;
+        let globalDocFreqCacheKey = null;
+        function getGlobalDocFreq() {
+            if (globalDocFreqCacheKey === currentTree && globalDocFreqCache) return globalDocFreqCache;
+            const full = (datasets[currentTree] && datasets[currentTree].docs) || [];
+            const freq = new Map();
+            full.forEach(doc => {
+                (doc.subjects_array || []).forEach(s => freq.set(s, (freq.get(s) || 0) + 1));
+            });
+            globalDocFreqCache = { freq, totalDocs: full.length };
+            globalDocFreqCacheKey = currentTree;
+            return globalDocFreqCache;
+        }
+
+        function buildCooccurrenceNetwork(docs, maxNodes, sizeMode, edgeCap = NETWORK_EDGE_SAFETY_CAP, edgeRankMode = 'weight', scoreFilterRange = null) {
             // Bipartite step: subject -> Set(pmid) from the filtered docs.
             const subjectDocs = new Map();
             (docs || []).forEach(doc => {
@@ -869,16 +952,38 @@
             });
             const totalSubjects = subjectDocs.size;
 
-            // Cap to the most-frequent subjects in this filtered set so the
-            // force layout stays readable — a full unfiltered corpus could
-            // have thousands of distinct subjects. This is a real, lossy cut:
-            // any subject outside the top `maxNodes` (and every relationship
-            // it has) is excluded from the computation below entirely, not
-            // just hidden from view.
-            const subjectList = Array.from(subjectDocs.entries())
-                .map(([name, docSet]) => ({ name, docSet, count: docSet.size }))
-                .sort((a, b) => b.count - a.count)
-                .slice(0, maxNodes);
+            let subjectList = Array.from(subjectDocs.entries())
+                .map(([name, docSet]) => ({ name, docSet, count: docSet.size }));
+
+            // TF-IDF mode re-ranks the candidates, not just re-sizes them —
+            // raw document count always surfaces the same generic, ubiquitous
+            // subjects (e.g. "extracellular region") no matter what you
+            // search. TF-IDF instead surfaces subjects that are common WITHIN
+            // this search's results but comparatively rare across the whole
+            // corpus — the terms that make this particular search distinctive.
+            //   tf  = (docs mentioning subject within the filtered results) / (filtered result count)
+            //   idf = log((corpus size + 1) / (corpus docs mentioning subject + 1)) + 1   [smoothed]
+            if (sizeMode === 'tfidf') {
+                const { freq: globalFreq, totalDocs: globalTotalDocs } = getGlobalDocFreq();
+                const filteredTotal = Math.max(docs.length, 1);
+                subjectList = subjectList.map(s => {
+                    const tf = s.count / filteredTotal;
+                    const df = globalFreq.get(s.name) || s.count; // fallback: shouldn't happen since the filtered set is a subset of the full corpus
+                    const idf = Math.log((globalTotalDocs + 1) / (df + 1)) + 1;
+                    return Object.assign(s, { tfidf: tf * idf });
+                });
+                subjectList.sort((a, b) => b.tfidf - a.tfidf);
+            } else {
+                subjectList.sort((a, b) => b.count - a.count);
+            }
+
+            // Cap to the most-relevant subjects (by whichever metric is
+            // active) so the force layout stays readable — a full unfiltered
+            // corpus could have thousands of distinct subjects. This is a
+            // real, lossy cut: any subject outside the top `maxNodes` (and
+            // every relationship it has) is excluded from the computation
+            // below entirely, not just hidden from view.
+            subjectList = subjectList.slice(0, maxNodes);
 
             // Transpose: for every pair of (capped) subjects, edge weight =
             // size of the intersection of their document sets. This part IS
@@ -895,8 +1000,59 @@
                 }
             }
             const totalEdges = edges.length; // every real co-occurrence among the shown subjects, before the display cap below
-            edges.sort((x, y) => y.weight - x.weight);
-            const cappedEdges = edges.slice(0, maxEdges);
+
+            let bridgingScoreRange = null;
+            if (edgeRankMode === 'bridging') {
+                // Local PMI: is this pair co-occurring more than you'd expect
+                // from how often each half shows up on its own, WITHIN this
+                // search? log( P(A,B) / (P(A)*P(B)) ), all computed on the
+                // filtered set — simplifies to log(w*N / (countA*countB)).
+                // Weighted by global rarity (reusing the same IDF used for
+                // TF-IDF sizing) so a pair that's ALSO individually uncommon
+                // across the whole corpus — not just within this search —
+                // scores higher. A minimum weight of 2 filters out the
+                // classic PMI failure mode: two terms that only ever
+                // co-occur in exactly one shared document get an enormous
+                // score despite being a coincidence, not a real signal.
+                const { freq: globalFreq, totalDocs: globalTotalDocs } = getGlobalDocFreq();
+                const countByName = new Map(subjectList.map(s => [s.name, s.count]));
+                const idfOf = (name) => {
+                    const df = globalFreq.get(name) || countByName.get(name) || 1;
+                    return Math.log((globalTotalDocs + 1) / (df + 1)) + 1;
+                };
+                const N_local = Math.max(docs.length, 1);
+                edges.forEach(e => {
+                    if (e.weight < 2) { e.bridgingScore = -Infinity; return; }
+                    const countA = countByName.get(e.source) || 1, countB = countByName.get(e.target) || 1;
+                    const localPMI = Math.log((e.weight * N_local) / (countA * countB));
+                    const globalRarity = (idfOf(e.source) + idfOf(e.target)) / 2;
+                    e.bridgingScore = localPMI * globalRarity;
+                });
+
+                const qualifyingScores = edges.filter(e => e.bridgingScore > -Infinity).map(e => e.bridgingScore);
+                bridgingScoreRange = qualifyingScores.length
+                    ? (() => {
+                        let lo = Infinity, hi = -Infinity;
+                        for (const s of qualifyingScores) { if (s < lo) lo = s; if (s > hi) hi = s; }
+                        return { min: lo, max: hi };
+                    })()
+                    : { min: 0, max: 0 };
+
+                // scoreFilterRange (if given) lets the caller dial into a
+                // specific band — e.g. the low end, to look for conspicuously
+                // ABSENT/anti-correlated pairs (negative or near-zero score)
+                // instead of always taking the top by score.
+                if (scoreFilterRange) {
+                    edges.forEach(e => {
+                        if (e.bridgingScore < scoreFilterRange.min || e.bridgingScore > scoreFilterRange.max) e.bridgingScore = -Infinity;
+                    });
+                }
+                edges.sort((x, y) => y.bridgingScore - x.bridgingScore);
+            } else {
+                edges.sort((x, y) => y.weight - x.weight);
+            }
+            const qualifyingEdges = edgeRankMode === 'bridging' ? edges.filter(e => e.bridgingScore > -Infinity) : edges;
+            const cappedEdges = qualifyingEdges.slice(0, edgeCap);
 
             // Drop nodes that ended up with no edges after the edge cap —
             // an isolated dot doesn't help show how subjects relate.
@@ -904,9 +1060,9 @@
             cappedEdges.forEach(e => { connected.add(e.source); connected.add(e.target); });
             const nodes = subjectList
                 .filter(s => connected.has(s.name))
-                .map(s => ({ id: s.name, count: s.count, type: subjectTypeMap.get(s.name) || 'other' }));
+                .map(s => ({ id: s.name, count: s.count, tfidf: s.tfidf, type: subjectTypeMap.get(s.name) || 'other' }));
 
-            return { nodes, edges: cappedEdges, totalSubjects, totalEdges };
+            return { nodes, edges: cappedEdges, totalSubjects, totalEdges, candidateNodeCount: subjectList.length, bridgingScoreRange };
         }
 
         // k-core decomposition (Seidman 1983): repeatedly peel off the
@@ -951,81 +1107,281 @@
             return coreness;
         }
 
-        let networkLayoutMode = 'force'; // 'force' | 'core-periphery'
+        let networkLayoutMode = 'force'; // 'force' | 'core-periphery' | 'community'
+
+        // Louvain method (Blondel et al. 2008) — the standard algorithm for
+        // exactly this: partition a network into communities by greedily
+        // maximizing modularity (how much denser connections are WITHIN
+        // proposed groups than you'd expect by chance), then repeat on the
+        // resulting community-as-node graph, aggregating level by level
+        // until no further improvement is possible. Operates on integer
+        // node indices throughout (translated from subject names once up
+        // front) purely so aggregated "communities become nodes" graphs at
+        // each level can use plain integer IDs without any string-key
+        // collision risk.
+        function louvainOneLevel(numNodes, edgeList) {
+            const adj = Array.from({ length: numNodes }, () => new Map());
+            const selfLoop = new Array(numNodes).fill(0);
+            let m2 = 0;
+            edgeList.forEach(e => {
+                if (e.source === e.target) { selfLoop[e.source] += e.weight; m2 += 2 * e.weight; return; }
+                adj[e.source].set(e.target, (adj[e.source].get(e.target) || 0) + e.weight);
+                adj[e.target].set(e.source, (adj[e.target].get(e.source) || 0) + e.weight);
+                m2 += 2 * e.weight;
+            });
+            if (m2 === 0) return { improved: false, communityOf: Array.from({ length: numNodes }, (_, i) => i) };
+
+            const degree = new Array(numNodes);
+            for (let i = 0; i < numNodes; i++) { let d = selfLoop[i] * 2; adj[i].forEach(w => d += w); degree[i] = d; }
+
+            const community = Array.from({ length: numNodes }, (_, i) => i);
+            const communityTotDegree = degree.slice();
+
+            let improved = false, anyMove = true, iterations = 0;
+            while (anyMove && iterations < 100) {
+                anyMove = false; iterations++;
+                for (let node = 0; node < numNodes; node++) {
+                    const nodeComm = community[node], nodeDegree = degree[node];
+                    communityTotDegree[nodeComm] -= nodeDegree;
+                    const neighborCommWeights = new Map();
+                    adj[node].forEach((w, neighbor) => {
+                        const c = community[neighbor];
+                        neighborCommWeights.set(c, (neighborCommWeights.get(c) || 0) + w);
+                    });
+                    let bestComm = nodeComm;
+                    let bestGain = (neighborCommWeights.get(nodeComm) || 0) - (nodeDegree * communityTotDegree[nodeComm]) / m2;
+                    neighborCommWeights.forEach((w, c) => {
+                        const gain = w - (nodeDegree * communityTotDegree[c]) / m2;
+                        if (gain > bestGain + 1e-12) { bestGain = gain; bestComm = c; }
+                    });
+                    community[node] = bestComm;
+                    communityTotDegree[bestComm] += nodeDegree;
+                    if (bestComm !== nodeComm) { anyMove = true; improved = true; }
+                }
+            }
+            return { improved, communityOf: community };
+        }
+
+        function detectCommunities(nodeIds, edgeListNamed) {
+            const idToIndex = new Map(nodeIds.map((id, i) => [id, i]));
+            let numNodes = nodeIds.length;
+            let levelEdges = edgeListNamed.map(e => ({ source: idToIndex.get(e.source), target: idToIndex.get(e.target), weight: e.weight }));
+            let membership = Array.from({ length: numNodes }, (_, i) => i);
+            let levelNumNodes = numNodes;
+            let improvedAny = true, guard = 0;
+
+            while (improvedAny && guard < 20) {
+                guard++;
+                const { improved, communityOf } = louvainOneLevel(levelNumNodes, levelEdges);
+                improvedAny = improved;
+                if (!improved) break;
+                const uniqueComms = [...new Set(communityOf)];
+                const renumber = new Map(uniqueComms.map((c, i) => [c, i]));
+                const newCommunityOf = communityOf.map(c => renumber.get(c));
+                membership = membership.map(levelNodeIdx => newCommunityOf[levelNodeIdx]);
+                const k = uniqueComms.length;
+                if (k === levelNumNodes) break; // fully converged, no further aggregation possible
+                const edgeWeightMap = new Map();
+                const getKey = (a, b) => a <= b ? a * 1000000 + b : b * 1000000 + a; // safe: k is always far below 1e6 here
+                levelEdges.forEach(e => {
+                    const cs = newCommunityOf[e.source], ct = newCommunityOf[e.target];
+                    edgeWeightMap.set(getKey(cs, ct), (edgeWeightMap.get(getKey(cs, ct)) || 0) + e.weight);
+                });
+                const newEdges = [];
+                edgeWeightMap.forEach((w, key) => { newEdges.push({ source: Math.floor(key / 1000000), target: key % 1000000, weight: w }); });
+                levelNumNodes = k; levelEdges = newEdges;
+            }
+
+            const communityOfId = new Map();
+            nodeIds.forEach((id, i) => communityOfId.set(id, membership[i]));
+
+            // Modularity of the final partition — the standard quality score
+            // for "how much community structure is really here" (roughly:
+            // <0.1 weak/no structure, 0.3-0.7 meaningful, closer to 1 very
+            // strong — though the exact scale depends on graph size/density).
+            const numNodes0 = nodeIds.length;
+            const degree0 = new Array(numNodes0).fill(0);
+            let m2_0 = 0;
+            const idxEdges0 = edgeListNamed.map(e => ({ s: idToIndex.get(e.source), t: idToIndex.get(e.target), w: e.weight }));
+            idxEdges0.forEach(e => { degree0[e.s] += e.w; degree0[e.t] += e.w; m2_0 += 2 * e.w; });
+            let modularity = 0;
+            if (m2_0 > 0) {
+                let internal = 0;
+                idxEdges0.forEach(e => { if (membership[e.s] === membership[e.t]) internal += 2 * e.w; });
+                const commDegree = new Map();
+                for (let i = 0; i < numNodes0; i++) commDegree.set(membership[i], (commDegree.get(membership[i]) || 0) + degree0[i]);
+                let expected = 0;
+                commDegree.forEach(d => expected += d * d);
+                modularity = internal / m2_0 - expected / (m2_0 * m2_0);
+            }
+
+            return { communityOfId, modularity };
+        }
+        let networkSizeMode = 'documents'; // 'documents' | 'tfidf'
+        let networkEdgeRankMode = 'weight'; // 'weight' | 'bridging' — which edges get shown when the edge cap kicks in
+        let networkBridgingFilter = null; // { min, max } dual-slider selection, or null for unfiltered (top-by-score)
+        let lastBridgingScoreRange = null; // the natural full range from the most recent render, used to (re)initialize the slider bounds
+        // Second-level MeSH category per disease leaf term (e.g. "Pneumonia,
+        // Viral" -> "Respiratory Tract Infections"), used for texture-marking
+        // disease nodes. Built from the disease dataset's own tree[] — same
+        // leaf-name-keyed lookup pattern as subjectTypeMap. Cached since the
+        // disease tree doesn't change after load.
+        let diseaseSecondLevelMapCache = null;
+        function getDiseaseSecondLevelMap() {
+            if (diseaseSecondLevelMapCache) return diseaseSecondLevelMapCache;
+            const map = new Map();
+            const tree = (datasets['disease'] && datasets['disease'].tree) || [];
+            tree.forEach(item => {
+                if (!item.first) return;
+                const parts = item.first.split('.');
+                const leaf = parts[parts.length - 1];
+                const secondLevel = parts.length >= 2 ? parts[1] : parts[0];
+                if (!map.has(leaf)) map.set(leaf, secondLevel);
+            });
+            diseaseSecondLevelMapCache = map;
+            return map;
+        }
+
+        const NETWORK_TEXTURE_COUNT = 6;
+        const diseaseCategoryPatternIndex = new Map(); // category name -> pattern index, assigned in first-seen order and kept stable across renders
+        function getPatternIndexForCategory(category) {
+            if (!diseaseCategoryPatternIndex.has(category)) {
+                diseaseCategoryPatternIndex.set(category, diseaseCategoryPatternIndex.size % NETWORK_TEXTURE_COUNT);
+            }
+            return diseaseCategoryPatternIndex.get(category);
+        }
+
+        function ensureNetworkTexturePatterns(defs) {
+            const specs = [
+                { id: 0, kind: 'diag-thin' }, { id: 1, kind: 'diag-thick' }, { id: 2, kind: 'dots' },
+                { id: 3, kind: 'crosshatch' }, { id: 4, kind: 'horiz' }, { id: 5, kind: 'vert' },
+            ];
+            specs.forEach(spec => {
+                const p = defs.append('pattern')
+                    .attr('id', `network-tex-${spec.id}`)
+                    .attr('width', 7).attr('height', 7)
+                    .attr('patternUnits', 'userSpaceOnUse');
+                if (spec.kind === 'diag-thin' || spec.kind === 'diag-thick') {
+                    p.attr('patternTransform', spec.kind === 'diag-thin' ? 'rotate(45)' : 'rotate(-45)');
+                    p.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 7)
+                        .attr('stroke', 'black').attr('stroke-width', spec.kind === 'diag-thin' ? 1.5 : 3).attr('stroke-opacity', 0.4);
+                } else if (spec.kind === 'dots') {
+                    p.append('circle').attr('cx', 2).attr('cy', 2).attr('r', 1.3).attr('fill', 'black').attr('fill-opacity', 0.45);
+                } else if (spec.kind === 'crosshatch') {
+                    p.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 7).attr('stroke', 'black').attr('stroke-width', 1.2).attr('stroke-opacity', 0.35);
+                    p.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 7).attr('y2', 0).attr('stroke', 'black').attr('stroke-width', 1.2).attr('stroke-opacity', 0.35);
+                } else if (spec.kind === 'horiz') {
+                    p.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 7).attr('y2', 0).attr('stroke', 'black').attr('stroke-width', 1.5).attr('stroke-opacity', 0.4);
+                } else if (spec.kind === 'vert') {
+                    p.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 7).attr('stroke', 'black').attr('stroke-width', 1.5).attr('stroke-opacity', 0.4);
+                }
+            });
+        }
+
         let networkSimulation = null;
         let networkZoomBehavior = null;
+        let lastNetworkNodes = []; // exactly what's currently on screen — including whichever of tfidf/community/coreness/diseaseCategory are populated for the active mode
+        let lastNetworkEdges = [];
 
         function renderNetwork(filteredDocs) {
             const placeholder = document.getElementById('network-placeholder');
             const wrap = document.getElementById('network-svg-wrap');
             const subtitle = document.getElementById('network-subtitle');
-            const showMoreBtn = document.getElementById('network-show-more-btn');
+            const sliderWrap = document.getElementById('network-node-slider-wrap');
+            const slider = document.getElementById('network-node-slider');
+            const sliderLabel = document.getElementById('network-node-slider-label');
+            const sliderTotal = document.getElementById('network-node-slider-total');
             if (!placeholder || !wrap) return; // fullscreen re-render race guard
 
             lastNetworkDocs = filteredDocs;
 
-            if (selectedSubjects.length === 0) {
-                placeholder.style.display = 'flex';
-                wrap.style.display = 'none';
-                subtitle.textContent = '';
-                showMoreBtn.style.display = 'none';
-                if (networkSimulation) { networkSimulation.stop(); networkSimulation = null; }
-                return;
-            }
+            const { nodes, edges, totalSubjects, totalEdges, candidateNodeCount, bridgingScoreRange } = buildCooccurrenceNetwork(filteredDocs, networkNodeCount, networkSizeMode, NETWORK_EDGE_SAFETY_CAP, networkEdgeRankMode, networkBridgingFilter);
+            lastBridgingScoreRange = bridgingScoreRange;
+            updateBridgingSliderUI(bridgingScoreRange);
 
-            const level = NETWORK_LEVELS[networkLevel];
-            const { nodes, edges, totalSubjects, totalEdges } = buildCooccurrenceNetwork(filteredDocs, level.nodes, level.edges);
+            const diseaseSecondLevelMap = getDiseaseSecondLevelMap();
+            nodes.forEach(n => {
+                if (n.type === 'disease') n.diseaseCategory = diseaseSecondLevelMap.get(n.id) || null;
+            });
+
+            // Slider range adapts to what's actually here: for a small
+            // filtered result, its max can genuinely reach totalSubjects —
+            // "show every subject, and every real link between them" — for
+            // a broad one, it's capped at NETWORK_HARD_MAX_NODES to stay
+            // renderable.
+            const sliderMax = Math.max(10, Math.min(totalSubjects, NETWORK_HARD_MAX_NODES));
+            slider.min = Math.min(10, sliderMax);
+            slider.max = sliderMax;
+            slider.value = Math.min(networkNodeCount, sliderMax);
+            sliderLabel.textContent = slider.value;
+            sliderTotal.textContent = totalSubjects > sliderMax ? `of ${totalSubjects.toLocaleString()} (capped)` : `of ${totalSubjects.toLocaleString()} (all)`;
 
             if (nodes.length === 0) {
                 placeholder.textContent = 'No subject co-occurrences in the current filtered results.';
                 placeholder.style.display = 'flex';
                 wrap.style.display = 'none';
                 subtitle.textContent = '';
-                showMoreBtn.style.display = 'none';
                 return;
             }
 
             placeholder.style.display = 'none';
             wrap.style.display = 'block';
             const nodesTruncated = totalSubjects > nodes.length;
-            const edgesTruncated = totalEdges > edges.length;
+            const edgesTruncated = totalEdges > edges.length; // only true if NETWORK_EDGE_SAFETY_CAP itself was hit — rare
+            const droppedByEdgeCap = edgesTruncated ? (candidateNodeCount - nodes.length) : 0;
             const nodesPart = nodesTruncated
-                ? `top ${nodes.length} of ${totalSubjects.toLocaleString()} subjects`
-                : `${nodes.length} subjects`;
+                ? `${nodes.length} of ${totalSubjects.toLocaleString()} subjects`
+                : `all ${nodes.length} subjects`;
             const edgesPart = edgesTruncated
-                ? `top ${edges.length} of ${totalEdges.toLocaleString()} co-occurrence links`
-                : `${edges.length} co-occurrence links`;
-            subtitle.textContent = `${nodesPart} · ${edgesPart} · from ${filteredDocs.length.toLocaleString()} documents${(nodesTruncated || edgesTruncated) ? ' (truncated for readability)' : ''}`;
-
-            const atMaxLevel = networkLevel >= NETWORK_LEVELS.length - 1;
-            const nothingMoreToShow = !nodesTruncated && !edgesTruncated;
-            if (atMaxLevel || nothingMoreToShow) {
-                showMoreBtn.style.display = 'none';
-            } else {
-                const next = NETWORK_LEVELS[networkLevel + 1];
-                showMoreBtn.style.display = '';
-                showMoreBtn.textContent = `Show more (up to ${next.nodes} subjects, ${next.edges} links)`;
-            }
+                ? `top ${edges.length} of ${totalEdges.toLocaleString()} co-occurrence links (safety cap reached — this is why ${droppedByEdgeCap} of your requested subjects aren't shown, they lost all their links to the cap)`
+                : `all ${edges.length} co-occurrence links among them`;
 
             const svgEl = document.getElementById('network-svg');
             const svg = d3.select(svgEl);
             svg.selectAll('*').remove();
             const rect = svgEl.getBoundingClientRect();
             const width = rect.width || 600, height = rect.height || 480;
+            const defs = svg.append('defs');
+            ensureNetworkTexturePatterns(defs);
+
+            const textureLegend = document.getElementById('network-texture-legend');
+            const presentCategories = [...new Set(nodes.filter(n => n.diseaseCategory).map(n => n.diseaseCategory))];
+            if (presentCategories.length > 0) {
+                const shown = presentCategories.slice(0, 8);
+                textureLegend.innerHTML = shown.map(cat => {
+                    const idx = getPatternIndexForCategory(cat);
+                    const label = cat.length > 28 ? cat.slice(0, 27) + '…' : cat;
+                    return `<span><svg width="14" height="14"><rect width="14" height="14" fill="#ef4444" fill-opacity="0.85"/><rect width="14" height="14" fill="url(#network-tex-${idx})"/></svg> ${label}</span>`;
+                }).join('') + (presentCategories.length > 8 ? `<span style="color:#9ca3af;">+${presentCategories.length - 8} more</span>` : '');
+                textureLegend.style.display = 'flex';
+            } else {
+                textureLegend.style.display = 'none';
+            }
 
             const g = svg.append('g');
-            const maxCount = d3.max(nodes, d => d.count) || 1;
-            const radius = d3.scaleSqrt().domain([0, maxCount]).range([4, 22]);
-            const maxWeight = d3.max(edges, d => d.weight) || 1;
-            const strokeWidth = d3.scaleLinear().domain([1, maxWeight]).range([1, 6]);
+            const sizeValue = d => networkSizeMode === 'tfidf' ? (d.tfidf || 0) : (d.count || 0);
+            const maxSizeValue = d3.max(nodes, sizeValue) || 1;
+            const radius = d3.scaleSqrt().domain([0, maxSizeValue]).range([4, 22]);
+            // Edge width reflects whichever metric is actually driving edge
+            // selection right now — raw weight in Strongest mode, bridging
+            // score in Bridging mode. Using weight even in Bridging mode
+            // would be misleading: those edges often all sit near the
+            // weight=2 minimum, so they'd look nearly identical in width
+            // despite having very different bridging scores.
+            const usingBridgingWidth = networkEdgeRankMode === 'bridging' && edges.some(e => e.bridgingScore !== undefined && e.bridgingScore > -Infinity);
+            const widthMetric = usingBridgingWidth ? (d => d.bridgingScore) : (d => d.weight);
+            const maxWidthVal = d3.max(edges, widthMetric) || 1;
+            const minWidthVal = usingBridgingWidth ? (d3.min(edges, widthMetric) || 0) : 1;
+            const strokeWidth = d3.scaleLinear().domain([minWidthVal, maxWidthVal]).range([1, 6]);
 
             if (networkSimulation) networkSimulation.stop();
             // Collision radius includes an estimate of label width (not just
             // the circle) — labels overlapping was the biggest source of the
             // "hairball" look, more than the circles themselves.
-            const collideRadius = d => radius(d.count) + Math.min(d.id.length, 30) * 3 + 6;
+            const collideRadius = d => radius(sizeValue(d)) + Math.min(d.id.length, 30) * 3 + 6;
 
             let coreness = null, maxCoreness = 0;
+            let communityOfId = null, modularity = 0, otherModeModularity = 0, otherModeLabel = '';
             if (networkLayoutMode === 'core-periphery') {
                 coreness = computeCoreness(nodes, edges);
                 nodes.forEach(n => { n.coreness = coreness.get(n.id) || 0; });
@@ -1042,6 +1398,30 @@
                 document.getElementById('network-legend').innerHTML = `
                     <span><i style="background:${CORE_PERIPHERY_COLOR.core};"></i> Core (coreness ≥ ${medianCoreness})</span>
                     <span><i style="background:${CORE_PERIPHERY_COLOR.periphery};"></i> Periphery (coreness &lt; ${medianCoreness})</span>`;
+            } else if (networkLayoutMode === 'community') {
+                const result = detectCommunities(nodes.map(n => n.id), edges);
+                communityOfId = result.communityOfId;
+                modularity = result.modularity;
+                nodes.forEach(n => { n.community = communityOfId.get(n.id) ?? 0; });
+
+                // Also compute what modularity WOULD be under the other edge
+                // ranking mode, so both numbers are visible side by side
+                // without needing to toggle "Edges" back and forth to compare.
+                // Reuses the same node selection (networkNodeCount, sizeMode)
+                // — only which edges get shown differs between the two.
+                const altEdgeMode = networkEdgeRankMode === 'bridging' ? 'weight' : 'bridging';
+                const altBuild = buildCooccurrenceNetwork(filteredDocs, networkNodeCount, networkSizeMode, NETWORK_EDGE_SAFETY_CAP, altEdgeMode);
+                const altResult = detectCommunities(altBuild.nodes.map(n => n.id), altBuild.edges);
+                otherModeModularity = altResult.modularity;
+                otherModeLabel = altEdgeMode === 'bridging' ? 'Bridging' : 'Strongest';
+
+                const sizeByComm = new Map();
+                nodes.forEach(n => sizeByComm.set(n.community, (sizeByComm.get(n.community) || 0) + 1));
+                const commIdsSorted = [...sizeByComm.entries()].sort((a, b) => b[1] - a[1]).map(([c]) => c);
+                const shownComms = commIdsSorted.slice(0, 10);
+                document.getElementById('network-legend').innerHTML = shownComms.map(c =>
+                    `<span><i style="background:${COMMUNITY_COLORS[c % COMMUNITY_COLORS.length]};"></i> Community ${c + 1} (${sizeByComm.get(c)})</span>`
+                ).join('') + (commIdsSorted.length > 10 ? `<span style="color:#9ca3af;">+${commIdsSorted.length - 10} more</span>` : '');
             } else {
                 document.getElementById('network-legend').innerHTML = `
                     <span><i style="background:${NETWORK_TYPE_COLOR.disease};"></i> Disease</span>
@@ -1049,6 +1429,15 @@
                     <span><i style="background:${NETWORK_TYPE_COLOR.gene};"></i> Gene</span>
                     <span><i style="background:${NETWORK_TYPE_COLOR.other};"></i> Other</span>`;
             }
+
+            const currentModeLabel = networkEdgeRankMode === 'bridging' ? 'Bridging' : 'Strongest';
+            const modularityText = networkLayoutMode === 'community'
+                ? ` · modularity Q=${modularity.toFixed(3)} (${currentModeLabel}) vs Q=${otherModeModularity.toFixed(3)} (${otherModeLabel})`
+                : '';
+            subtitle.textContent = `${nodesPart} · ${edgesPart} · from ${filteredDocs.length.toLocaleString()} documents${(nodesTruncated || edgesTruncated) ? ' (truncated for readability)' : ''}${modularityText}`;
+
+            lastNetworkNodes = nodes;
+            lastNetworkEdges = edges;
 
             networkSimulation = d3.forceSimulation(nodes)
                 .force('link', d3.forceLink(edges).id(d => d.id).distance(110).strength(0.12))
@@ -1075,13 +1464,28 @@
                 g.append('text').attr('x', width / 2).attr('y', height / 2 - 6)
                     .attr('text-anchor', 'middle').attr('font-size', '10px').attr('fill', '#60a5fa')
                     .text('core');
+            } else if (networkLayoutMode === 'community') {
+                const commIds = [...new Set(nodes.map(n => n.community))].sort((a, b) => a - b);
+                const angleStep = (2 * Math.PI) / Math.max(commIds.length, 1);
+                const clusterRadius = Math.min(width, height) / 2 - 60;
+                const centroids = new Map();
+                commIds.forEach((c, i) => {
+                    centroids.set(c, {
+                        x: width / 2 + clusterRadius * Math.cos(i * angleStep - Math.PI / 2),
+                        y: height / 2 + clusterRadius * Math.sin(i * angleStep - Math.PI / 2),
+                    });
+                });
+                networkSimulation
+                    .force('x', d3.forceX(d => centroids.get(d.community).x).strength(0.15))
+                    .force('y', d3.forceY(d => centroids.get(d.community).y).strength(0.15))
+                    .force('radial', null);
             } else {
                 networkSimulation.force('x', d3.forceX(width / 2).strength(0.03)).force('y', d3.forceY(height / 2).strength(0.03));
             }
 
             const link = g.append('g').selectAll('path').data(edges).join('path')
                 .attr('class', 'network-link')
-                .attr('stroke-width', d => strokeWidth(d.weight));
+                .attr('stroke-width', d => strokeWidth(widthMetric(d)));
 
             const node = g.append('g').selectAll('g').data(nodes).join('g')
                 .attr('class', 'network-node')
@@ -1091,14 +1495,28 @@
                     .on('end', (event, d) => { if (!event.active) networkSimulation.alphaTarget(0); d.fx = null; d.fy = null; }));
 
             node.append('circle')
-                .attr('r', d => radius(d.count))
-                .attr('fill', d => networkLayoutMode === 'core-periphery'
-                    ? CORE_PERIPHERY_COLOR[d.corePeripheryGroup] || CORE_PERIPHERY_COLOR.periphery
-                    : NETWORK_TYPE_COLOR[d.type] || NETWORK_TYPE_COLOR.other)
+                .attr('r', d => radius(sizeValue(d)))
+                .attr('fill', d => {
+                    if (networkLayoutMode === 'core-periphery') return CORE_PERIPHERY_COLOR[d.corePeripheryGroup] || CORE_PERIPHERY_COLOR.periphery;
+                    if (networkLayoutMode === 'community') return COMMUNITY_COLORS[d.community % COMMUNITY_COLORS.length];
+                    return NETWORK_TYPE_COLOR[d.type] || NETWORK_TYPE_COLOR.other;
+                })
                 .attr('fill-opacity', 0.85);
 
+            // Texture overlay for disease nodes only — an orthogonal visual
+            // channel from color, so it works whether color is currently
+            // showing type or core/periphery. Marks which second-level MeSH
+            // disease category (e.g. "Respiratory Tract Infections") each
+            // disease subject falls under. Small nodes (low document count)
+            // won't show the pattern clearly at only a few pixels across —
+            // an inherent resolution limit, not a bug.
+            node.filter(d => d.type === 'disease' && d.diseaseCategory).append('circle')
+                .attr('r', d => radius(sizeValue(d)))
+                .attr('fill', d => `url(#network-tex-${getPatternIndexForCategory(d.diseaseCategory)})`)
+                .attr('pointer-events', 'none');
+
             node.append('text')
-                .attr('x', d => radius(d.count) + 4)
+                .attr('x', d => radius(sizeValue(d)) + 4)
                 .attr('dy', '0.32em')
                 .text(d => d.id.length > 30 ? d.id.slice(0, 29) + '…' : d.id);
 
@@ -1139,11 +1557,25 @@
                 tooltip.style.left = (event.clientX - wrapRect.left + 12) + 'px';
                 tooltip.style.top = (event.clientY - wrapRect.top + 12) + 'px';
                 const corenessLine = (networkLayoutMode === 'core-periphery' && d.coreness !== undefined) ? `<br>k-core: ${d.coreness}` : '';
-                tooltip.innerHTML = `<strong>${d.id}</strong><br>${d.type} · ${d.count.toLocaleString()} document${d.count === 1 ? '' : 's'}${corenessLine}`;
+                const communityLine = (networkLayoutMode === 'community' && d.community !== undefined) ? `<br>Community: ${d.community + 1}` : '';
+                const tfidfLine = (networkSizeMode === 'tfidf' && d.tfidf !== undefined) ? `<br>TF-IDF: ${d.tfidf.toFixed(3)}` : '';
+                const diseaseCatLine = d.diseaseCategory ? `<br>MeSH category: ${d.diseaseCategory}` : '';
+                tooltip.innerHTML = `<strong>${d.id}</strong><br>${d.type} · ${d.count.toLocaleString()} document${d.count === 1 ? '' : 's'}${tfidfLine}${diseaseCatLine}${corenessLine}${communityLine}`;
             }).on('mouseenter', (event, d) => { highlightNode(d); })
               .on('mouseleave', () => { tooltip.style.display = 'none'; clearHighlight(); });
 
             node.on('click', (event, d) => { if (!selectedSubjects.includes(d.id)) selectSubject(d.id); });
+
+            link.style('cursor', 'default').on('mousemove', (event, d) => {
+                const wrapRect = wrap.getBoundingClientRect();
+                tooltip.style.display = 'block';
+                tooltip.style.left = (event.clientX - wrapRect.left + 12) + 'px';
+                tooltip.style.top = (event.clientY - wrapRect.top + 12) + 'px';
+                const s = d.source.id || d.source, t = d.target.id || d.target;
+                const bridgingLine = (networkEdgeRankMode === 'bridging' && d.bridgingScore !== undefined && d.bridgingScore > -Infinity)
+                    ? `<br>Bridging score: ${d.bridgingScore.toFixed(2)}` : '';
+                tooltip.innerHTML = `<strong>${s}</strong> ↔ <strong>${t}</strong><br>${d.weight.toLocaleString()} shared document${d.weight === 1 ? '' : 's'}${bridgingLine}`;
+            }).on('mouseleave', () => { tooltip.style.display = 'none'; });
 
             networkZoomBehavior = d3.zoom().scaleExtent([0.2, 4]).on('zoom', (event) => g.attr('transform', event.transform));
             svg.call(networkZoomBehavior);
@@ -1170,7 +1602,7 @@
             networkSimulation.on('end', () => {
                 let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
                 nodes.forEach(d => {
-                    const r = radius(d.count);
+                    const r = radius(sizeValue(d));
                     if (d.x - r < x0) x0 = d.x - r;
                     if (d.x + r > x1) x1 = d.x + r;
                     if (d.y - r < y0) y0 = d.y - r;
@@ -1196,17 +1628,319 @@
             if (networkZoomBehavior) d3.select('#network-svg').transition().duration(300).call(networkZoomBehavior.transform, d3.zoomIdentity);
         }
 
-        function networkShowMore() {
-            if (networkLevel < NETWORK_LEVELS.length - 1) networkLevel++;
+        function networkSetNodeCount(value) {
+            networkNodeCount = parseInt(value, 10) || NETWORK_DEFAULT_NODE_COUNT;
             renderNetwork(lastNetworkDocs || []);
         }
 
+        // ── Network export — download whatever's currently on screen for
+        //    use in other tools (Gephi, Cytoscape, NetworkX/igraph, pandas,
+        //    R, Excel...). Filename reflects the condition(s) currently
+        //    searched, so it's identifiable later rather than a generic
+        //    "network.csv" every time.
+        function sanitizeFilename(str) {
+            return (str || 'network')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '_')
+                .replace(/^_+|_+$/g, '')
+                .slice(0, 60) || 'network';
+        }
+
+        function networkFilenameBase() {
+            if (selectedSubjects.length > 0) {
+                return sanitizeFilename(selectedSubjects.slice(0, 3).join('_and_'));
+            }
+            const searchBox = document.getElementById('search-box');
+            const query = searchBox && searchBox.value && searchBox.value.trim();
+            if (query) {
+                return sanitizeFilename(query);
+            }
+            const label = (DATASETS[currentTree] && DATASETS[currentTree].shortLabel) || currentTree || 'network';
+            return sanitizeFilename(label);
+        }
+
+        function csvEscape(value) {
+            const s = String(value === undefined || value === null ? '' : value);
+            return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+        }
+
+        function networkNodesCSV(exportNodes) {
+            const hasTfidf = exportNodes.some(n => n.tfidf !== undefined);
+            const hasCoreness = exportNodes.some(n => n.coreness !== undefined);
+            const hasCommunity = exportNodes.some(n => n.community !== undefined);
+            const hasDiseaseCategory = exportNodes.some(n => n.diseaseCategory);
+            const cols = ['id', 'type', 'documents'];
+            if (hasTfidf) cols.push('tfidf');
+            if (hasCoreness) cols.push('coreness', 'core_periphery_group');
+            if (hasCommunity) cols.push('community');
+            if (hasDiseaseCategory) cols.push('mesh_second_level_category');
+            const rows = [cols.join(',')];
+            exportNodes.forEach(n => {
+                const row = [n.id, n.type, n.count];
+                if (hasTfidf) row.push(n.tfidf !== undefined ? n.tfidf.toFixed(6) : '');
+                if (hasCoreness) row.push(n.coreness !== undefined ? n.coreness : '', n.corePeripheryGroup || '');
+                if (hasCommunity) row.push(n.community !== undefined ? n.community + 1 : '');
+                if (hasDiseaseCategory) row.push(n.diseaseCategory || '');
+                rows.push(row.map(csvEscape).join(','));
+            });
+            return rows.join('\n');
+        }
+
+        function networkEdgesCSV(exportEdges) {
+            const hasBridging = exportEdges.some(e => e.bridgingScore !== undefined && e.bridgingScore > -Infinity);
+            const header = hasBridging ? 'source,target,weight,bridging_score' : 'source,target,weight';
+            const rows = [header];
+            exportEdges.forEach(e => {
+                const s = e.source.id || e.source, t = e.target.id || e.target;
+                const row = [s, t, e.weight];
+                if (hasBridging) row.push(e.bridgingScore !== undefined && e.bridgingScore > -Infinity ? e.bridgingScore.toFixed(4) : '');
+                rows.push(row.map(csvEscape).join(','));
+            });
+            return rows.join('\n');
+        }
+
+        function xmlEscape(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function networkGraphML(exportNodes, exportEdges) {
+            // GraphML keeps nodes, edges, AND their attributes in one
+            // self-contained file — opens directly in Gephi (File > Open)
+            // and Cytoscape (File > Import > Network from File), and reads
+            // natively with networkx.read_graphml() / igraph::read_graph().
+            const hasTfidf = exportNodes.some(n => n.tfidf !== undefined);
+            const hasCoreness = exportNodes.some(n => n.coreness !== undefined);
+            const hasCommunity = exportNodes.some(n => n.community !== undefined);
+            const hasDiseaseCategory = exportNodes.some(n => n.diseaseCategory);
+
+            const hasBridging = exportEdges.some(e => e.bridgingScore !== undefined && e.bridgingScore > -Infinity);
+
+            const keys = [
+                '<key id="d_type" for="node" attr.name="type" attr.type="string"/>',
+                '<key id="d_documents" for="node" attr.name="documents" attr.type="int"/>',
+                '<key id="d_weight" for="edge" attr.name="weight" attr.type="double"/>',
+            ];
+            if (hasBridging) keys.push('<key id="d_bridging" for="edge" attr.name="bridging_score" attr.type="double"/>');
+            if (hasTfidf) keys.push('<key id="d_tfidf" for="node" attr.name="tfidf" attr.type="double"/>');
+            if (hasCoreness) {
+                keys.push('<key id="d_coreness" for="node" attr.name="coreness" attr.type="int"/>');
+                keys.push('<key id="d_cpgroup" for="node" attr.name="core_periphery_group" attr.type="string"/>');
+            }
+            if (hasCommunity) keys.push('<key id="d_community" for="node" attr.name="community" attr.type="int"/>');
+            if (hasDiseaseCategory) keys.push('<key id="d_meshcat" for="node" attr.name="mesh_second_level_category" attr.type="string"/>');
+
+            const nodeXml = exportNodes.map(n => {
+                let attrs = `<data key="d_type">${xmlEscape(n.type)}</data><data key="d_documents">${n.count}</data>`;
+                if (hasTfidf && n.tfidf !== undefined) attrs += `<data key="d_tfidf">${n.tfidf.toFixed(6)}</data>`;
+                if (hasCoreness && n.coreness !== undefined) attrs += `<data key="d_coreness">${n.coreness}</data><data key="d_cpgroup">${xmlEscape(n.corePeripheryGroup || '')}</data>`;
+                if (hasCommunity && n.community !== undefined) attrs += `<data key="d_community">${n.community + 1}</data>`;
+                if (hasDiseaseCategory && n.diseaseCategory) attrs += `<data key="d_meshcat">${xmlEscape(n.diseaseCategory)}</data>`;
+                return `<node id="${xmlEscape(n.id)}">${attrs}</node>`;
+            }).join('\n    ');
+
+            const edgeXml = exportEdges.map((e, i) => {
+                const s = e.source.id || e.source, t = e.target.id || e.target;
+                const bridgingAttr = (hasBridging && e.bridgingScore !== undefined && e.bridgingScore > -Infinity)
+                    ? `<data key="d_bridging">${e.bridgingScore.toFixed(4)}</data>` : '';
+                return `<edge id="e${i}" source="${xmlEscape(s)}" target="${xmlEscape(t)}"><data key="d_weight">${e.weight}</data>${bridgingAttr}</edge>`;
+            }).join('\n    ');
+
+            return `<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+  ${keys.join('\n  ')}
+  <graph id="G" edgedefault="undirected">
+    ${nodeXml}
+    ${edgeXml}
+  </graph>
+</graphml>`;
+        }
+
+        function triggerDownload(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function buildDownloadNetwork() {
+            // Deliberately NOT reusing lastNetworkNodes/lastNetworkEdges —
+            // those reflect the slider's current (render-safe) position.
+            // Downloads recompute independently, up to NETWORK_HARD_MAX_NODES
+            // subjects and NETWORK_DOWNLOAD_EDGE_CAP edges — both far more
+            // permissive than the render caps, since a CSV/GraphML file
+            // doesn't have to stay smooth as an SVG force layout does.
+            const { nodes, edges } = buildCooccurrenceNetwork(
+                lastNetworkDocs || [], NETWORK_HARD_MAX_NODES, networkSizeMode, NETWORK_DOWNLOAD_EDGE_CAP, networkEdgeRankMode, networkBridgingFilter
+            );
+            const diseaseSecondLevelMap = getDiseaseSecondLevelMap();
+            nodes.forEach(n => { if (n.type === 'disease') n.diseaseCategory = diseaseSecondLevelMap.get(n.id) || null; });
+
+            // Recompute coreness/community on this larger node set too, so
+            // the export is consistent with whichever mode is on screen —
+            // just computed at the more complete scale, not copied from the
+            // (possibly much smaller) rendered set.
+            if (networkLayoutMode === 'core-periphery') {
+                const coreness = computeCoreness(nodes, edges);
+                nodes.forEach(n => { n.coreness = coreness.get(n.id) || 0; });
+                const sorted = nodes.map(n => n.coreness).sort((a, b) => a - b);
+                const median = sorted[Math.floor(sorted.length / 2)];
+                nodes.forEach(n => { n.corePeripheryGroup = n.coreness >= median ? 'core' : 'periphery'; });
+            } else if (networkLayoutMode === 'community') {
+                const { communityOfId } = detectCommunities(nodes.map(n => n.id), edges);
+                nodes.forEach(n => { n.community = communityOfId.get(n.id) ?? 0; });
+            }
+            return { nodes, edges };
+        }
+
+        function networkDownload(format) {
+            if (!lastNetworkDocs || !lastNetworkDocs.length) return;
+            const btn = document.getElementById('network-download-btn');
+            document.getElementById('network-download-menu').style.display = 'none';
+            const originalLabel = btn.textContent;
+            btn.textContent = '⏳ Preparing…';
+            btn.disabled = true;
+            // setTimeout lets the browser actually paint the "Preparing…"
+            // label before the heavy synchronous computation below blocks
+            // the main thread — without this the button would just freeze
+            // looking unchanged for however long it takes.
+            setTimeout(() => {
+                try {
+                    const { nodes, edges } = buildDownloadNetwork();
+                    const base = networkFilenameBase();
+                    if (format === 'nodes-csv') {
+                        triggerDownload(`${base}_network_nodes.csv`, networkNodesCSV(nodes), 'text/csv');
+                    } else if (format === 'edges-csv') {
+                        triggerDownload(`${base}_network_edges.csv`, networkEdgesCSV(edges), 'text/csv');
+                    } else if (format === 'graphml') {
+                        triggerDownload(`${base}_network.graphml`, networkGraphML(nodes, edges), 'application/xml');
+                    }
+                } finally {
+                    btn.textContent = originalLabel;
+                    btn.disabled = false;
+                }
+            }, 20);
+        }
+
+        function networkToggleDownloadMenu() {
+            const menu = document.getElementById('network-download-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+        document.addEventListener('click', (event) => {
+            const menu = document.getElementById('network-download-menu');
+            const btn = document.getElementById('network-download-btn');
+            if (menu && menu.style.display !== 'none' && !menu.contains(event.target) && event.target !== btn) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function networkToggleSizeMode() {
+            networkSizeMode = networkSizeMode === 'documents' ? 'tfidf' : 'documents';
+            const btn = document.getElementById('network-size-btn');
+            btn.textContent = networkSizeMode === 'tfidf' ? '📏 Size: TF-IDF' : '📏 Size: Documents';
+            btn.style.background = networkSizeMode === 'tfidf' ? '#f97316' : '';
+            btn.style.color = networkSizeMode === 'tfidf' ? 'white' : '';
+            btn.style.borderColor = networkSizeMode === 'tfidf' ? '#f97316' : '';
+            renderNetwork(lastNetworkDocs || []);
+        }
+
+        function networkToggleEdgeRankMode() {
+            networkEdgeRankMode = networkEdgeRankMode === 'weight' ? 'bridging' : 'weight';
+            const btn = document.getElementById('network-edgerank-btn');
+            const active = networkEdgeRankMode === 'bridging';
+            btn.textContent = active ? '🌉 Edges: Bridging' : '🌉 Edges: Strongest';
+            btn.style.background = active ? '#f97316' : '';
+            btn.style.color = active ? 'white' : '';
+            btn.style.borderColor = active ? '#f97316' : '';
+            document.getElementById('network-bridging-range-wrap').style.display = active ? 'flex' : 'none';
+            if (!active) networkBridgingFilter = null; // filter is meaningless outside bridging mode
+            renderNetwork(lastNetworkDocs || []);
+        }
+
+        // Keeps the two thumbs from crossing, redraws the highlighted band,
+        // and updates the readout label — called on every drag tick (for
+        // immediate visual feedback) but only triggers a re-render on
+        // release (see the 'change' listeners below), since rebuilding the
+        // network is the expensive part.
+        function updateBridgingSliderVisual() {
+            const minInput = document.getElementById('network-bridging-min-slider');
+            const maxInput = document.getElementById('network-bridging-max-slider');
+            let lo = parseFloat(minInput.value), hi = parseFloat(maxInput.value);
+            if (lo > hi) { [lo, hi] = [hi, lo]; } // keep logically ordered without hard-blocking the drag
+            const sliderMin = parseFloat(minInput.min), sliderMax = parseFloat(minInput.max);
+            const span = Math.max(sliderMax - sliderMin, 1e-9);
+            const fill = document.getElementById('network-bridging-track-fill');
+            fill.style.left = (((lo - sliderMin) / span) * 100) + '%';
+            fill.style.width = (((hi - lo) / span) * 100) + '%';
+            document.getElementById('network-bridging-range-label').textContent = `${lo.toFixed(2)} to ${hi.toFixed(2)}`;
+        }
+
+        function updateBridgingSliderUI(bridgingScoreRange) {
+            const wrap = document.getElementById('network-bridging-range-wrap');
+            if (networkEdgeRankMode !== 'bridging' || !bridgingScoreRange) {
+                wrap.style.display = 'none';
+                return;
+            }
+            wrap.style.display = 'flex';
+            const minInput = document.getElementById('network-bridging-min-slider');
+            const maxInput = document.getElementById('network-bridging-max-slider');
+            const { min, max } = bridgingScoreRange;
+            minInput.min = maxInput.min = min;
+            minInput.max = maxInput.max = max;
+            const active = networkBridgingFilter;
+            minInput.value = active ? Math.max(active.min, min) : min;
+            maxInput.value = active ? Math.min(active.max, max) : max;
+            updateBridgingSliderVisual();
+        }
+
+        function networkApplyBridgingFilter() {
+            const minInput = document.getElementById('network-bridging-min-slider');
+            const maxInput = document.getElementById('network-bridging-max-slider');
+            let lo = parseFloat(minInput.value), hi = parseFloat(maxInput.value);
+            if (lo > hi) [lo, hi] = [hi, lo];
+            networkBridgingFilter = { min: lo, max: hi };
+            renderNetwork(lastNetworkDocs || []);
+        }
+
+        function networkResetBridgingFilter() {
+            networkBridgingFilter = null;
+            renderNetwork(lastNetworkDocs || []);
+        }
+
+        // Event delegation, not direct listeners: the slider elements are
+        // injected into the DOM via innerHTML at runtime (inside renderUI's
+        // template), well after DOMContentLoaded has already fired — a
+        // listener registered for that event would never run, and even a
+        // direct getElementById().addEventListener() at script-parse time
+        // would find nothing yet to attach to. Delegating on `document`
+        // sidesteps element lifecycle entirely: it matches by id whenever
+        // the event bubbles up, however many times the network re-renders.
+        document.addEventListener('input', (event) => {
+            if (event.target.id === 'network-bridging-min-slider' || event.target.id === 'network-bridging-max-slider') {
+                updateBridgingSliderVisual();
+            }
+        });
+        document.addEventListener('change', (event) => {
+            if (event.target.id === 'network-bridging-min-slider' || event.target.id === 'network-bridging-max-slider') {
+                networkApplyBridgingFilter();
+            }
+        });
+
+        const NETWORK_LAYOUT_CYCLE = ['force', 'core-periphery', 'community'];
+        const NETWORK_LAYOUT_LABEL = { force: '🎯 Layout: Standard', 'core-periphery': '🎯 Layout: Core/Periphery', community: '🎯 Layout: Communities' };
         function networkToggleLayout() {
-            networkLayoutMode = networkLayoutMode === 'force' ? 'core-periphery' : 'force';
+            const idx = NETWORK_LAYOUT_CYCLE.indexOf(networkLayoutMode);
+            networkLayoutMode = NETWORK_LAYOUT_CYCLE[(idx + 1) % NETWORK_LAYOUT_CYCLE.length];
             const btn = document.getElementById('network-layout-btn');
-            btn.style.background = networkLayoutMode === 'core-periphery' ? '#f97316' : '';
-            btn.style.color = networkLayoutMode === 'core-periphery' ? 'white' : '';
-            btn.style.borderColor = networkLayoutMode === 'core-periphery' ? '#f97316' : '';
+            const active = networkLayoutMode !== 'force';
+            btn.textContent = NETWORK_LAYOUT_LABEL[networkLayoutMode];
+            btn.style.background = active ? '#f97316' : '';
+            btn.style.color = active ? 'white' : '';
+            btn.style.borderColor = active ? '#f97316' : '';
             renderNetwork(lastNetworkDocs || []);
         }
 
@@ -1350,7 +2084,8 @@
         function selectSubject(name) {
             if (selectedSubjects.includes(name)) return;
             selectedSubjects.push(name);
-            networkLevel = 0; // new search — start the network back at the default (most-readable) cap
+            networkNodeCount = NETWORK_DEFAULT_NODE_COUNT; // new search — start the network back at the default (most-readable) size
+            networkBridgingFilter = null;
             document.getElementById('search-box').value = '';
             document.getElementById('autocomplete-dropdown').classList.remove('visible');
             applySubjectFilter(); renderSelectedTags(); focusedNodePath = null;
@@ -1364,7 +2099,8 @@
 
         function removeSubject(name) {
             selectedSubjects = selectedSubjects.filter(s => s !== name);
-            networkLevel = 0;
+            networkNodeCount = NETWORK_DEFAULT_NODE_COUNT;
+            networkBridgingFilter = null;
             applySubjectFilter(); renderSelectedTags(); focusedNodePath = null;
             listSelections.subjects.clear();
             listSelections.doctype.clear();
