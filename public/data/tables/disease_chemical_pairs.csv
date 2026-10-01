@@ -1,0 +1,104 @@
+disease,disease_id,chemical,chemical_id,papers_together,disease_papers,chemical_papers,odds_ratio,q_value,joint_group
+COVID-19,MESH:D000086382,Steroids,MESH:D013256,351,3401,365,3.58,1.54e-06,Group 2: COVID-19 / Steroids
+Dyspnea,MESH:D004417,Oxygen,MESH:D010100,186,455,738,3.58,3.91e-28,Group 3: Dyspnea / Oxygen
+Fatigue,MESH:D005221,Oxygen,MESH:D010100,169,631,738,1.72,1.25e-05,
+COVID-19,MESH:D000086382,remdesivir,MESH:C000606551,113,3401,116,4.55,0.00959,
+Lung Diseases,MESH:D008171,Oxygen,MESH:D010100,91,297,738,2.0,3.52e-05,
+Lung Diseases,MESH:D008171,Carbon Monoxide,MESH:D002248,82,297,216,9.78,2.54e-36,Group 4: Lung Diseases / Carbon Monoxide
+Anxiety,MESH:D001007,Oxygen,MESH:D010100,79,242,738,2.19,1.32e-05,
+Depressive Disorder,MESH:D003866,Oxygen,MESH:D010100,76,274,738,1.7,0.00791,
+Respiratory Insufficiency,MESH:D012131,Oxygen,MESH:D010100,71,187,738,2.77,7.46e-08,Group 3: Dyspnea / Oxygen
+COVID-19,MESH:D000086382,Dexamethasone,MESH:D003907,69,3401,70,6.44,0.0395,
+Hypoxia,MESH:D000860,Oxygen,MESH:D010100,60,114,738,5.03,1.23e-13,
+Post-Acute COVID-19 Syndrome,MESH:D000094024,nirmatrelvir and ritonavir drug combination,MESH:C000719967,58,2254,76,2.29,0.0253,
+Inflammation,MESH:D007249,Lipids,MESH:D008055,55,913,118,2.94,2.67e-06,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Diabetes Mellitus,MESH:D003920,Steroids,MESH:D013256,54,244,365,3.04,8.72e-08,Group 2: COVID-19 / Steroids
+Post-Acute COVID-19 Syndrome,MESH:D000094024,Hydrocortisone,MESH:D006854,54,2254,71,2.26,0.0394,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Dyspnea,MESH:D004417,Carbon Monoxide,MESH:D002248,54,455,216,2.71,2.48e-06,
+Infections,MESH:D007239,remdesivir,MESH:C000606551,49,1039,116,2.04,0.00819,
+Heart Diseases,MESH:D006331,Gadolinium,MESH:D005682,49,223,75,38.71,8.34e-41,Group 6: Heart Diseases / Gadolinium
+Fever,MESH:D005334,Steroids,MESH:D013256,49,197,365,3.53,1.01e-08,Group 2: COVID-19 / Steroids
+Respiratory Distress Syndrome,MESH:D012128,Oxygen,MESH:D010100,42,116,738,2.5,0.000554,
+Diabetes Mellitus,MESH:D003920,Glucose,MESH:D005947,40,244,111,9.83,1.02e-18,
+pediatric multisystem inflammatory disease COVID-19 related,MESH:C000705967,Steroids,MESH:D013256,38,105,365,5.98,9.07e-12,
+Post-Acute COVID-19 Syndrome,MESH:D000094024,Metformin,MESH:D008687,35,2254,39,5.71,0.00104,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Diabetes Mellitus,MESH:D003920,Blood Glucose,MESH:D001786,32,244,46,38.05,3.69e-26,
+Respiratory Insufficiency,MESH:D012131,Carbon Monoxide,MESH:D002248,31,187,216,3.79,2.48e-06,
+Autoimmune Diseases,MESH:D001327,Steroids,MESH:D013256,29,126,365,3.06,0.000241,Group 2: COVID-19 / Steroids
+Fatigue,MESH:D005221,Hydrocortisone,MESH:D006854,26,631,71,3.07,0.00134,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Inflammation,MESH:D007249,Reactive Oxygen Species,MESH:D017382,26,913,54,3.06,0.00322,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Fever,MESH:D005334,Methylprednisolone,MESH:D008775,26,197,110,6.55,2.79e-09,Group 2: COVID-19 / Steroids
+Pneumonia,MESH:D011014,Carbon Monoxide,MESH:D002248,25,184,216,2.91,0.0013,
+Inflammation,MESH:D007249,Kynurenine,MESH:D007737,23,913,35,6.21,1.22e-05,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Inflammation,MESH:D007249,Tryptophan,MESH:D014364,23,913,41,4.19,0.00048,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Pulmonary Fibrosis,MESH:D011658,pirfenidone,MESH:C093844,23,103,28,199.44,4.16e-30,Group 4: Lung Diseases / Carbon Monoxide
+Diabetes Mellitus,MESH:D003920,Amphotericin B,MESH:D000666,22,244,31,38.45,7.39e-18,Group 2: COVID-19 / Steroids
+Cognition Disorders,MESH:D003072,Fluorodeoxyglucose F18,MESH:D019788,22,337,84,3.96,0.000115,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Inflammation,MESH:D007249,Triglycerides,MESH:D014280,21,913,41,3.45,0.0049,
+Lung Diseases,MESH:D008171,Carbon,MESH:D002244,20,297,49,8.86,1.7e-08,Group 4: Lung Diseases / Carbon Monoxide
+Inflammation,MESH:D007249,Lipopolysaccharides,MESH:D008070,18,913,26,7.16,7.68e-05,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Inflammation,MESH:D007249,Aspirin,MESH:D001241,18,913,29,5.28,0.000658,
+Signs and Symptoms Respiratory,MESH:D012818,Carbon Monoxide,MESH:D002248,17,110,216,3.34,0.00472,
+Pulmonary Fibrosis,MESH:D011658,nintedanib,MESH:C530716,17,103,23,116.92,1.98e-20,Group 4: Lung Diseases / Carbon Monoxide
+pediatric multisystem inflammatory disease COVID-19 related,MESH:C000705967,Methylprednisolone,MESH:D008775,16,105,110,7.15,2.67e-06,
+Neurologic Manifestations,MESH:D009461,Fluorodeoxyglucose F18,MESH:D019788,16,174,84,5.51,5.01e-05,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Respiratory Distress Syndrome,MESH:D012128,Carbon Monoxide,MESH:D002248,16,116,216,2.91,0.0223,Group 4: Lung Diseases / Carbon Monoxide
+Autoimmune Diseases,MESH:D001327,Prednisone,MESH:D011241,15,126,46,16.37,1.02e-09,Group 2: COVID-19 / Steroids
+Dyspnea,MESH:D004417,Carbon Dioxide,MESH:D002245,15,455,43,4.18,0.0032,Group 3: Dyspnea / Oxygen
+Inflammation,MESH:D007249,Serotonin,MESH:D012701,15,913,30,3.27,0.0432,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Cardiovascular Diseases,MESH:D002318,Gadolinium,MESH:D005682,15,151,75,6.86,1.11e-05,
+Cognition Disorders,MESH:D003072,Reactive Oxygen Species,MESH:D017382,14,337,54,3.86,0.00607,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Olfaction Disorders,MESH:D000857,Luteolin,MESH:D047311,14,206,24,26.18,2.77e-10,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Autoimmune Diseases,MESH:D001327,Methylprednisolone,MESH:D008775,14,126,110,4.87,0.000618,Group 2: COVID-19 / Steroids
+Fever,MESH:D005334,Rituximab,MESH:D000069283,14,197,84,4.03,0.00331,Group 2: COVID-19 / Steroids
+Pneumonia,MESH:D011014,Rituximab,MESH:D000069283,13,184,84,3.97,0.00583,
+Fibrosis,MESH:D005355,nintedanib,MESH:C530716,13,149,23,34.91,5.13e-11,Group 4: Lung Diseases / Carbon Monoxide
+Neurologic Manifestations,MESH:D009461,Methylprednisolone,MESH:D008775,13,174,110,3.08,0.0363,
+Fever,MESH:D005334,Aspirin,MESH:D001241,13,197,29,16.2,5.6e-08,
+Olfaction Disorders,MESH:D000857,palmidrol,MESH:C005958,12,206,15,67.14,4.2e-11,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Inflammation,MESH:D007249,Fatty Acids Volatile,MESH:D005232,12,913,21,4.3,0.0315,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Fibrosis,MESH:D005355,Gadolinium,MESH:D005682,12,149,75,5.23,0.0013,
+Cognition Disorders,MESH:D003072,Kynurenine,MESH:D007737,11,337,35,5.04,0.00516,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Pneumonia,MESH:D011014,Dexamethasone,MESH:D003907,11,184,70,4.04,0.0151,Group 3: Dyspnea / Oxygen
+Death,MESH:D003643,Creatinine,MESH:D003404,11,191,64,4.31,0.00955,
+pediatric multisystem inflammatory disease COVID-19 related,MESH:C000705967,Aspirin,MESH:D001241,11,105,29,24.62,1.44e-08,Group 5: Death / Glucose
+Fibrosis,MESH:D005355,pirfenidone,MESH:C093844,11,149,28,17.55,3.26e-07,Group 4: Lung Diseases / Carbon Monoxide
+Diabetes Mellitus,MESH:D003920,Insulin,MESH:D007328,10,244,20,15.4,9.25e-06,Group 2: COVID-19 / Steroids
+Diabetes Mellitus,MESH:D003920,Metformin,MESH:D008687,10,244,39,5.45,0.00486,
+Muscle Weakness,MESH:D018908,Methylprednisolone,MESH:D008775,10,111,110,3.76,0.0342,Group 2: COVID-19 / Steroids
+Lung Diseases,MESH:D008171,pirfenidone,MESH:C093844,10,297,28,7.01,0.00133,Group 4: Lung Diseases / Carbon Monoxide
+Virus Diseases,MESH:D014777,Serotonin,MESH:D012701,10,210,30,9.29,0.000155,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Fatigue Syndrome Chronic,MESH:D015673,Calcium,MESH:D002118,10,143,52,6.81,0.000907,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Fever,MESH:D005334,Prednisolone,MESH:D011239,10,197,60,4.01,0.0265,Group 2: COVID-19 / Steroids
+Depressive Disorder,MESH:D003866,Kynurenine,MESH:D007737,9,274,35,4.81,0.0208,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Autoimmune Diseases,MESH:D001327,Prednisolone,MESH:D011239,9,126,60,5.79,0.00512,Group 2: COVID-19 / Steroids
+Autoimmune Diseases,MESH:D001327,Rituximab,MESH:D000069283,9,126,84,3.92,0.0433,Group 2: COVID-19 / Steroids
+Lung Diseases,MESH:D008171,nintedanib,MESH:C530716,9,297,23,8.07,0.00142,Group 4: Lung Diseases / Carbon Monoxide
+Vascular Diseases,MESH:D014652,Nitric Oxide,MESH:D009569,9,112,66,5.9,0.00466,
+Pain,MESH:D010146,Prednisone,MESH:D011241,8,163,46,5.2,0.021,Group 2: COVID-19 / Steroids
+Depressive Disorder,MESH:D003866,Serotonin,MESH:D012701,8,274,30,5.06,0.0293,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Autoimmune Diseases,MESH:D001327,Methotrexate,MESH:D008727,8,126,20,21.39,9.38e-06,Group 2: COVID-19 / Steroids
+Thrombosis,MESH:D013927,Heparin,MESH:D006493,8,103,28,16.25,3.26e-05,Group 5: Death / Glucose
+Cardiovascular Diseases,MESH:D002318,Reactive Oxygen Species,MESH:D017382,8,151,54,4.67,0.0328,
+Virus Diseases,MESH:D014777,Dopamine,MESH:D004298,8,210,21,11.33,0.000494,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Neuroinflammatory Diseases,MESH:D000090862,Reactive Oxygen Species,MESH:D017382,8,118,54,6.12,0.00791,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Chest Pain,MESH:D002637,Colchicine,MESH:D003078,8,100,23,22.23,5.85e-06,Group 6: Heart Diseases / Gadolinium
+Chest Pain,MESH:D002637,Gadolinium,MESH:D005682,8,100,75,5.03,0.0223,Group 6: Heart Diseases / Gadolinium
+Fatigue Syndrome Chronic,MESH:D015673,Adenosine Triphosphate,MESH:D000255,8,143,29,10.8,0.000452,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Fatigue Syndrome Chronic,MESH:D015673,Reactive Oxygen Species,MESH:D017382,8,143,54,4.96,0.0253,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Vascular Diseases,MESH:D014652,Reactive Oxygen Species,MESH:D017382,8,112,54,6.49,0.00583,
+Hypertension,MESH:D006973,Creatinine,MESH:D003404,8,116,64,5.12,0.021,Group 2: COVID-19 / Steroids
+Pneumonia,MESH:D011014,Azithromycin,MESH:D017963,7,184,23,9.39,0.00322,
+Autoimmune Diseases,MESH:D001327,Azathioprine,MESH:D001379,7,126,16,24.65,2.57e-05,Group 2: COVID-19 / Steroids
+Heart Diseases,MESH:D006331,Aspirin,MESH:D001241,7,223,29,5.57,0.0328,
+Cardiovascular Diseases,MESH:D002318,Cholesterol,MESH:D002784,7,151,45,4.96,0.0459,Group 5: Death / Glucose
+pediatric multisystem inflammatory disease COVID-19 related,MESH:C000705967,Sodium,MESH:D012964,6,105,27,11.36,0.00322,Group 5: Death / Glucose
+Heart Diseases,MESH:D006331,Colchicine,MESH:D003078,6,223,23,6.19,0.0447,Group 6: Heart Diseases / Gadolinium
+Neuroinflammatory Diseases,MESH:D000090862,Luteolin,MESH:D047311,6,118,24,11.65,0.0032,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Neuroinflammatory Diseases,MESH:D000090862,Dopamine,MESH:D004298,6,118,21,13.91,0.00144,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Respiratory Distress Syndrome,MESH:D012128,pirfenidone,MESH:C093844,6,116,28,9.75,0.00602,Group 4: Lung Diseases / Carbon Monoxide
+Mental Disorders,MESH:D001523,Glutamic Acid,MESH:D018698,5,186,17,8.89,0.0314,Group 1: Post-Acute COVID-19 Syndrome / Lipids
+Autoimmune Diseases,MESH:D001327,Thyroxine,MESH:D013974,5,126,26,7.83,0.0395,Group 2: COVID-19 / Steroids
+Thrombosis,MESH:D013927,Aspirin,MESH:D001241,5,103,29,8.52,0.0293,Group 5: Death / Glucose
+Cardiovascular Diseases,MESH:D002318,Aldosterone,MESH:D000450,5,151,19,9.58,0.0229,Group 5: Death / Glucose
+Neuroinflammatory Diseases,MESH:D000090862,Adenosine Triphosphate,MESH:D000255,5,118,29,7.36,0.0465,Group 1: Post-Acute COVID-19 Syndrome / Lipids
