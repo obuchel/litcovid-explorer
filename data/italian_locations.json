@@ -1,0 +1,6 @@
+[
+  {"name": "Rome", "coordinates": {"latitude": 41.9028, "longitude": 12.4964}, "times": ["400 CE", "1521 CE"], "manuscripts": ["vergilius_vaticanus"]},
+  {"name": "Florence", "coordinates": {"latitude": 43.7696, "longitude": 11.2558}, "times": ["1406 CE", "1477 CE"], "manuscripts": ["ptolemy_geography", "federico_bible_volume_2"]},
+  {"name": "Urbino", "coordinates": {"latitude": 43.7262, "longitude": 12.6363}, "times": ["1460 CE", "1476 CE", "1478 CE"], "manuscripts": ["ptolemy_geography", "federico_bible_volume_1", "federico_bible_volume_2"]},
+  {"name": "Vatican City", "coordinates": {"latitude": 41.9029, "longitude": 12.4534}, "times": ["1600 CE", "1657 CE"], "manuscripts": ["vergilius_vaticanus", "ptolemy_geography", "federico_bible_volume_1", "federico_bible_volume_2"]}
+]

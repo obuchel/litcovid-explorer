@@ -1,0 +1,7 @@
+{
+  "ptolemy_geography": {"title": "Ptolemy's Geography", "color": "#8e44ad", "symbol": "circle"},
+  "vergilius_vaticanus": {"title": "Vergilius Vaticanus", "color": "#16a085", "symbol": "square"},
+  "federico_bible_volume_1": {"title": "Federico's Bible Volume 1", "color": "#e67e22", "symbol": "triangle"},
+  "federico_bible_volume_2": {"title": "Federico's Bible Volume 2", "color": "#d35400", "symbol": "diamond"},
+  "mixtec_codex_vat_lat_3773": {"title": "Mixtec Codex", "color": "#8b4513", "symbol": "star"}
+}
