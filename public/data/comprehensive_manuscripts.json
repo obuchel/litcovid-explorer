@@ -1,0 +1,202 @@
+{
+  "160 CE": [
+    {
+      "event": "Original Ptolemy Geography composition",
+      "location": "Alexandria",
+      "modern_name": "Alexandria, Egypt",
+      "coordinates": { "latitude": 31.2001, "longitude": 29.9187 },
+      "country": "Egypt",
+      "region": "Alexandria Governorate",
+      "role": "original_composition_location",
+      "period": "150-170 CE",
+      "manuscript": "ptolemy_geography",
+      "manuscript_count": 1
+    }
+  ],
+  "400 CE": [
+    {
+      "event": "Vergilius Vaticanus creation",
+      "location": "Rome",
+      "modern_name": "Roma, Italy",
+      "coordinates": { "latitude": 41.9028, "longitude": 12.4964 },
+      "country": "Italy",
+      "region": "Lazio",
+      "role": "creation_location",
+      "period": "c. 400 CE",
+      "manuscript": "vergilius_vaticanus",
+      "patron": "Unknown wealthy aristocrat",
+      "manuscript_count": 1
+    }
+  ],
+  "850 CE": [
+    {
+      "event": "Vergilius Vaticanus at Tours Abbey",
+      "location": "Tours",
+      "modern_name": "Tours, France",
+      "coordinates": { "latitude": 47.3941, "longitude": 0.6848 },
+      "country": "France",
+      "region": "Centre-Val de Loire",
+      "role": "preservation_location",
+      "period": "840-10th century",
+      "manuscript": "vergilius_vaticanus",
+      "institution": "Abbey of Saint-Martin",
+      "manuscript_count": 1
+    }
+  ],
+  "1400 CE": [
+    {
+      "event": "Mixtec codex creation",
+      "location": "Puebla region",
+      "modern_name": "Puebla, Mexico",
+      "coordinates": { "latitude": 19.0414, "longitude": -98.2063 },
+      "country": "Mexico",
+      "region": "Puebla",
+      "role": "creation_location",
+      "period": "c. 1350-1500 CE",
+      "manuscript": "mixtec_codex_vat_lat_3773",
+      "culture": "Mixtec civilization",
+      "manuscript_count": 1
+    }
+  ],
+  "1406 CE": [
+    {
+      "event": "Jacobus Angelus translation of Ptolemy",
+      "location": "Florence",
+      "modern_name": "Firenze, Italy",
+      "coordinates": { "latitude": 43.7696, "longitude": 11.2558 },
+      "country": "Italy",
+      "region": "Tuscany",
+      "role": "translation_location",
+      "period": "1406 CE",
+      "manuscript": "ptolemy_geography",
+      "manuscript_count": 1
+    }
+  ],
+  "1460 CE": [
+    {
+      "event": "Renaissance manuscript activity at Urbino",
+      "location": "Urbino",
+      "modern_name": "Urbino, Italy",
+      "coordinates": { "latitude": 43.7262, "longitude": 12.6363 },
+      "country": "Italy",
+      "region": "Marche",
+      "role": "patron_court_location",
+      "period": "1450-1482 CE",
+      "manuscripts": [
+        { "name": "ptolemy_geography", "event": "Commission by Federico da Montefeltro" },
+        { "name": "federico_bible_volume_1", "event": "Bible Volume 1 creation begins" }
+      ],
+      "patron": "Federico da Montefeltro",
+      "manuscript_count": 2
+    }
+  ],
+  "1476 CE": [
+    {
+      "event": "Bible Volume 2 commission",
+      "location": "Urbino",
+      "modern_name": "Urbino, Italy",
+      "coordinates": { "latitude": 43.7262, "longitude": 12.6363 },
+      "country": "Italy",
+      "region": "Marche",
+      "role": "commission_location",
+      "period": "1476 CE",
+      "manuscript": "federico_bible_volume_2",
+      "patron": "Federico da Montefeltro",
+      "manuscript_count": 1
+    }
+  ],
+  "1477 CE": [
+    {
+      "event": "Bible Volume 2 creation in Florence workshop",
+      "location": "Florence",
+      "modern_name": "Firenze, Italy",
+      "coordinates": { "latitude": 43.7696, "longitude": 11.2558 },
+      "country": "Italy",
+      "region": "Tuscany",
+      "role": "creation_location",
+      "period": "1476-1478 CE",
+      "manuscript": "federico_bible_volume_2",
+      "workshop_director": "Vespasiano da Bisticci",
+      "scribe": "Hugo de Comminellis",
+      "manuscript_count": 1
+    }
+  ],
+  "1478 CE": [
+    {
+      "event": "Bible Volume 2 completion and return",
+      "location": "Urbino",
+      "modern_name": "Urbino, Italy",
+      "coordinates": { "latitude": 43.7262, "longitude": 12.6363 },
+      "country": "Italy",
+      "region": "Marche",
+      "role": "destination_library",
+      "period": "1478 CE",
+      "manuscript": "federico_bible_volume_2",
+      "transport_context": "During Pazzi War",
+      "manuscript_count": 1
+    }
+  ],
+  "1521 CE": [
+    {
+      "event": "Pietro Bembo acquires Vergilius Vaticanus",
+      "location": "Rome",
+      "modern_name": "Roma, Italy",
+      "coordinates": { "latitude": 41.9028, "longitude": 12.4964 },
+      "country": "Italy",
+      "region": "Lazio",
+      "role": "humanist_acquisition",
+      "period": "1521 CE",
+      "manuscript": "vergilius_vaticanus",
+      "owner": "Pietro Bembo (Cardinal and humanist)",
+      "manuscript_count": 1
+    }
+  ],
+  "1600 CE": [
+    {
+      "event": "Vergilius Vaticanus bequeathed to Vatican",
+      "location": "Vatican City",
+      "modern_name": "Vatican City",
+      "coordinates": { "latitude": 41.9029, "longitude": 12.4534 },
+      "country": "Vatican City State",
+      "region": "Vatican City",
+      "role": "acquisition_location",
+      "period": "1600 CE",
+      "manuscript": "vergilius_vaticanus",
+      "bequest": "Fulvio Orsini bequest",
+      "manuscript_count": 1
+    }
+  ],
+  "1657 CE": [
+    {
+      "event": "Major Vatican manuscript acquisition",
+      "location": "Vatican City",
+      "modern_name": "Vatican City",
+      "coordinates": { "latitude": 41.9029, "longitude": 12.4534 },
+      "country": "Vatican City State",
+      "region": "Vatican City",
+      "role": "mass_acquisition_location",
+      "period": "1657 CE",
+      "manuscripts": [
+        { "name": "ptolemy_geography", "event": "Vatican acquisition from Urbino collection" },
+        { "name": "federico_bible_volume_1", "event": "Vatican acquisition from Urbino collection" },
+        { "name": "federico_bible_volume_2", "event": "Vatican acquisition from Urbino collection" }
+      ],
+      "pope": "Alexander VII (Fabio Chigi)",
+      "manuscript_count": 3
+    }
+  ],
+  "1700 CE": [
+    {
+      "event": "Mixtec codex Vatican acquisition (estimated)",
+      "location": "Vatican City",
+      "modern_name": "Vatican City",
+      "coordinates": { "latitude": 41.9029, "longitude": 12.4534 },
+      "country": "Vatican City State",
+      "region": "Vatican City",
+      "role": "colonial_acquisition",
+      "period": "Colonial period (estimated 1600s-1700s)",
+      "manuscript": "mixtec_codex_vat_lat_3773",
+      "manuscript_count": 1
+    }
+  ]
+}
