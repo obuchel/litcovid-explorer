@@ -1,164 +1,161 @@
 cluster,term,papers
-1. Neurologic Manifestations,Neurologic Manifestations,1172
-1. Neurologic Manifestations,Coronavirus Infections,844
-1. Neurologic Manifestations,Respiratory Insufficiency,684
-1. Neurologic Manifestations,Anosmia,554
-1. Neurologic Manifestations,Central Nervous System Diseases,483
-1. Neurologic Manifestations,Nervous System Diseases,435
-1. Neurologic Manifestations,Ageusia,323
-1. Neurologic Manifestations,Cardiomyopathies,319
-1. Neurologic Manifestations,Hypoxia,270
-1. Neurologic Manifestations,Severe Acute Respiratory Syndrome,255
-1. Neurologic Manifestations,Respiratory Tract Infections,252
-1. Neurologic Manifestations,Encephalitis,214
-1. Neurologic Manifestations,Liver Diseases,204
-1. Neurologic Manifestations,Cerebrovascular Disorders,199
-1. Neurologic Manifestations,Seizures,196
-1. Neurologic Manifestations,Acute Kidney Injury,149
-1. Neurologic Manifestations,Taste Disorders,135
-1. Neurologic Manifestations,Peripheral Nervous System Diseases,133
-1. Neurologic Manifestations,Cerebral Infarction,129
-1. Neurologic Manifestations,Heredodegenerative Disorders Nervous System,128
-1. Neurologic Manifestations,Hemorrhage,128
-1. Neurologic Manifestations,Demyelinating Diseases,115
-1. Neurologic Manifestations,Psychological Trauma,100
-1. Neurologic Manifestations,Trauma Nervous System,100
-2. COVID-19,COVID-19,16501
-2. COVID-19,Heart Diseases,1018
-2. COVID-19,Lung Diseases,973
-2. COVID-19,Death,909
-2. COVID-19,Cough,796
-2. COVID-19,Cardiovascular Diseases,795
-2. COVID-19,Myalgia,617
-2. COVID-19,Signs and Symptoms Respiratory,486
-2. COVID-19,Muscle Weakness,454
-2. COVID-19,Fibrosis,433
-2. COVID-19,Communicable Diseases,377
-2. COVID-19,Dizziness,287
-2. COVID-19,Lung Diseases Interstitial,275
-2. COVID-19,Heart Failure,252
-2. COVID-19,Dysgeusia,242
-2. COVID-19,603663,227
-2. COVID-19,Pulmonary Embolism,194
-2. COVID-19,Diarrhea,180
-2. COVID-19,Multiple Sclerosis,174
-2. COVID-19,Kidney Diseases,166
-2. COVID-19,Dementia,157
-2. COVID-19,Muscular Diseases,154
-2. COVID-19,Renal Insufficiency,141
-2. COVID-19,Myocardial Infarction,136
-2. COVID-19,Wounds and Injuries,122
-2. COVID-19,Pediatric acute-onset neuropsychiatric syndrome,115
-2. COVID-19,Anhedonia,115
-2. COVID-19,608852,113
-2. COVID-19,Heart Arrest,112
-2. COVID-19,Nausea,111
-2. COVID-19,Cardiovascular Abnormalities,108
-2. COVID-19,Deglutition Disorders,104
-2. COVID-19,Psychotic Disorders,100
-2. COVID-19,Frailty,100
-2. COVID-19,Movement Disorders,97
-2. COVID-19,Pharyngitis,97
-3. Olfaction Disorders,Olfaction Disorders,1260
-3. Olfaction Disorders,Headache,965
-3. Olfaction Disorders,Virus Diseases,871
-3. Olfaction Disorders,Pneumonia,584
-3. Olfaction Disorders,Fever,578
-3. Olfaction Disorders,Respiratory Distress Syndrome,538
-3. Olfaction Disorders,pediatric multisystem inflammatory disease COVID-19 related,510
-3. Olfaction Disorders,Respiratory Tract Diseases,431
-3. Olfaction Disorders,Thrombosis,404
-3. Olfaction Disorders,Myocarditis,397
-3. Olfaction Disorders,Stroke,378
-3. Olfaction Disorders,Brain Diseases,372
-3. Olfaction Disorders,Pulmonary Fibrosis,341
-3. Olfaction Disorders,Critical Illness,327
-3. Olfaction Disorders,Blood Coagulation Disorders,282
-3. Olfaction Disorders,Multiple Organ Failure,281
-3. Olfaction Disorders,Arrhythmias Cardiac,250
-3. Olfaction Disorders,Guillain-Barre Syndrome,237
-3. Olfaction Disorders,Mucormycosis,196
-3. Olfaction Disorders,Gastrointestinal Diseases,183
-3. Olfaction Disorders,Lung Injury,182
-3. Olfaction Disorders,Thromboembolism,174
-3. Olfaction Disorders,Thrombophilia,173
-3. Olfaction Disorders,Vision Disorders,161
-3. Olfaction Disorders,adult multisystem inflammatory disease COVID-19 related,157
-3. Olfaction Disorders,Abdominal Pain,136
-3. Olfaction Disorders,postintensive care syndrome,135
-3. Olfaction Disorders,Delirium,130
-3. Olfaction Disorders,Edema,126
-3. Olfaction Disorders,Mucocutaneous Lymph Node Syndrome,124
-3. Olfaction Disorders,Mycoses,116
-3. Olfaction Disorders,Cytokine Release Syndrome,114
-3. Olfaction Disorders,Ventricular Dysfunction Left,114
-3. Olfaction Disorders,Vasculitis,108
-3. Olfaction Disorders,Venous Thromboembolism,105
-3. Olfaction Disorders,Systemic Inflammatory Response Syndrome,101
-4. Infections,Infections,5211
-4. Infections,Inflammation,2848
-4. Infections,Dyspnea,1873
-4. Infections,Mental Disorders,1113
-4. Infections,Diabetes Mellitus,710
-4. Infections,Stress Disorders Post-Traumatic,573
-4. Infections,Persistent Infection,558
-4. Infections,Hypertension,456
-4. Infections,Autoimmune Diseases,442
-4. Infections,Chest Pain,437
-4. Infections,Vascular Diseases,361
-4. Infections,Arthralgia,295
-4. Infections,Signs and Symptoms,281
-4. Infections,Neoplasms,279
-4. Infections,Mood Disorders,214
-4. Infections,Abnormalities Drug-Induced,210
-4. Infections,Influenza Human,204
-4. Infections,Disease,187
-4. Infections,Anxiety Disorders,185
-4. Infections,Alopecia,178
-4. Infections,Attention Deficit Disorder with Hyperactivity,171
-4. Infections,Acute Disease,166
-4. Infections,Organizing Pneumonia,162
-4. Infections,Conversion Disorder,155
-4. Infections,Musculoskeletal Diseases,150
-4. Infections,Diabetes Mellitus Type 2,148
-4. Infections,Vascular System Injuries,115
-4. Infections,Nerve Degeneration,108
-4. Infections,Tachycardia,101
-4. Infections,Myopathy with Lactic Acidosis Hereditary,99
-5. Post-Acute COVID-19 Syndrome,Post-Acute COVID-19 Syndrome,12475
-5. Post-Acute COVID-19 Syndrome,Fatigue,3425
-5. Post-Acute COVID-19 Syndrome,Cognition Disorders,1908
-5. Post-Acute COVID-19 Syndrome,Depressive Disorder,1784
-5. Post-Acute COVID-19 Syndrome,Anxiety,1671
-5. Post-Acute COVID-19 Syndrome,Pain,882
-5. Post-Acute COVID-19 Syndrome,Sleep Wake Disorders,668
-5. Post-Acute COVID-19 Syndrome,Fatigue Syndrome Chronic,649
-5. Post-Acute COVID-19 Syndrome,Mental Fatigue,534
-5. Post-Acute COVID-19 Syndrome,Memory Disorders,431
-5. Post-Acute COVID-19 Syndrome,Post-Infectious Disorders,417
-5. Post-Acute COVID-19 Syndrome,Obesity,396
-5. Post-Acute COVID-19 Syndrome,Neuroinflammatory Diseases,388
-5. Post-Acute COVID-19 Syndrome,Sleep Initiation and Maintenance Disorders,330
-5. Post-Acute COVID-19 Syndrome,Chronic Disease,283
-5. Post-Acute COVID-19 Syndrome,614878,265
-5. Post-Acute COVID-19 Syndrome,Exercise-Induced Allergies,245
-5. Post-Acute COVID-19 Syndrome,Retinitis Pigmentosa Concentric,215
-5. Post-Acute COVID-19 Syndrome,Autonomic Nervous System Diseases,210
-5. Post-Acute COVID-19 Syndrome,Asthma,209
-5. Post-Acute COVID-19 Syndrome,Cognitive Dysfunction,206
-5. Post-Acute COVID-19 Syndrome,Postural Orthostatic Tachycardia Syndrome,205
-5. Post-Acute COVID-19 Syndrome,Neurobehavioral Manifestations,167
-5. Post-Acute COVID-19 Syndrome,Primary Dysautonomias,159
-5. Post-Acute COVID-19 Syndrome,Mitochondrial Diseases,152
-5. Post-Acute COVID-19 Syndrome,Neurocognitive Disorders,148
-5. Post-Acute COVID-19 Syndrome,Immune System Diseases,136
-5. Post-Acute COVID-19 Syndrome,Metabolic Diseases,134
-5. Post-Acute COVID-19 Syndrome,Chronic Pain,105
-5. Post-Acute COVID-19 Syndrome,Neuralgia,102
-5. Post-Acute COVID-19 Syndrome,Renal Insufficiency Chronic,100
-6. Neurodegenerative Diseases,Neurodegenerative Diseases,366
-6. Neurodegenerative Diseases,Pulmonary Disease Chronic Obstructive,215
-6. Neurodegenerative Diseases,Signs and Symptoms Digestive,209
-6. Neurodegenerative Diseases,Alzheimer Disease,187
-6. Neurodegenerative Diseases,Parkinson Disease,133
-6. Neurodegenerative Diseases,Weight Loss,107
+1. Olfaction Disorders,Olfaction Disorders,1260
+1. Olfaction Disorders,Neurologic Manifestations,1172
+1. Olfaction Disorders,Headache,964
+1. Olfaction Disorders,Virus Diseases,870
+1. Olfaction Disorders,Coronavirus Infections,844
+1. Olfaction Disorders,Respiratory Insufficiency,684
+1. Olfaction Disorders,Anosmia,554
+1. Olfaction Disorders,Signs and Symptoms Respiratory,486
+1. Olfaction Disorders,Central Nervous System Diseases,483
+1. Olfaction Disorders,Nervous System Diseases,435
+1. Olfaction Disorders,Respiratory Tract Diseases,431
+1. Olfaction Disorders,Stroke,378
+1. Olfaction Disorders,Communicable Diseases,377
+1. Olfaction Disorders,Neurodegenerative Diseases,366
+1. Olfaction Disorders,Ageusia,323
+1. Olfaction Disorders,Cardiomyopathies,319
+1. Olfaction Disorders,Dizziness,287
+1. Olfaction Disorders,Hypoxia,270
+1. Olfaction Disorders,Severe Acute Respiratory Syndrome,255
+1. Olfaction Disorders,Respiratory Tract Infections,252
+1. Olfaction Disorders,Arrhythmias Cardiac,250
+1. Olfaction Disorders,603663,227
+1. Olfaction Disorders,Encephalitis,214
+1. Olfaction Disorders,Liver Diseases,204
+1. Olfaction Disorders,Cerebrovascular Disorders,199
+1. Olfaction Disorders,Seizures,196
+1. Olfaction Disorders,Multiple Sclerosis,174
+1. Olfaction Disorders,Kidney Diseases,166
+1. Olfaction Disorders,Dementia,157
+1. Olfaction Disorders,Muscular Diseases,154
+1. Olfaction Disorders,Acute Kidney Injury,149
+1. Olfaction Disorders,postintensive care syndrome,135
+1. Olfaction Disorders,Taste Disorders,135
+1. Olfaction Disorders,Peripheral Nervous System Diseases,133
+1. Olfaction Disorders,Cerebral Infarction,129
+1. Olfaction Disorders,Heredodegenerative Disorders Nervous System,128
+1. Olfaction Disorders,Hemorrhage,128
+1. Olfaction Disorders,Wounds and Injuries,122
+1. Olfaction Disorders,Pediatric acute-onset neuropsychiatric syndrome,115
+1. Olfaction Disorders,Demyelinating Diseases,115
+1. Olfaction Disorders,Nausea,111
+1. Olfaction Disorders,Psychotic Disorders,100
+1. Olfaction Disorders,Frailty,100
+1. Olfaction Disorders,Psychological Trauma,100
+1. Olfaction Disorders,Trauma Nervous System,100
+2. Pneumonia,Pneumonia,584
+2. Pneumonia,Fever,578
+2. Pneumonia,Respiratory Distress Syndrome,538
+2. Pneumonia,pediatric multisystem inflammatory disease COVID-19 related,510
+2. Pneumonia,Thrombosis,404
+2. Pneumonia,Myocarditis,397
+2. Pneumonia,Brain Diseases,372
+2. Pneumonia,Pulmonary Fibrosis,341
+2. Pneumonia,Critical Illness,327
+2. Pneumonia,Blood Coagulation Disorders,282
+2. Pneumonia,Multiple Organ Failure,281
+2. Pneumonia,Heart Failure,251
+2. Pneumonia,Guillain-Barre Syndrome,237
+2. Pneumonia,Pulmonary Embolism,194
+2. Pneumonia,Lung Injury,182
+2. Pneumonia,Thromboembolism,174
+2. Pneumonia,Thrombophilia,173
+2. Pneumonia,Vision Disorders,161
+2. Pneumonia,adult multisystem inflammatory disease COVID-19 related,157
+2. Pneumonia,Abdominal Pain,136
+2. Pneumonia,Myocardial Infarction,135
+2. Pneumonia,Delirium,130
+2. Pneumonia,Mucocutaneous Lymph Node Syndrome,124
+2. Pneumonia,Cytokine Release Syndrome,114
+2. Pneumonia,Vasculitis,108
+2. Pneumonia,Cardiovascular Abnormalities,108
+2. Pneumonia,Venous Thromboembolism,105
+2. Pneumonia,Deglutition Disorders,104
+2. Pneumonia,Systemic Inflammatory Response Syndrome,101
+3. COVID-19,COVID-19,16493
+3. COVID-19,Heart Diseases,1018
+3. COVID-19,Lung Diseases,973
+3. COVID-19,Death,909
+3. COVID-19,Cough,796
+3. COVID-19,Cardiovascular Diseases,795
+3. COVID-19,Myalgia,617
+3. COVID-19,Muscle Weakness,454
+3. COVID-19,Fibrosis,433
+3. COVID-19,Lung Diseases Interstitial,275
+3. COVID-19,Dysgeusia,242
+3. COVID-19,Abnormalities Drug-Induced,210
+3. COVID-19,Mucormycosis,196
+3. COVID-19,Diarrhea,180
+3. COVID-19,Organizing Pneumonia,162
+3. COVID-19,Parkinson Disease,133
+3. COVID-19,Edema,126
+3. COVID-19,Mycoses,116
+3. COVID-19,Ventricular Dysfunction Left,114
+3. COVID-19,Heart Arrest,112
+4. Dyspnea,Dyspnea,1872
+4. Dyspnea,Diabetes Mellitus,710
+4. Dyspnea,Stress Disorders Post-Traumatic,573
+4. Dyspnea,Persistent Infection,558
+4. Dyspnea,Chest Pain,437
+4. Dyspnea,Arthralgia,295
+4. Dyspnea,Signs and Symptoms,281
+4. Dyspnea,Mood Disorders,214
+4. Dyspnea,Anxiety Disorders,185
+4. Dyspnea,Alopecia,178
+4. Dyspnea,Attention Deficit Disorder with Hyperactivity,171
+4. Dyspnea,Conversion Disorder,155
+4. Dyspnea,Musculoskeletal Diseases,150
+4. Dyspnea,Diabetes Mellitus Type 2,148
+4. Dyspnea,Tachycardia,101
+5. Infections,Infections,5208
+5. Infections,Mental Disorders,1113
+5. Infections,Hypertension,456
+5. Infections,Autoimmune Diseases,441
+5. Infections,Neoplasms,279
+5. Infections,Signs and Symptoms Digestive,209
+5. Infections,Influenza Human,204
+5. Infections,Disease,187
+5. Infections,Gastrointestinal Diseases,183
+5. Infections,Renal Insufficiency,141
+5. Infections,Anhedonia,115
+5. Infections,Vascular System Injuries,115
+5. Infections,608852,113
+5. Infections,Nerve Degeneration,108
+6. Post-Acute COVID-19 Syndrome,Post-Acute COVID-19 Syndrome,12469
+6. Post-Acute COVID-19 Syndrome,Fatigue,3421
+6. Post-Acute COVID-19 Syndrome,Inflammation,2848
+6. Post-Acute COVID-19 Syndrome,Cognition Disorders,1907
+6. Post-Acute COVID-19 Syndrome,Depressive Disorder,1783
+6. Post-Acute COVID-19 Syndrome,Anxiety,1671
+6. Post-Acute COVID-19 Syndrome,Pain,881
+6. Post-Acute COVID-19 Syndrome,Sleep Wake Disorders,668
+6. Post-Acute COVID-19 Syndrome,Fatigue Syndrome Chronic,649
+6. Post-Acute COVID-19 Syndrome,Mental Fatigue,532
+6. Post-Acute COVID-19 Syndrome,Memory Disorders,431
+6. Post-Acute COVID-19 Syndrome,Post-Infectious Disorders,417
+6. Post-Acute COVID-19 Syndrome,Obesity,395
+6. Post-Acute COVID-19 Syndrome,Neuroinflammatory Diseases,388
+6. Post-Acute COVID-19 Syndrome,Vascular Diseases,361
+6. Post-Acute COVID-19 Syndrome,Sleep Initiation and Maintenance Disorders,330
+6. Post-Acute COVID-19 Syndrome,Chronic Disease,283
+6. Post-Acute COVID-19 Syndrome,614878,265
+6. Post-Acute COVID-19 Syndrome,Exercise-Induced Allergies,245
+6. Post-Acute COVID-19 Syndrome,Pulmonary Disease Chronic Obstructive,215
+6. Post-Acute COVID-19 Syndrome,Retinitis Pigmentosa Concentric,215
+6. Post-Acute COVID-19 Syndrome,Asthma,209
+6. Post-Acute COVID-19 Syndrome,Autonomic Nervous System Diseases,208
+6. Post-Acute COVID-19 Syndrome,Cognitive Dysfunction,206
+6. Post-Acute COVID-19 Syndrome,Postural Orthostatic Tachycardia Syndrome,204
+6. Post-Acute COVID-19 Syndrome,Alzheimer Disease,187
+6. Post-Acute COVID-19 Syndrome,Neurobehavioral Manifestations,167
+6. Post-Acute COVID-19 Syndrome,Acute Disease,165
+6. Post-Acute COVID-19 Syndrome,Primary Dysautonomias,159
+6. Post-Acute COVID-19 Syndrome,Mitochondrial Diseases,152
+6. Post-Acute COVID-19 Syndrome,Neurocognitive Disorders,148
+6. Post-Acute COVID-19 Syndrome,Immune System Diseases,136
+6. Post-Acute COVID-19 Syndrome,Metabolic Diseases,134
+6. Post-Acute COVID-19 Syndrome,Weight Loss,107
+6. Post-Acute COVID-19 Syndrome,Chronic Pain,104
+6. Post-Acute COVID-19 Syndrome,Neuralgia,102
+6. Post-Acute COVID-19 Syndrome,Renal Insufficiency Chronic,100
