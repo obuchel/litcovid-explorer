@@ -797,10 +797,11 @@ function chgRow(){if(!GAP)return '';const v=CHG,mx=Math.max(...v,1),w=150,h=26;c
   return `<div class="spark" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--grid)"><span class="dot" style="background:none;border:2px dotted var(--ink)"></span><div><div class="nm"><span>Phase changed vs original</span></div><svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none" style="display:block"><path d="${path}" fill="none" stroke="var(--ink)" stroke-width="1.6" vector-effect="non-scaling-stroke"/><circle cx="${pts[si][0]}" cy="${pts[si][1]}" r="3.2" fill="var(--ink)" stroke="var(--surface)" stroke-width="1.5"/></svg></div><span class="v">${fmt(v[si])}</span></div>`}
 
 // ---- detail panel
+$('detail').addEventListener('click',e=>{const b=e.target.closest('button[data-near]');if(b){select(+b.dataset.near);$('plotcard')&&$('plotcard').scrollIntoView({behavior:'smooth',block:'start'})}});
 function detail(){queueMicrotask(waves);
   const r=DATA[sel],[id,name,m,s]=r;
   const rows=s.map((d,k)=>d?`<tr class="${k===si?'cur':''}"><td>${lab(k)}</td><td>${fmtDate(d[0])}</td><td>${d[6].toFixed(2)}</td><td>${dmo(d,k).toFixed(1)}</td><td style="text-align:left"><span class="ph"><span class="dot" style="background:var(--c${d[3]})"></span>${PH[d[3]]}</span>${changed(sel,k)?`<span style="color:var(--muted);font:400 11px var(--sans)"> (was ${PH[origPhase(sel,k)]})</span>`:''}</td></tr>`:`<tr class="${k===si?'cur':''}"><td>${lab(k)}</td><td colspan="4" style="text-align:left;color:var(--muted)">no papers yet</td></tr>`).join('');
-  $('detail').innerHTML=`<h2>${esc(name)}</h2><div class="id">${esc(id)} · ${fmt(m.reduce((a,b)=>a+b,0))} papers 2020–2026</div>${waveInfo(sel)}${chart(r)}
+  $('detail').innerHTML=`<h2>${esc(name)}</h2><div class="id">${esc(id)} · ${fmt(m.reduce((a,b)=>a+b,0))} papers 2020–2026</div>${waveInfo(sel)}${nearInfo(sel)}${chart(r)}
    <div class="legend"><span><i style="border-color:var(--ink)"></i>papers so far${GAP?' (gap filled)':''}</span>${GAP?'<span><i style="border-color:var(--c2);border-top-style:dashed"></i>as collected</span>':''}<span><i style="border-color:var(--accent)"></i>fit at ${lab(si)}</span><span><i style="border-color:var(--accent);border-top-style:dashed"></i>projection</span><span><i style="border-color:var(--muted);border-top-style:dotted"></i>later data</span></div>
    <table><thead><tr><th>Snapshot</th><th>Inflection</th><th>Sat.</th><th>Δ mo</th><th style="text-align:left">Phase</th></tr></thead><tbody>${rows}</tbody></table>
    <p class="note">${note(r)}</p>`}
@@ -826,6 +827,11 @@ function chart(r){
 
 // ---- wave groups: colouring, chips, and the volume-curve card ----
 const waveLine=i=>WG[i]>=0||AR[i]>=0?'<br>wave: '+(WG[i]>=0?WN[WG[i]]+(WTw[i]?' (tentative)':''):'\u2013')+(AR[i]>=0?' · lifepath: '+AN[AR[i]]+(WTa[i]?' (tentative)':''):''):'';
+const NEAR=__P.near||null,IXN=new Map(DATA.map((r,i)=>[r[0],i]));
+function nearInfo(i){if(!NEAR)return '';const id=DATA[i][0],L=NEAR[id],R=CFG.dref;
+  if(!L)return '<p class="note near" style="margin:8px 0 0"><b>Nearest lifepaths.</b> Not available: a distance needs at least '+(CFG.minCore||100)+' papers and a lifepath with 5+ papers at two or more snapshots.</p>';
+  const items=L.map(([j,d])=>{const k=IXN.get(j);return k==null?'':`<li><button type="button" data-near="${k}" style="all:unset;cursor:pointer;text-decoration:underline;text-underline-offset:2px">${esc(DATA[k][1])}</button> <span style="color:var(--muted)">${d.toFixed(2)}</span></li>`}).join('');
+  return `<div class="note near" style="margin:8px 0 0"><b>Nearest lifepaths</b> <span style="color:var(--muted)">(most similar shape of path)</span><ol style="margin:4px 0 4px 18px;padding:0">${items}</ol>Distance is the DTW distance between standardised lifepaths (inflection date and steepness at each snapshot)${R?`; a typical pair is ${R[1].toFixed(2)}, and the closest tenth of pairs are under ${R[0].toFixed(2)}`:''}. It compares how topics were researched, not whether they are related in meaning.</div>`}
 function waveInfo(i){if(!CFG.waves)return '';if(WG[i]<0&&AR[i]<0)return '<p class="note wtag" style="margin:6px 0 0">Not grouped.</p>';
   return `<p class="note wtag" style="margin:6px 0 0">${WG[i]>=0?`<span class="dot" style="background:var(${WCV[WG[i]]})"></span> Wave group <b>${WN[WG[i]]}</b>${WTw[i]?` <i>(model-assigned, ${WCf[i]}% certain)</i>`:''}`:'Not in a wave group'}${AR[i]>=0?` · lifepath archetype <b>${AN[AR[i]]}</b>${WTa[i]?` <i>(${TENT[DATA[i][0]][5]?'nearest lifepath':'timing model'}, ${ACf[i]}% certain)</i>`:''}`:' · no lifepath archetype'}</p>`}
 function buildWChips(){const box=$('wchips');box.innerHTML='';$('wfield').style.display=colorBy==='phase'?'none':'';
