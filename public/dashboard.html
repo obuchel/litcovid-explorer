@@ -953,7 +953,7 @@ build();
 new MutationObserver(()=>setTimeout(build,50)).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 }
 
-if(CFG.lists){{let glMode=0;
+if(CFG.lists){(function(){var glMode=0;
  function glLists(){const names=glMode?AN:WN,cols=glMode?ACV:WCV,box=$('glbox');
   const mem=names.map(()=>[]);
   DATA.forEach((r,i)=>{const g=glMode?AR[i]:WG[i];if(g>=0)mem[g].push([i,r[2].reduce((a,b)=>a+b,0),glMode?ACf[i]:WCf[i]])});
@@ -963,7 +963,7 @@ if(CFG.lists){{let glMode=0;
   box.querySelectorAll('button').forEach(b=>{b.onmouseenter=()=>b.style.background='var(--chip)';b.onmouseleave=()=>b.style.background='';b.onclick=()=>{select(+b.dataset.i);$('plotcard').scrollIntoView({behavior:'smooth',block:'start'})}});
   $('gl1').setAttribute('aria-pressed',!glMode);$('gl2').setAttribute('aria-pressed',!!glMode)}
  $('gl1').onclick=()=>{glMode=0;glLists()};$('gl2').onclick=()=>{glMode=1;glLists()};glLists();
- window.glView=()=>{const g=$('glists');g.style.display=colorBy==='phase'?'none':'';if(colorBy!=='phase'){glMode=colorBy==='arch'?1:0;glLists()}};window.glView()}}
+ window.glView=()=>{const g=$('glists');g.style.display=colorBy==='phase'?'none':'';if(colorBy!=='phase'){glMode=colorBy==='arch'?1:0;glLists()}};window.glView()})()}
 if(CFG.extra){clusterExtras()}
 try{if(innerWidth>700)$('more').open=true}catch(e){}
 recls();setView('paths');detail();counts();size();
