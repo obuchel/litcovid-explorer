@@ -6,15 +6,15 @@
 /* Layout: control bar on top; big scatter (inflection time x slope) left, selected-disease detail right; stacks on phones. */
 :root{
   --bg:#f6f6f3; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#7b7a74; --grid:#e1e0d9; --axis:#c3c2b7;
-  --accent:#2a78d6; --c0:#2a78d6; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
+  --accent:#2a78d6; --c0:#17935f; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
   --serif:'IBM Plex Serif',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:20px 32px}
 .wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
@@ -116,6 +116,7 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
 .insights .ins-s{color:var(--muted);font-size:12.5px;margin:0 0 10px}
 .insights ul{margin:0;padding-left:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:8px 36px;list-style:disc;color:var(--ink2);font-size:14px;line-height:1.55}
 .insights li{padding-right:6px}
+.insights .vh{font:600 14px var(--sans);color:var(--ink);margin:18px 0 8px;padding-top:12px;border-top:1px solid var(--grid)}.insights .vh:empty{display:none}
 [data-tip]{position:relative}
 [data-tip]:hover::after,[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 8px);z-index:60;width:max-content;max-width:min(300px,78vw);background:var(--ink);color:var(--bg);font:400 12px/1.45 var(--sans);letter-spacing:0;text-transform:none;text-align:left;white-space:normal;padding:8px 11px;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.25);pointer-events:none}
 @media(max-width:860px){.hgrid{grid-template-columns:1fr}.phases{border-left:0;padding-left:0}}
@@ -141,19 +142,20 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
 .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:8px 0}
 .kchoice svg .ct{font:600 12px var(--sans);fill:var(--ink)}.kchoice svg .at{font:400 10px var(--mono);fill:var(--muted)}.kchoice svg .gl{stroke:var(--grid)}
 .kt{width:100%;border-collapse:collapse;font:400 12px var(--mono);min-width:560px}.kt th{font:500 10px var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:right;padding:4px 6px}.kt td{padding:5px 6px;text-align:right;border-top:1px solid var(--grid)}.kt th:first-child,.kt td:first-child{text-align:left}.kt tr.sel td{background:var(--chip);font-weight:600}
-#plotcard.listmode>*:not(#listtab):not(.stat){display:none!important}#listtab{display:none}#plotcard.listmode>#listtab{display:block}#listbox{max-height:640px;overflow:auto;border:1px solid var(--grid);border-radius:8px;margin-top:8px}#listtab .lt{display:flex;gap:10px;align-items:center;flex-wrap:wrap}#listtab input[type=search]{font:inherit;padding:6px 8px;border:1px solid var(--grid);border-radius:8px;background:var(--surface);color:var(--ink)}#listtab button{font:inherit;font-size:12px;padding:5px 10px;border:1px solid var(--grid);border-radius:8px;background:var(--chip);color:var(--ink);cursor:pointer}</style><body>
+#plotcard.listmode>*:not(#listtab):not(.stat){display:none!important}#listtab{display:none}#plotcard.listmode>#listtab{display:block}#listbox{max-height:640px;overflow:auto;border:1px solid var(--grid);border-radius:8px;margin-top:8px}#listtab .lt{display:flex;gap:10px;align-items:center;flex-wrap:wrap}#listtab input[type=search]{font:inherit;padding:6px 8px;border:1px solid var(--grid);border-radius:8px;background:var(--surface);color:var(--ink)}#listtab button{font:inherit;font-size:12px;padding:5px 10px;border:1px solid var(--grid);border-radius:8px;background:var(--chip);color:var(--ink);cursor:pointer}#counts .spark{grid-template-columns:14px minmax(0,1fr) auto 14px minmax(0,1fr) auto;gap:8px 14px}#counts .spark .nm{white-space:nowrap}@media(max-width:760px){#counts .spark{grid-template-columns:14px minmax(0,1fr) auto}}
+</style><body>
 <div class="hero"><div class="hin"><!--NAV--><div class="hgrid"><header><h1>{{title}}</h1><p class="lead">{{lead}}</p></header><div class="phases"><div class="ph-h">The four phases</div>
 <div class="ph"><i style="background:var(--c0)"></i><b>Acceleration</b><span>the fitted inflection is still ahead: growth is speeding up</span></div>
 <div class="ph"><i style="background:var(--c1)"></i><b>Inflection</b><span>growth is at its fastest now, within a month of the fitted inflection</span></div>
 <div class="ph"><i style="background:var(--c2)"></i><b>Deceleration</b><span>the inflection is behind: still growing, but slowing</span></div>
 <div class="ph"><i style="background:var(--c3)"></i><b>Deactivation</b><span>the curve has reached its ceiling: few new papers</span></div>
-<div class="ph-f">On the plot, each dot is placed by its fitted inflection date (left to right) and steepness (steeper curves sit lower); dot size is papers so far and a line joins one term’s snapshots.</div></div></div></div></div>
+<div class="ph-f">On the plot, each line with dots is one term. Each dot is the term at one snapshot, placed by its fitted inflection date (left to right) and steepness (steeper curves sit lower); dot size is papers so far and the line joins the term’s snapshots.</div></div></div></div></div>
 <div class="wrap">
 
   <div class="bar">
     <div class="field">
       <span class="lab">View</span>
-      <div class="tabs"><button id="v1" type="button" aria-pressed="true" data-tip="Every dot is a term placed by its fitted inflection date (left to right) and steepness at the chosen snapshot. Lines join a term’s snapshots, so you can follow its whole lifepath.">Lifepaths</button><button id="v2" type="button" aria-pressed="false" data-tip="Shows the phase rule itself: papers so far against months since the fitted inflection. Drag the dashed thresholds to reclassify every term and see how sensitive each label is.">Classification rule</button><button id="v3" type="button" aria-pressed="false">List of all terms</button></div>
+      <div class="tabs"><button id="v1" type="button" aria-pressed="true" data-tip="Each line with dots is one term. Each dot places the term by its fitted inflection date (left to right) and steepness at one snapshot, and the line joins a term’s snapshots, so you can follow its whole lifepath.">Lifepaths</button><button id="v2" type="button" aria-pressed="false" data-tip="Shows the phase rule itself: papers so far against months since the fitted inflection. Drag the dashed thresholds to reclassify every term and see how sensitive each label is.">Classification rule</button><button id="v3" type="button" aria-pressed="false">List of all terms</button></div>
     </div>
     <div class="field" id="xfield" style="display:none"><label for="xsel">Classification x-axis</label><select id="xsel"><option value="n">Papers so far (ln)</option><option value="s">Fitted saturation (log)</option></select></div>
     <div class="field" id="lvfield" data-levels><label for="lvsel">Level</label><select id="lvsel"><option value="0">All</option><option value="2">Categories</option><option value="3">Subcategories</option></select></div>
@@ -212,6 +214,7 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
       
       <div class="tip" id="tip" hidden></div>
       <div class="dleg" id="dleg"></div>
+      <div class="dens" id="counts"></div>
       <div class="dens" data-gap>
         <div class="dhead"><span class="h3">Inflection dates: original vs gap-filled</span></div>
         <canvas id="cv3" role="img" aria-label="Number of diseases by fitted inflection date, original run versus gap-filled run"></canvas>
@@ -230,31 +233,31 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
       <div class="dens" id="cattab" data-cats>
         <div class="dhead"><span class="h3">Terms grouped by higher-level MeSH category</span></div>
         <div style="overflow-x:auto"><table id="cattbl" style="font:400 12px var(--sans);min-width:720px"></table></div>
-        <div class="dleg">Category is the second level of each term's MeSH disease tree path (the level below "Diseases"). A term with several tree paths counts in each of its categories, so rows overlap and do not add up to the total. Mentions, phases and top terms follow the snapshot, thresholds and minimum-papers filter above; shares use monthly counts (2020 to 2021 against 2025 to 2026). Click a row to list its terms, or a header to sort.</div>
+        <div class="dleg">Category is the second level of each term's MeSH tree path (the level below its top branch, which MeSH calls "Diseases"). A term with several tree paths counts in each of its categories, so rows overlap and do not add up to the total. Mentions, phases and top terms follow the snapshot, thresholds and minimum-papers filter above; shares use monthly counts (2020 to 2021 against 2025 to 2026). Click a row to list its terms, or a header to sort.</div>
       </div>
       <div class="dens" id="listtab"><div class="lt"><span class="h3">Every term</span><input type="search" id="lfilter" placeholder="Filter by name" aria-label="Filter terms"><button type="button" id="lcsv">Download CSV</button></div><div class="dleg" id="lcount"></div><div id="listbox"></div><div class="dleg">Paper counts are the number of distinct papers that mention the term, whatever the filters. Click a column heading to sort, or a row to follow its lifepath.</div></div>
       <div class="stat"><span id="count"></span><span id="hint"></span></div>
     </div>
     <div class="side">
-      <aside class="card" id="counts"></aside><aside class="card" id="lp"><div class="lh"><h3 class="h3" id="lph">Lifepaths</h3><label style="font-size:12px;color:var(--muted)">Sort <select id="lps"><option value="p">papers so far</option><option value="m">months since inflection</option><option value="a">name</option></select></label></div><div id="lpb"></div><div class="dleg" id="lpn"></div></aside>
-      <aside class="card" id="waves" data-waves></aside>
-      <aside class="card" id="detail"></aside>
+      <aside class="card" id="lp"><div class="lh"><h3 class="h3" id="lph">Lifepaths</h3><label style="font-size:12px;color:var(--muted)">Sort <select id="lps"><option value="p">papers so far</option><option value="m">months since inflection</option><option value="a">name</option></select></label></div><div id="lpb"></div><div class="dleg" id="lpn"></div></aside>
       <div class="card" id="glists" data-lists><h3 class="h3">Diseases by group</h3><p class="rule" style="margin:4px 0 10px">Every disease with {{minN}}+ papers, by the wave group and by the lifepath archetype it was assigned to. Number = papers; bracket = model certainty. Click a name to open its lifepath. Assignments are tentative.</p><div class="tabs" style="margin-bottom:10px"><button id="gl1" type="button" aria-pressed="true">Wave groups</button><button id="gl2" type="button" aria-pressed="false">Lifepath archetypes</button></div><div id="glbox" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px"></div></div>
+      <aside class="card" id="detail"></aside>
+      <aside class="card" id="waves" data-waves></aside>
     </div>
   </div>
-  <section class="insights" id="insights" aria-labelledby="insh"><h2 id="insh">Insights</h2><p class="ins-s">What this page shows, and how to read it.</p><ul>{{insights}}</ul></section>
-<details class="kchoice" data-cats><summary>How the groups were chosen: number of groups and minimum papers</summary>
-<p><b>Number of groups.</b> Silhouette measures how well separated a grouping is (1 is perfect, near 0 means the groups overlap). For the wave groups (k-means on each term’s quarterly volume scaled to its own peak) it is highest at k=2 (0.218) and then falls steadily, so we use two wave groups, an early wave (85 terms) and a sustained group (78 terms). Three and four groups score 0.156 and 0.155. The four-group solution is also not unique: different random starts give different partitions, and in the one we examined the weakest group has a mean silhouette of only 0.04. The lifepath archetypes (DTW distance with Ward linkage) also score highest at k=2 (0.358 against 0.240 at k=3), but we keep three because the two-group split puts 118 of 163 terms in one group. Either way the terms form a continuum: the groups are a descriptive split of it, not natural clusters.</p>
-<div class="kgrid"><svg viewBox="0 0 400 230" role="img" aria-label="Wave groups (k-means)" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Wave groups (k-means)</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="160.4" y2="160.4" class="gl"/><text x="38" y="163.4" text-anchor="end" class="at">0.1</text><line x1="44" x2="390" y1="126.8" y2="126.8" class="gl"/><text x="38" y="129.8" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="93.2" y2="93.2" class="gl"/><text x="38" y="96.2" text-anchor="end" class="at">0.3</text><line x1="44" x2="390" y1="59.6" y2="59.6" class="gl"/><text x="38" y="62.6" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">0.5</text><text x="44.0" y="208" text-anchor="middle" class="at">2</text><text x="97.2" y="208" text-anchor="middle" class="at">4</text><text x="150.5" y="208" text-anchor="middle" class="at">6</text><text x="203.7" y="208" text-anchor="middle" class="at">8</text><text x="256.9" y="208" text-anchor="middle" class="at">10</text><text x="310.2" y="208" text-anchor="middle" class="at">12</text><text x="363.4" y="208" text-anchor="middle" class="at">14</text><text x="217.0" y="226" text-anchor="middle" class="at">number of groups k</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">mean silhouette</text><line x1="44.0" x2="44.0" y1="26" y2="194" stroke="var(--c2)" stroke-dasharray="3 3"/><text x="48.0" y="188" class="at" fill="var(--c2)" style="fill:var(--c2)">k used</text><polyline points="44.0,120.8 70.6,141.6 97.2,141.9 123.8,145.3 150.5,151.0 177.1,153.3 203.7,159.4 230.3,159.4 256.9,160.4 283.5,162.4 310.2,161.7 336.8,162.4 363.4,162.8 390.0,164.4" fill="none" stroke="var(--c0)" stroke-width="2" /><circle cx="44.0" cy="120.8" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 2 → 0.218</title></circle><circle cx="70.6" cy="141.6" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 3 → 0.156</title></circle><circle cx="97.2" cy="141.9" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 4 → 0.155</title></circle><circle cx="123.8" cy="145.3" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 5 → 0.145</title></circle><circle cx="150.5" cy="151.0" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 6 → 0.128</title></circle><circle cx="177.1" cy="153.3" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 7 → 0.121</title></circle><circle cx="203.7" cy="159.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 8 → 0.103</title></circle><circle cx="230.3" cy="159.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 9 → 0.103</title></circle><circle cx="256.9" cy="160.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 10 → 0.1</title></circle><circle cx="283.5" cy="162.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 11 → 0.094</title></circle><circle cx="310.2" cy="161.7" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 12 → 0.096</title></circle><circle cx="336.8" cy="162.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 13 → 0.094</title></circle><circle cx="363.4" cy="162.8" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 14 → 0.093</title></circle><circle cx="390.0" cy="164.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 15 → 0.088</title></circle><polyline points="44.0,147.3 70.6,155.4 97.2,166.1 123.8,166.4 150.5,169.5 177.1,169.5 203.7,170.5 230.3,168.1 256.9,171.5 283.5,172.8 310.2,172.8 336.8,171.8 363.4,171.8 390.0,172.2" fill="none" stroke="var(--c3)" stroke-width="2" stroke-dasharray="4 3"/><circle cx="44.0" cy="147.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 2 → 0.139</title></circle><circle cx="70.6" cy="155.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 3 → 0.115</title></circle><circle cx="97.2" cy="166.1" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 4 → 0.083</title></circle><circle cx="123.8" cy="166.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 5 → 0.082</title></circle><circle cx="150.5" cy="169.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 6 → 0.073</title></circle><circle cx="177.1" cy="169.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 7 → 0.073</title></circle><circle cx="203.7" cy="170.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 8 → 0.07</title></circle><circle cx="230.3" cy="168.1" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 9 → 0.077</title></circle><circle cx="256.9" cy="171.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 10 → 0.067</title></circle><circle cx="283.5" cy="172.8" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 11 → 0.063</title></circle><circle cx="310.2" cy="172.8" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 12 → 0.063</title></circle><circle cx="336.8" cy="171.8" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 13 → 0.066</title></circle><circle cx="363.4" cy="171.8" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 14 → 0.066</title></circle><circle cx="390.0" cy="172.2" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 15 → 0.065</title></circle></svg><svg viewBox="0 0 400 230" role="img" aria-label="Lifepath archetypes (DTW + Ward)" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Lifepath archetypes (DTW + Ward)</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="160.4" y2="160.4" class="gl"/><text x="38" y="163.4" text-anchor="end" class="at">0.1</text><line x1="44" x2="390" y1="126.8" y2="126.8" class="gl"/><text x="38" y="129.8" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="93.2" y2="93.2" class="gl"/><text x="38" y="96.2" text-anchor="end" class="at">0.3</text><line x1="44" x2="390" y1="59.6" y2="59.6" class="gl"/><text x="38" y="62.6" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">0.5</text><text x="44.0" y="208" text-anchor="middle" class="at">2</text><text x="97.2" y="208" text-anchor="middle" class="at">4</text><text x="150.5" y="208" text-anchor="middle" class="at">6</text><text x="203.7" y="208" text-anchor="middle" class="at">8</text><text x="256.9" y="208" text-anchor="middle" class="at">10</text><text x="310.2" y="208" text-anchor="middle" class="at">12</text><text x="363.4" y="208" text-anchor="middle" class="at">14</text><text x="217.0" y="226" text-anchor="middle" class="at">number of groups k</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">mean silhouette</text><line x1="70.6" x2="70.6" y1="26" y2="194" stroke="var(--c2)" stroke-dasharray="3 3"/><text x="74.6" y="188" class="at" fill="var(--c2)" style="fill:var(--c2)">k used</text><polyline points="44.0,73.7 70.6,113.4 97.2,107.0 123.8,115.7 150.5,134.5 177.1,132.8 203.7,130.2 230.3,131.2 256.9,137.2 283.5,136.9 310.2,135.5 336.8,137.2 363.4,136.9 390.0,134.9" fill="none" stroke="var(--c0)" stroke-width="2" /><circle cx="44.0" cy="73.7" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 2 → 0.358</title></circle><circle cx="70.6" cy="113.4" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 3 → 0.24</title></circle><circle cx="97.2" cy="107.0" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 4 → 0.259</title></circle><circle cx="123.8" cy="115.7" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 5 → 0.233</title></circle><circle cx="150.5" cy="134.5" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 6 → 0.177</title></circle><circle cx="177.1" cy="132.8" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 7 → 0.182</title></circle><circle cx="203.7" cy="130.2" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 8 → 0.19</title></circle><circle cx="230.3" cy="131.2" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 9 → 0.187</title></circle><circle cx="256.9" cy="137.2" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 10 → 0.169</title></circle><circle cx="283.5" cy="136.9" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 11 → 0.17</title></circle><circle cx="310.2" cy="135.5" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 12 → 0.174</title></circle><circle cx="336.8" cy="137.2" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 13 → 0.169</title></circle><circle cx="363.4" cy="136.9" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 14 → 0.17</title></circle><circle cx="390.0" cy="134.9" r="2.8" fill="var(--c0)"><title>≥100 papers (n=163): 15 → 0.176</title></circle><polyline points="44.0,30.0 70.6,113.4 97.2,114.4 123.8,134.5 150.5,144.3 177.1,143.3 203.7,144.6 230.3,142.9 256.9,141.2 283.5,146.0 310.2,144.3 336.8,146.0 363.4,147.3 390.0,146.0" fill="none" stroke="var(--c3)" stroke-width="2" stroke-dasharray="4 3"/><circle cx="44.0" cy="30.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 2 → 0.488</title></circle><circle cx="70.6" cy="113.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 3 → 0.24</title></circle><circle cx="97.2" cy="114.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 4 → 0.237</title></circle><circle cx="123.8" cy="134.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 5 → 0.177</title></circle><circle cx="150.5" cy="144.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 6 → 0.148</title></circle><circle cx="177.1" cy="143.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 7 → 0.151</title></circle><circle cx="203.7" cy="144.6" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 8 → 0.147</title></circle><circle cx="230.3" cy="142.9" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 9 → 0.152</title></circle><circle cx="256.9" cy="141.2" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 10 → 0.157</title></circle><circle cx="283.5" cy="146.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 11 → 0.143</title></circle><circle cx="310.2" cy="144.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 12 → 0.148</title></circle><circle cx="336.8" cy="146.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 13 → 0.143</title></circle><circle cx="363.4" cy="147.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 14 → 0.139</title></circle><circle cx="390.0" cy="146.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=745): 15 → 0.143</title></circle></svg></div>
-<p><b>Why 100 papers.</b> Core terms are the ones with at least 100 papers (163 terms, 81% of all disease mentions). A term with 100 papers has on average four papers per quarter over the 25 quarters, enough to give a curve shape, while at 10 papers most quarters are empty. Raising the cutoff improves separation (silhouette rises from 0.139 at 10 papers to 0.276 at 200), but it discards terms: coverage falls from 95% to 73%, and at 200 only 92 terms remain. Stability is high at every cutoff (seed ARI 0.98 or more). Split-half ARI, the agreement between groupings of two random halves of each term’s papers, is lowest at 30 to 50 papers and rises above 0.4 from 100. So 100 is the first cutoff where the groups separate clearly while four fifths of all mentions are still covered. There is no sharp optimum, and 100 is a round-number compromise. Terms under 100 papers are not dropped: they are assigned to a group by a timing model, with a certainty value.</p>
-<div class="kgrid"><svg viewBox="0 0 400 230" role="img" aria-label="Separation and reliability of the two wave groups" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Separation and reliability of the two wave groups</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="146.0" y2="146.0" class="gl"/><text x="38" y="149.0" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="98.0" y2="98.0" class="gl"/><text x="38" y="101.0" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="50.0" y2="50.0" class="gl"/><text x="38" y="53.0" text-anchor="end" class="at">0.6</text><text x="44.0" y="208" text-anchor="middle" class="at">10</text><text x="113.2" y="208" text-anchor="middle" class="at">20</text><text x="182.4" y="208" text-anchor="middle" class="at">30</text><text x="251.6" y="208" text-anchor="middle" class="at">50</text><text x="320.8" y="208" text-anchor="middle" class="at">100</text><text x="390.0" y="208" text-anchor="middle" class="at">200</text><text x="217.0" y="226" text-anchor="middle" class="at">minimum papers per term</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">score</text><polyline points="44.0,160.6 113.2,158.7 182.4,157.3 251.6,153.7 320.8,141.7 390.0,127.8" fill="none" stroke="var(--c0)" stroke-width="2" /><circle cx="44.0" cy="160.6" r="2.8" fill="var(--c0)"><title>silhouette at k=2: 10 → 0.139</title></circle><circle cx="113.2" cy="158.7" r="2.8" fill="var(--c0)"><title>silhouette at k=2: 20 → 0.147</title></circle><circle cx="182.4" cy="157.3" r="2.8" fill="var(--c0)"><title>silhouette at k=2: 30 → 0.153</title></circle><circle cx="251.6" cy="153.7" r="2.8" fill="var(--c0)"><title>silhouette at k=2: 50 → 0.168</title></circle><circle cx="320.8" cy="141.7" r="2.8" fill="var(--c0)"><title>silhouette at k=2: 100 → 0.218</title></circle><circle cx="390.0" cy="127.8" r="2.8" fill="var(--c0)"><title>silhouette at k=2: 200 → 0.276</title></circle><polyline points="44.0,100.4 113.2,114.8 182.4,124.4 251.6,129.2 320.8,93.2 390.0,52.4" fill="none" stroke="var(--c3)" stroke-width="2" stroke-dasharray="4 3"/><circle cx="44.0" cy="100.4" r="2.8" fill="var(--c3)"><title>split-half ARI at k=2: 10 → 0.39</title></circle><circle cx="113.2" cy="114.8" r="2.8" fill="var(--c3)"><title>split-half ARI at k=2: 20 → 0.33</title></circle><circle cx="182.4" cy="124.4" r="2.8" fill="var(--c3)"><title>split-half ARI at k=2: 30 → 0.29</title></circle><circle cx="251.6" cy="129.2" r="2.8" fill="var(--c3)"><title>split-half ARI at k=2: 50 → 0.27</title></circle><circle cx="320.8" cy="93.2" r="2.8" fill="var(--c3)"><title>split-half ARI at k=2: 100 → 0.42</title></circle><circle cx="390.0" cy="52.4" r="2.8" fill="var(--c3)"><title>split-half ARI at k=2: 200 → 0.59</title></circle></svg><svg viewBox="0 0 400 230" role="img" aria-label="Coverage by core terms" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Coverage by core terms</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="160.4" y2="160.4" class="gl"/><text x="38" y="163.4" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="126.8" y2="126.8" class="gl"/><text x="38" y="129.8" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="93.2" y2="93.2" class="gl"/><text x="38" y="96.2" text-anchor="end" class="at">0.6</text><line x1="44" x2="390" y1="59.6" y2="59.6" class="gl"/><text x="38" y="62.6" text-anchor="end" class="at">0.8</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">1.0</text><text x="44.0" y="208" text-anchor="middle" class="at">10</text><text x="113.2" y="208" text-anchor="middle" class="at">20</text><text x="182.4" y="208" text-anchor="middle" class="at">30</text><text x="251.6" y="208" text-anchor="middle" class="at">50</text><text x="320.8" y="208" text-anchor="middle" class="at">100</text><text x="390.0" y="208" text-anchor="middle" class="at">200</text><text x="217.0" y="226" text-anchor="middle" class="at">minimum papers per term</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">share of all disease mentions</text><polyline points="44.0,34.4 113.2,39.4 182.4,42.8 251.6,47.8 320.8,57.9 390.0,71.4" fill="none" stroke="var(--c0)" stroke-width="2" /><circle cx="44.0" cy="34.4" r="2.8" fill="var(--c0)"><title>share of mentions covered: 10 → 0.95</title></circle><circle cx="113.2" cy="39.4" r="2.8" fill="var(--c0)"><title>share of mentions covered: 20 → 0.92</title></circle><circle cx="182.4" cy="42.8" r="2.8" fill="var(--c0)"><title>share of mentions covered: 30 → 0.9</title></circle><circle cx="251.6" cy="47.8" r="2.8" fill="var(--c0)"><title>share of mentions covered: 50 → 0.87</title></circle><circle cx="320.8" cy="57.9" r="2.8" fill="var(--c0)"><title>share of mentions covered: 100 → 0.81</title></circle><circle cx="390.0" cy="71.4" r="2.8" fill="var(--c0)"><title>share of mentions covered: 200 → 0.73</title></circle></svg></div>
-<div style="overflow-x:auto"><table class="kt"><thead><tr><th>Minimum papers</th><th>Terms</th><th>Mentions covered</th><th>Silhouette (k=2)</th><th>Split-half ARI</th><th>Bootstrap ARI</th><th>Seed ARI</th></tr></thead><tbody>
-<tr><td>10</td><td>745</td><td>95%</td><td>0.139</td><td>0.39</td><td>0.90</td><td>0.99</td></tr>
-<tr><td>20</td><td>464</td><td>92%</td><td>0.147</td><td>0.33</td><td>0.90</td><td>1.00</td></tr>
-<tr><td>30</td><td>360</td><td>90%</td><td>0.153</td><td>0.29</td><td>0.81</td><td>0.99</td></tr>
-<tr><td>50</td><td>269</td><td>87%</td><td>0.168</td><td>0.27</td><td>0.79</td><td>1.00</td></tr>
-<tr class="sel"><td>100 (used)</td><td>163</td><td>81%</td><td>0.218</td><td>0.42</td><td>0.77</td><td>0.98</td></tr>
-<tr><td>200</td><td>92</td><td>73%</td><td>0.276</td><td>0.59</td><td>0.81</td><td>0.99</td></tr></tbody></table></div></details>
+  <section class="insights" id="insights" aria-labelledby="insh"><h2 id="insh">Insights</h2><p class="ins-s">What this page shows, and how to read it.</p><ul>{{insights}}</ul><h3 class="vh" id="vh"></h3><ul id="vins"></ul></section>
+<details class="kchoice" id="kwave" data-cats style="display:none"><summary>How the wave groups were chosen: number of groups and minimum papers</summary>
+<p><b>Number of groups.</b> Silhouette measures how well separated a grouping is (1 is perfect, near 0 means the groups overlap). For the wave groups (k-means on each term’s quarterly volume scaled to its own peak) the mean silhouette is highest at k=2 (0.217), drops to 0.151 at k=3 and rises slightly to 0.157 at k=4, a local peak, before falling again. We use <b>four wave groups</b>, as in the paper: Acute early (38 terms), Broad first wave (47), Late symptom (29) and Chronic core (43). This is a choice made for description, not the best-separated split: two groups would separate more cleanly. The weakest of the four, Late symptom, has a mean silhouette of only 0.05, and the partition is reproducible across random starts (seed ARI 0.99). The terms form a continuum: the groups are a descriptive split of it, not natural clusters.</p>
+<div class="kgrid"><svg viewBox="0 0 400 230" role="img" aria-label="Wave groups (k-means)" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Wave groups (k-means)</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="160.4" y2="160.4" class="gl"/><text x="38" y="163.4" text-anchor="end" class="at">0.1</text><line x1="44" x2="390" y1="126.8" y2="126.8" class="gl"/><text x="38" y="129.8" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="93.2" y2="93.2" class="gl"/><text x="38" y="96.2" text-anchor="end" class="at">0.3</text><line x1="44" x2="390" y1="59.6" y2="59.6" class="gl"/><text x="38" y="62.6" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">0.5</text><text x="44.0" y="208" text-anchor="middle" class="at">2</text><text x="97.2" y="208" text-anchor="middle" class="at">4</text><text x="150.5" y="208" text-anchor="middle" class="at">6</text><text x="203.7" y="208" text-anchor="middle" class="at">8</text><text x="256.9" y="208" text-anchor="middle" class="at">10</text><text x="310.2" y="208" text-anchor="middle" class="at">12</text><text x="363.4" y="208" text-anchor="middle" class="at">14</text><text x="217.0" y="226" text-anchor="middle" class="at">number of groups k</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">mean silhouette</text><line x1="97.2" x2="97.2" y1="26" y2="194" stroke="var(--c2)" stroke-dasharray="3 3"/><text x="101.2" y="36" class="at" fill="var(--c2)" style="fill:var(--c2)">k = 4 chosen</text><polyline points="44.0,121.2 70.6,143.3 97.2,141.2 123.8,149.6 150.5,150.1 177.1,149.5 203.7,154.6 230.3,160.3 256.9,162.4 283.5,159.2 310.2,163.3 336.8,164.3 363.4,161.2 390.0,168.2" fill="none" stroke="var(--accent)" stroke-width="2" /><circle cx="44.0" cy="121.2" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 2 → 0.217</title></circle><circle cx="70.6" cy="143.3" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 3 → 0.151</title></circle><circle cx="97.2" cy="141.2" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 4 → 0.157</title></circle><circle cx="123.8" cy="149.6" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 5 → 0.132</title></circle><circle cx="150.5" cy="150.1" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 6 → 0.131</title></circle><circle cx="177.1" cy="149.5" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 7 → 0.132</title></circle><circle cx="203.7" cy="154.6" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 8 → 0.117</title></circle><circle cx="230.3" cy="160.3" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 9 → 0.100</title></circle><circle cx="256.9" cy="162.4" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 10 → 0.094</title></circle><circle cx="283.5" cy="159.2" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 11 → 0.104</title></circle><circle cx="310.2" cy="163.3" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 12 → 0.091</title></circle><circle cx="336.8" cy="164.3" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 13 → 0.088</title></circle><circle cx="363.4" cy="161.2" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 14 → 0.098</title></circle><circle cx="390.0" cy="168.2" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 15 → 0.077</title></circle><polyline points="44.0,148.1 70.6,156.6 97.2,167.0 123.8,167.3 150.5,169.5 177.1,170.9 203.7,169.4 230.3,168.4 256.9,172.0 283.5,173.0 310.2,171.4 336.8,172.3 363.4,171.0 390.0,173.1" fill="none" stroke="var(--c3)" stroke-width="2" stroke-dasharray="4 3" /><circle cx="44.0" cy="148.1" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 2 → 0.137</title></circle><circle cx="70.6" cy="156.6" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 3 → 0.111</title></circle><circle cx="97.2" cy="167.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 4 → 0.081</title></circle><circle cx="123.8" cy="167.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 5 → 0.080</title></circle><circle cx="150.5" cy="169.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 6 → 0.073</title></circle><circle cx="177.1" cy="170.9" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 7 → 0.069</title></circle><circle cx="203.7" cy="169.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 8 → 0.073</title></circle><circle cx="230.3" cy="168.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 9 → 0.076</title></circle><circle cx="256.9" cy="172.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 10 → 0.065</title></circle><circle cx="283.5" cy="173.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 11 → 0.063</title></circle><circle cx="310.2" cy="171.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 12 → 0.067</title></circle><circle cx="336.8" cy="172.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 13 → 0.065</title></circle><circle cx="363.4" cy="171.0" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 14 → 0.068</title></circle><circle cx="390.0" cy="173.1" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 15 → 0.062</title></circle><circle cx="97.2" cy="141.2" r="6" fill="none" stroke="var(--c2)" stroke-width="2"/></svg></div><p style="font-size:12px;line-height:1.5;color:var(--muted);margin:6px 0 0"><b>Solid blue line:</b> core terms with at least 100 papers (157 terms), the ones the groups are built on. <b>Dashed grey line:</b> all terms with at least 10 papers (722 terms). Both lines are the mean silhouette at each number of groups k. The orange line and ring mark the number of groups we chose, k = 4.</p>
+<p><b>Why 100 papers.</b> Core terms are the ones with at least 100 papers (157 terms, 81% of all disease mentions). A term with 100 papers has on average four papers per quarter over the 25 quarters, enough to give a curve shape, while at 10 papers most quarters are empty. Raising the cutoff improves separation (silhouette at k=4 rises from 0.081 at 10 papers to 0.172 at 200) and split-half agreement (0.14 to 0.29), but it discards terms: coverage falls from 95% to 73%, and at 200 only 88 terms remain. Agreement between random starts is high at every cutoff (seed ARI 0.92 or more). Split-half ARI, the agreement between groupings of two random halves of each term’s papers, stays modest (0.27 at 100 papers), so terms near a group boundary can change group when their papers change. There is no sharp optimum, and 100 is a round-number compromise that keeps four fifths of all mentions. Terms under 100 papers are not dropped: they are assigned to a group by a timing model, with a certainty value.</p>
+<div class="kgrid"><svg viewBox="0 0 400 230" role="img" aria-label="Separation and reliability of the four wave groups" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Separation and reliability of the four wave groups</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="152.0" y2="152.0" class="gl"/><text x="38" y="155.0" text-anchor="end" class="at">0.1</text><line x1="44" x2="390" y1="110.0" y2="110.0" class="gl"/><text x="38" y="113.0" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="68.0" y2="68.0" class="gl"/><text x="38" y="71.0" text-anchor="end" class="at">0.3</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">0.4</text><text x="44.0" y="208" text-anchor="middle" class="at">10</text><text x="113.2" y="208" text-anchor="middle" class="at">20</text><text x="182.4" y="208" text-anchor="middle" class="at">30</text><text x="251.6" y="208" text-anchor="middle" class="at">50</text><text x="320.8" y="208" text-anchor="middle" class="at">100</text><text x="390.0" y="208" text-anchor="middle" class="at">200</text><text x="217.0" y="226" text-anchor="middle" class="at">minimum papers per term</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">score</text><polyline points="44.0,160.2 113.2,152.6 182.4,149.6 251.6,142.8 320.8,128.0 390.0,121.8" fill="none" stroke="var(--accent)" stroke-width="2" /><circle cx="44.0" cy="160.2" r="2.8" fill="var(--accent)"><title>silhouette at k=4: 10 → 0.081</title></circle><circle cx="113.2" cy="152.6" r="2.8" fill="var(--accent)"><title>silhouette at k=4: 20 → 0.099</title></circle><circle cx="182.4" cy="149.6" r="2.8" fill="var(--accent)"><title>silhouette at k=4: 30 → 0.106</title></circle><circle cx="251.6" cy="142.8" r="2.8" fill="var(--accent)"><title>silhouette at k=4: 50 → 0.122</title></circle><circle cx="320.8" cy="128.0" r="2.8" fill="var(--accent)"><title>silhouette at k=4: 100 → 0.157</title></circle><circle cx="390.0" cy="121.8" r="2.8" fill="var(--accent)"><title>silhouette at k=4: 200 → 0.172</title></circle><polyline points="44.0,136.5 113.2,115.0 182.4,112.9 251.6,102.0 320.8,81.4 390.0,71.8" fill="none" stroke="var(--c3)" stroke-width="2" stroke-dasharray="4 3" /><circle cx="44.0" cy="136.5" r="2.8" fill="var(--c3)"><title>split-half ARI at k=4: 10 → 0.14</title></circle><circle cx="113.2" cy="115.0" r="2.8" fill="var(--c3)"><title>split-half ARI at k=4: 20 → 0.19</title></circle><circle cx="182.4" cy="112.9" r="2.8" fill="var(--c3)"><title>split-half ARI at k=4: 30 → 0.19</title></circle><circle cx="251.6" cy="102.0" r="2.8" fill="var(--c3)"><title>split-half ARI at k=4: 50 → 0.22</title></circle><circle cx="320.8" cy="81.4" r="2.8" fill="var(--c3)"><title>split-half ARI at k=4: 100 → 0.27</title></circle><circle cx="390.0" cy="71.8" r="2.8" fill="var(--c3)"><title>split-half ARI at k=4: 200 → 0.29</title></circle></svg><svg viewBox="0 0 400 230" role="img" aria-label="Coverage by core terms" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Coverage by core terms</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="160.4" y2="160.4" class="gl"/><text x="38" y="163.4" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="126.8" y2="126.8" class="gl"/><text x="38" y="129.8" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="93.2" y2="93.2" class="gl"/><text x="38" y="96.2" text-anchor="end" class="at">0.6</text><line x1="44" x2="390" y1="59.6" y2="59.6" class="gl"/><text x="38" y="62.6" text-anchor="end" class="at">0.8</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">1.0</text><text x="44.0" y="208" text-anchor="middle" class="at">10</text><text x="113.2" y="208" text-anchor="middle" class="at">20</text><text x="182.4" y="208" text-anchor="middle" class="at">30</text><text x="251.6" y="208" text-anchor="middle" class="at">50</text><text x="320.8" y="208" text-anchor="middle" class="at">100</text><text x="390.0" y="208" text-anchor="middle" class="at">200</text><text x="217.0" y="226" text-anchor="middle" class="at">minimum papers per term</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">share of all disease mentions</text><polyline points="44.0,34.1 113.2,39.5 182.4,43.0 251.6,48.2 320.8,58.2 390.0,72.1" fill="none" stroke="var(--accent)" stroke-width="2" /><circle cx="44.0" cy="34.1" r="2.8" fill="var(--accent)"><title>share of mentions covered: 10 → 0.95</title></circle><circle cx="113.2" cy="39.5" r="2.8" fill="var(--accent)"><title>share of mentions covered: 20 → 0.92</title></circle><circle cx="182.4" cy="43.0" r="2.8" fill="var(--accent)"><title>share of mentions covered: 30 → 0.90</title></circle><circle cx="251.6" cy="48.2" r="2.8" fill="var(--accent)"><title>share of mentions covered: 50 → 0.87</title></circle><circle cx="320.8" cy="58.2" r="2.8" fill="var(--accent)"><title>share of mentions covered: 100 → 0.81</title></circle><circle cx="390.0" cy="72.1" r="2.8" fill="var(--accent)"><title>share of mentions covered: 200 → 0.73</title></circle></svg></div><p style="font-size:12px;line-height:1.5;color:var(--muted);margin:6px 0 0"><b>Left:</b> solid blue line is the silhouette (how well separated the four wave groups are) and dashed grey line is the split-half ARI (how stable they are), both at k=4 for each minimum number of papers per term. <b>Right:</b> the share of all disease mentions that the core terms cover.</p>
+<div style="overflow-x:auto"><table class="kt"><thead><tr><th>Minimum papers</th><th>Terms</th><th>Mentions covered</th><th>Silhouette (k=4)</th><th>Split-half ARI</th><th>Bootstrap ARI</th><th>Seed ARI</th></tr></thead><tbody><tr><td>10</td><td>722</td><td>95%</td><td>0.081</td><td>0.14</td><td>0.28</td><td>0.92</td></tr><tr><td>20</td><td>450</td><td>92%</td><td>0.099</td><td>0.19</td><td>0.37</td><td>0.95</td></tr><tr><td>30</td><td>348</td><td>90%</td><td>0.106</td><td>0.19</td><td>0.34</td><td>0.94</td></tr><tr><td>50</td><td>256</td><td>87%</td><td>0.122</td><td>0.22</td><td>0.37</td><td>0.93</td></tr><tr class="sel"><td>100 (used)</td><td>157</td><td>81%</td><td>0.157</td><td>0.27</td><td>0.45</td><td>0.99</td></tr><tr><td>200</td><td>88</td><td>73%</td><td>0.172</td><td>0.29</td><td>0.48</td><td>0.99</td></tr></tbody></table></div><p style="font-size:12px;line-height:1.5;color:var(--muted);margin:6px 0 0">Split-half ARI: each term’s papers are randomly split in two, each half is clustered separately, and the two groupings are compared (mean of 20 splits). Bootstrap ARI: each term’s papers are resampled with replacement and clustered again, then compared with the original groups (mean of 20). Seed ARI: agreement between k-means runs from different random starts. ARI is 1 for identical groupings and about 0 for unrelated ones.</p>
+</details>
+<details class="kchoice" id="karch" data-cats style="display:none"><summary>How the lifepath archetypes were chosen: number of groups</summary>
+<p><b>Number of groups.</b> Silhouette measures how well separated a grouping is (1 is perfect, near 0 means the groups overlap). Here each core term’s lifepath (its fitted inflection date and steepness at every snapshot, from the first fit with 5 or more papers) is compared with every other term’s by DTW distance, and the terms are joined by Ward linkage. The silhouette is computed on those DTW distances. It is highest at k=2 (0.354), then 0.257 at k=3 and 0.242 at k=4. We use <b>three archetypes</b>: Early exit (31 terms), Broad wave (62) and Late settling (64), named by how often a term’s lifepath ends in the Deactivated phase. Their mean silhouettes at k=3 are 0.239, 0.304 and 0.220: positive for all three but modest, so the archetypes overlap. This is a descriptive split of a continuum, not a set of natural clusters.</p>
+<div class="kgrid"><svg viewBox="0 0 400 230" role="img" aria-label="Lifepath archetypes (DTW + Ward)" style="width:100%;height:auto;max-width:400px"><text x="44" y="14" class="ct">Lifepath archetypes (DTW + Ward)</text><line x1="44" x2="390" y1="194.0" y2="194.0" class="gl"/><text x="38" y="197.0" text-anchor="end" class="at">0.0</text><line x1="44" x2="390" y1="160.4" y2="160.4" class="gl"/><text x="38" y="163.4" text-anchor="end" class="at">0.1</text><line x1="44" x2="390" y1="126.8" y2="126.8" class="gl"/><text x="38" y="129.8" text-anchor="end" class="at">0.2</text><line x1="44" x2="390" y1="93.2" y2="93.2" class="gl"/><text x="38" y="96.2" text-anchor="end" class="at">0.3</text><line x1="44" x2="390" y1="59.6" y2="59.6" class="gl"/><text x="38" y="62.6" text-anchor="end" class="at">0.4</text><line x1="44" x2="390" y1="26.0" y2="26.0" class="gl"/><text x="38" y="29.0" text-anchor="end" class="at">0.5</text><text x="44.0" y="208" text-anchor="middle" class="at">2</text><text x="97.2" y="208" text-anchor="middle" class="at">4</text><text x="150.5" y="208" text-anchor="middle" class="at">6</text><text x="203.7" y="208" text-anchor="middle" class="at">8</text><text x="256.9" y="208" text-anchor="middle" class="at">10</text><text x="310.2" y="208" text-anchor="middle" class="at">12</text><text x="363.4" y="208" text-anchor="middle" class="at">14</text><text x="217.0" y="226" text-anchor="middle" class="at">number of groups k</text><text x="11" y="110.0" text-anchor="middle" class="at" transform="rotate(-90 11 110.0)">mean silhouette</text><line x1="70.6" x2="70.6" y1="26" y2="194" stroke="var(--c2)" stroke-dasharray="3 3"/><text x="74.6" y="188" class="at" fill="var(--c2)" style="fill:var(--c2)">k = 3 chosen</text><polyline points="44.0,75.0 70.6,107.6 97.2,112.6 123.8,122.5 150.5,139.6 177.1,134.0 203.7,130.7 230.3,129.7 256.9,140.0 283.5,139.9 310.2,137.8 336.8,136.7 363.4,137.9 390.0,136.9" fill="none" stroke="var(--accent)" stroke-width="2" /><circle cx="44.0" cy="75.0" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 2 → 0.354</title></circle><circle cx="70.6" cy="107.6" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 3 → 0.257</title></circle><circle cx="97.2" cy="112.6" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 4 → 0.242</title></circle><circle cx="123.8" cy="122.5" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 5 → 0.213</title></circle><circle cx="150.5" cy="139.6" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 6 → 0.162</title></circle><circle cx="177.1" cy="134.0" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 7 → 0.179</title></circle><circle cx="203.7" cy="130.7" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 8 → 0.188</title></circle><circle cx="230.3" cy="129.7" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 9 → 0.192</title></circle><circle cx="256.9" cy="140.0" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 10 → 0.161</title></circle><circle cx="283.5" cy="139.9" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 11 → 0.161</title></circle><circle cx="310.2" cy="137.8" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 12 → 0.167</title></circle><circle cx="336.8" cy="136.7" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 13 → 0.170</title></circle><circle cx="363.4" cy="137.9" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 14 → 0.167</title></circle><circle cx="390.0" cy="136.9" r="2.8" fill="var(--accent)"><title>≥100 papers (n=157): 15 → 0.170</title></circle><polyline points="44.0,61.9 70.6,124.7 97.2,120.1 123.8,136.7 150.5,146.7 177.1,145.3 203.7,144.4 230.3,141.8 256.9,141.4 283.5,140.5 310.2,144.6 336.8,152.7 363.4,156.3 390.0,155.2" fill="none" stroke="var(--c3)" stroke-width="2" stroke-dasharray="4 3" /><circle cx="44.0" cy="61.9" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 2 → 0.393</title></circle><circle cx="70.6" cy="124.7" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 3 → 0.206</title></circle><circle cx="97.2" cy="120.1" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 4 → 0.220</title></circle><circle cx="123.8" cy="136.7" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 5 → 0.171</title></circle><circle cx="150.5" cy="146.7" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 6 → 0.141</title></circle><circle cx="177.1" cy="145.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 7 → 0.145</title></circle><circle cx="203.7" cy="144.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 8 → 0.147</title></circle><circle cx="230.3" cy="141.8" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 9 → 0.155</title></circle><circle cx="256.9" cy="141.4" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 10 → 0.157</title></circle><circle cx="283.5" cy="140.5" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 11 → 0.159</title></circle><circle cx="310.2" cy="144.6" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 12 → 0.147</title></circle><circle cx="336.8" cy="152.7" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 13 → 0.123</title></circle><circle cx="363.4" cy="156.3" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 14 → 0.112</title></circle><circle cx="390.0" cy="155.2" r="2.8" fill="var(--c3)"><title>≥10 papers (n=722): 15 → 0.115</title></circle><circle cx="70.6" cy="107.6" r="6" fill="none" stroke="var(--c2)" stroke-width="2"/></svg></div><p style="font-size:12px;line-height:1.5;color:var(--muted);margin:6px 0 0"><b>Solid blue line:</b> core terms with at least 100 papers (157 terms), the ones the archetypes are built on. <b>Dashed grey line:</b> all terms with at least 10 papers (722 terms). Both lines are the mean silhouette (DTW distances, Ward linkage) at each number of groups k. The orange line and ring mark the number of groups we chose, k = 3.</p>
+</details>
+<details class="kchoice" id="kchem" style="display:none"></details>
 </div>
 
 <script>
@@ -262,7 +265,7 @@ const __P=window.DASH_PAGE,__M=window.DASH_MAN,CFG=__P.cfg;
 const DATA=__P.rows.map(r=>r.length>=6?r:[r[0],r[1],r[2],r[3],r[3].map(d=>d?[d[0],d[6]]:null),r[2]]);
 const MCAT=__P.mcat||{};
 const SNAPS=__M.snaps;
-const NM=__M.nm,NP=NM+__M.pad,NQ=__M.nq,GAP=CFG.gap;
+const NM=__M.nm,NP=NM+__M.pad,NQ=__M.nq,GAP=null;   // gap-fill views (rings, original-vs-filled chart, gap band) are not shown
 const LAST=SNAPS.length-1;
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const lab=k=>MON[SNAPS[k][1]-1]+' '+SNAPS[k][0];
@@ -283,18 +286,18 @@ const on=[true,true,true,true];
 const phCol=i=>css('--c'+i);
 const WAVE=__P.wave||{};
 const WCURVE=__P.wcurve||[],WMETA=__P.wmeta||[];
-const WN=CFG.wn||['Acute early','Broad first wave','Late symptom','Chronic core'],NW=WN.length,AN=['Early exit','Broad wave','Late settling'];
+const WN=CFG.wn||['Acute early','Broad first wave','Late symptom','Chronic core'],NW=WN.length,AN=CFG.an||['Early exit','Broad wave','Late settling'],NA=AN.length;
 const TENT=__P.tent||{};
 const tw_=r=>!WAVE[r[0]]&&TENT[r[0]]&&TENT[r[0]][0]>=0,ta_=r=>!(WAVE[r[0]]&&WAVE[r[0]][1]>=0)&&TENT[r[0]]&&TENT[r[0]][1]>=0;
 const WG=DATA.map(r=>WAVE[r[0]]?WAVE[r[0]][0]:(tw_(r)?TENT[r[0]][0]:-1)),AR=DATA.map(r=>WAVE[r[0]]&&WAVE[r[0]][1]>=0?WAVE[r[0]][1]:(ta_(r)?TENT[r[0]][1]:-1));
 const WTw=DATA.map(r=>tw_(r)?1:0),WTa=DATA.map(r=>ta_(r)?1:0);let tentOn=true,minConf=0;const WCf=DATA.map(r=>tw_(r)?TENT[r[0]][2]:100),ACf=DATA.map(r=>ta_(r)?TENT[r[0]][3]:100);const cfOf=i=>colorBy==='wave'?WCf[i]:ACf[i];
 const isT=i=>colorBy==='wave'?WTw[i]:WTa[i];
-const WCV=({2:['--w0','--w3'],3:['--w0','--w1','--w3'],4:['--w0','--w1','--w2','--w3']})[NW]||['--w0','--w1','--w2','--w3'],ACV=['--w0','--w1','--w3'];
+const WCV=({2:['--w0','--w3'],3:['--w0','--w1','--w3'],4:['--w0','--w1','--w2','--w3']})[NW]||['--w0','--w1','--w2','--w3'],ACV=NA===2?['--w0','--w3']:['--w0','--w1','--w3'];
 let colorBy='phase';const gon=[true,true,true,true,true];
-const UNG=()=>colorBy==='wave'?NW:3;
+const UNG=()=>colorBy==='wave'?NW:NA;
 const catOf=i=>colorBy==='phase'?cph[i]:(colorBy==='wave'?(WG[i]>=0&&(!WTw[i]||(tentOn&&WCf[i]>=minConf))?WG[i]:NW):(AR[i]>=0&&(!WTa[i]||(tentOn&&ACf[i]>=minConf))?AR[i]:3));
 const catCol=c=>colorBy==='phase'?phCol(c):(c===UNG()?css('--axis'):css((colorBy==='wave'?WCV:ACV)[c]));
-const ORDER=()=>colorBy==='phase'?[3,2,1,0]:(colorBy==='wave'?[NW].concat(WN.map((_,i)=>i)):[3,0,1,2]);
+const ORDER=()=>colorBy==='phase'?[3,2,1,0]:(colorBy==='wave'?[NW].concat(WN.map((_,i)=>i)):[NA].concat(AN.map((_,i)=>i)));
 const ALPHA=ph=>colorBy==='phase'?(ph===3?.42:.72):(ph===UNG()?.14:.8);
 const groupOn=i=>colorBy==='phase'?true:gon[catOf(i)];
 
@@ -503,16 +506,25 @@ let pathsOn=true;
 let allP=true;
 
 let catSort='m',catDir=-1,catOpen='',catKey='';
-const CATS=[...new Set(Object.values(MCAT).flat())];
-const PSUM=DATA.map(r=>[0,0]);
-(()=>{let tA=0,tB=0;DATA.forEach((r,i)=>{let a=0,b=0;for(let m=0;m<=23;m++)a+=r[2][m]||0;for(let m=NM-17;m<NM;m++)b+=r[2][m]||0;PSUM[i]=[a,b];tA+=a;tB+=b});PSUM.tot=[tA,tB]})();
-function catTable(){if(!CFG.cats)return;
+// term-level source for this table: this page's own terms (Diseases page) or the term data the loader passes in (MeSH categories page)
+const CT_SRC=window.DASH_TERMS||null;
+const CT_ROWS=CT_SRC?CT_SRC.rows.map(r=>r.length>=6?r:[r[0],r[1],r[2],r[3],r[3].map(d=>d?[d[0],d[6]]:null),r[2]]):DATA;
+const CT_MC=CT_SRC?(CT_SRC.mcat||{}):MCAT;
+const CT_PS=CT_SRC?CT_ROWS.map(r=>{const a=new Int32Array(NM+1);for(let i=0;i<NM;i++)a[i+1]=a[i]+r[2][i];return a}):PS;
+function ctPhase(d,i){if(!CT_SRC)return d[3];
+  if(accOn){const n=nmon(si),w=Math.min(12,n>>1);if(w>=6){const r1=CT_PS[i][n]-CT_PS[i][n-w],r0=CT_PS[i][n-w]-CT_PS[i][n-2*w];if(r1>=accM*w/12&&r1>=accR*Math.max(r0,1)&&(r1-r0)/Math.sqrt(r1+r0)>=2)return 0}}
+  return fitClass(d,si)}
+const CATS=[...new Set(Object.values(CT_MC).flat())];
+const DQ_=new URLSearchParams(location.search).get('data')?'&data='+encodeURIComponent(new URLSearchParams(location.search).get('data')):'';
+const PSUM=CT_ROWS.map(r=>[0,0]);
+(()=>{let tA=0,tB=0;CT_ROWS.forEach((r,i)=>{let a=0,b=0;for(let m=0;m<=23;m++)a+=r[2][m]||0;for(let m=NM-17;m<NM;m++)b+=r[2][m]||0;PSUM[i]=[a,b];tA+=a;tB+=b});PSUM.tot=[tA,tB]})();
+function catTable(){if(!$('cattbl')||!CFG.cats&&!CT_SRC)return;
   const key=[si,satT,dT,accOn,accR,accM,minP,catSort,catDir,catOpen].join('|');if(key===catKey)return;catKey=key;
   const esc=t=>String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
   const rows={};CATS.forEach(c=>rows[c]={c,n:0,m:0,a:0,b:0,ph:[0,0,0,0],t:[]});
   let allM=0;
-  for(let i=0;i<N;i++){const d=DATA[i][3][si];if(!d||d[2]<minP)continue;allM+=d[2];
-    for(const c of MCAT[DATA[i][0]]){const r=rows[c];r.n++;r.m+=d[2];r.a+=PSUM[i][0];r.b+=PSUM[i][1];r.ph[d[3]]++;r.t.push([i,d[2],d[3]])}}
+  for(let i=0;i<CT_ROWS.length;i++){const d=CT_ROWS[i][3][si];if(!d||d[2]<minP)continue;allM+=d[2];const ph=ctPhase(d,i);
+    for(const c of (CT_MC[CT_ROWS[i][0]]||[])){const r=rows[c];if(!r)continue;r.n++;r.m+=d[2];r.a+=PSUM[i][0];r.b+=PSUM[i][1];r.ph[ph]++;r.t.push([i,d[2],ph])}}
   let L=Object.values(rows).filter(r=>r.n>0);
   const val={n:r=>r.n,m:r=>r.m,sh:r=>r.b/PSUM.tot[1]-r.a/PSUM.tot[0],c:r=>r.c,a:r=>r.ph[0],i:r=>r.ph[1],d:r=>r.ph[2],x:r=>r.ph[3]}[catSort]||(r=>r.m);
   L.sort((p,q)=>{const a=val(p),b=val(q);return (typeof a==='string'?a.localeCompare(b):a-b)*catDir});
@@ -522,13 +534,13 @@ function catTable(){if(!CFG.cats)return;
   for(const r of L){
     r.t.sort((p,q)=>q[1]-p[1]);
     const s0=100*r.a/PSUM.tot[0],s1=100*r.b/PSUM.tot[1],up=s1>s0;
-    h+=`<tr data-c="${esc(r.c)}" style="cursor:pointer;${catOpen===r.c?'background:var(--chip)':''}"><td style="text-align:left;padding:5px 6px;border-top:1px solid var(--grid)"><b>${esc(r.c)}</b></td><td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid)">${fmt(r.n)}</td><td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid)">${fmt(r.m)}</td><td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid);white-space:nowrap">${s0.toFixed(1)}% → ${s1.toFixed(1)}% <span style="color:var(${up?'--c0':'--c2'})">${up?'▲':'▼'}</span></td>`+r.ph.map(v=>`<td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid)">${v||''}</td>`).join('')+`<td style="text-align:left;padding:5px 6px;border-top:1px solid var(--grid);color:var(--ink2)">${r.t.slice(0,3).map(t=>esc(DATA[t[0]][1])).join(', ')}</td></tr>`;
-    if(catOpen===r.c)h+=`<tr><td colspan="9" style="padding:6px 10px 12px;border-top:1px solid var(--grid)"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 14px">`+r.t.slice(0,60).map(t=>`<button type="button" data-i="${t[0]}" style="all:unset;cursor:pointer;font-size:12px;display:flex;justify-content:space-between;gap:8px;padding:1px 4px"><span><span class="dot" style="background:var(${pc[t[2]]});margin-right:5px"></span>${esc(DATA[t[0]][1])}</span><span style="color:var(--muted)">${fmt(t[1])}</span></button>`).join('')+(r.t.length>60?`</div><div style="color:var(--muted);margin-top:4px">and ${r.t.length-60} smaller terms</div>`:'</div>')+'</td></tr>';
+    h+=`<tr data-c="${esc(r.c)}" style="cursor:pointer;${catOpen===r.c?'background:var(--chip)':''}"><td style="text-align:left;padding:5px 6px;border-top:1px solid var(--grid)"><b>${esc(r.c)}</b></td><td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid)">${fmt(r.n)}</td><td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid)">${fmt(r.m)}</td><td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid);white-space:nowrap">${s0.toFixed(1)}% → ${s1.toFixed(1)}% <span style="color:var(${up?'--c0':'--c2'})">${up?'▲':'▼'}</span></td>`+r.ph.map(v=>`<td style="text-align:right;padding:5px 6px;border-top:1px solid var(--grid)">${v||''}</td>`).join('')+`<td style="text-align:left;padding:5px 6px;border-top:1px solid var(--grid);color:var(--ink2)">${r.t.slice(0,3).map(t=>esc(CT_ROWS[t[0]][1])).join(', ')}</td></tr>`;
+    if(catOpen===r.c)h+=`<tr><td colspan="9" style="padding:6px 10px 12px;border-top:1px solid var(--grid)"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 14px">`+r.t.slice(0,60).map(t=>`<button type="button" data-i="${t[0]}" style="all:unset;cursor:pointer;font-size:12px;display:flex;justify-content:space-between;gap:8px;padding:1px 4px"><span><span class="dot" style="background:var(${pc[t[2]]});margin-right:5px"></span>${esc(CT_ROWS[t[0]][1])}</span><span style="color:var(--muted)">${fmt(t[1])}</span></button>`).join('')+(r.t.length>60?`</div><div style="color:var(--muted);margin-top:4px">and ${r.t.length-60} smaller terms</div>`:'</div>')+'</td></tr>';
   }
   const tb=$('cattbl');tb.innerHTML=h;
   tb.querySelectorAll('th[data-k]').forEach(e=>e.onclick=()=>{const k=e.dataset.k;if(catSort===k)catDir*=-1;else{catSort=k;catDir=k==='c'?1:-1}catKey='';catTable()});
   tb.querySelectorAll('tr[data-c]').forEach(e=>e.onclick=()=>{catOpen=catOpen===e.dataset.c?'':e.dataset.c;catKey='';catTable()});
-  tb.querySelectorAll('button[data-i]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();select(+b.dataset.i);$('plotcard').scrollIntoView({behavior:'smooth',block:'start'})});
+  tb.querySelectorAll('button[data-i]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();if(CT_SRC){location.href='?page=dis'+'eases&find='+encodeURIComponent(CT_ROWS[+b.dataset.i][1])+DQ_}else{select(+b.dataset.i);$('plotcard').scrollIntoView({behavior:'smooth',block:'start'})}});
 }
 function drawAllPaths(hasQ){
   if(!allP||colorBy!=='phase'||view==='rule')return;
@@ -543,7 +555,7 @@ function drawAllPaths(hasQ){
   ctx.globalAlpha=1}
 function drawGroupPaths(hasQ){
   if(colorBy==='phase'||!pathsOn)return;
-  const NG=colorBy==='wave'?NW:3,U=UNG(),names=colorBy==='wave'?WN:AN,inc=[];
+  const NG=colorBy==='wave'?NW:NA,U=UNG(),names=colorBy==='wave'?WN:AN,inc=[];
   for(let c=0;c<NG;c++)inc.push([]);
   for(let i=0;i<N;i++){const c=catOf(i);if(c===U||ca[i]<.02)continue;const d=DATA[i][3][si];if(!vis(d,i))continue;inc[c].push(i)}
   const pt=(i,k)=>k===si?[cx[i],cy[i]]:scr(i,k);
@@ -612,7 +624,7 @@ function draw(){
   ctx.restore();
   if(box){ctx.strokeStyle=css('--accent');ctx.fillStyle=css('--accent');ctx.lineWidth=1.2;ctx.setLineDash([4,3]);ctx.strokeRect(box.x0,box.y0,box.x1-box.x0,box.y1-box.y0);ctx.globalAlpha=.1;ctx.fillRect(box.x0,box.y0,box.x1-box.x0,box.y1-box.y0);ctx.globalAlpha=1;ctx.setLineDash([])}
   draw3();catTable();
-  $('count').textContent=hasQ?`${fmt(nm)} of ${fmt(n)} shown match “${query}”`:`${fmt(n)} diseases shown at ${lab(si)}`;
+  $('count').textContent=hasQ?`${fmt(nm)} of ${fmt(n)} shown match “${query}”`:`${fmt(n)} ${CFG.kind==='diseases'?'symptoms/comorbidities':CFG.nouns} shown at ${lab(si)}`;
 }
 
 // ---- hover / click
@@ -698,7 +710,7 @@ q.addEventListener('focus',()=>{if(query)res.hidden=false});q.addEventListener('
 function select(i){sel=i;if(!DATA[i][3][si]){const k=DATA[i][3].findIndex(Boolean);if(k>=0)setSnap(k,true)}detail();redraw()}
 function setSnap(k,silent){si=k;$('sl').value=k;$('yr').textContent=lab(k);if(!silent){retarget();detail();counts()}}
 $('sl').addEventListener('input',e=>{stop();setSnap(+e.target.value)});
-$('minp').addEventListener('change',e=>{minP=+e.target.value;dDirty=true;redraw()});
+$('minp').addEventListener('change',e=>{minP=+e.target.value;dDirty=true;redraw();VI()});
 function stop(){if(playT){clearInterval(playT);playT=null;$('play').textContent='Play'}}
 $('play').onclick=()=>{if(playT){stop();return}$('play').textContent='Pause';if(si===LAST)setSnap(0);
   playT=setInterval(()=>{if(si>=LAST){stop();return}setSnap(si+1)},1500)};
@@ -715,8 +727,64 @@ $('dOn').addEventListener('input',e=>{dOn=e.target.checked;redraw()});$('dbw').a
 $('ringOn').addEventListener('input',()=>{ringOn=$('ringOn').checked;redraw()});
 $('reset').onclick=()=>{$('satT').value=1.05;$('dT').value=1;$('accOn').checked=true;$('accR').value=1.3;$('accM').value=20;satT=1.05;dT=1;accCtl()};
 
+// ---- insights that follow the colour view (phase / wave group / archetype) and the snapshot
+let vit=0;const VI=()=>{cancelAnimationFrame(vit);vit=requestAnimationFrame(vinsights)};
+function vinsights(){
+  const ul=$('vins'),hd=$('vh');if(!ul||!hd)return;
+  const E=t=>String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const pct=(a,b)=>b?Math.round(100*a/b):0,med=a=>{if(!a.length)return NaN;const b=a.slice().sort((x,y)=>x-y),m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2};
+  const mname=day=>{const t=new Date(BASE+day*864e5);return MON[t.getUTCMonth()]+' '+t.getUTCFullYear()};
+  const qlab=q=>'Q'+(q%4+1)+' '+(BASE_Y+Math.floor(q/4));
+  const nm=CFG.kind==='diseases'?'symptoms/comorbidities':CFG.nouns,li=[],grp=colorBy!=='phase'&&CFG.waves;
+  const ids=[];for(let i=0;i<N;i++){const d=DATA[i][3][si];if(d&&d[2]>=minP)ids.push(i)}
+  const n=ids.length,pap=i=>{const d=DATA[i][3][si];return d?d[2]:0};
+  const topN=(arr,k)=>arr.slice().sort((a,b)=>pap(b)-pap(a)).slice(0,k).map(i=>E(DATA[i][1])+' ('+fmt(pap(i))+')').join(', ');
+  const minTxt=minP>0?minP+'+ papers':'any number of papers';
+  const partial=si===LAST&&__M.final_month_partial?' <i>The latest month is partial, which pushes fits toward saturation, so read the Deactivated share at this snapshot as an upper bound.</i>':'';
+  if(!n){hd.textContent='';ul.innerHTML='';return}
+  if(!grp){
+    hd.textContent='In this view: phase at '+lab(si);
+    const c=[0,0,0,0];ids.forEach(i=>c[DATA[i][3][si][3]]++);
+    let t='<b>Where terms are.</b> Of '+fmt(n)+' '+nm+' with '+minTxt+' at '+lab(si)+', '+pct(c[3],n)+'% are Deactivated, '+pct(c[2],n)+'% Decelerating, '+pct(c[1],n)+'% at Inflection and '+pct(c[0],n)+'% Accelerating.';
+    const k0=Math.max(0,si-2);if(k0<si){const c0=[0,0,0,0];let n0=0;for(let i=0;i<N;i++){const d=DATA[i][3][k0];if(d&&d[2]>=minP){c0[d[3]]++;n0++}}
+      if(n0)t+=' A year earlier ('+lab(k0)+') the Deactivated share was '+pct(c0[3],n0)+'% of '+fmt(n0)+' '+nm+'.'}
+    li.push(t+partial);
+    if(si>0){const tr={};let both=0,ch=0;ids.forEach(i=>{const a=DATA[i][3][si-1],b=DATA[i][3][si];if(a&&b){both++;if(a[3]!==b[3]){ch++;const k=a[3]+'>'+b[3];tr[k]=(tr[k]||0)+1}}});
+      const best=Object.entries(tr).sort((a,b)=>b[1]-a[1])[0];
+      if(both)li.push('<b>What moved.</b> Since '+lab(si-1)+', '+fmt(ch)+' of '+fmt(both)+' '+nm+' ('+pct(ch,both)+'%) changed phase'+(best?'; the most common move was '+PH[+best[0][0]]+' → '+PH[+best[0][2]]+' ('+fmt(best[1])+')':'')+'.')}
+    const md=med(ids.map(i=>dmo(DATA[i][3][si],si)));
+    if(isFinite(md))li.push('<b>Typical timing.</b> The median fitted inflection came '+(Math.abs(md)<1?'at about':Math.round(Math.abs(md))+' months '+(md>0?'before':'after'))+' the end of '+lab(si)+'. Positive months since inflection mean a term has passed its turning point. Deceleration starts more than '+dT+' month'+(dT===1?'':'s')+' after it, and a term counts as Deactivated once its fitted saturation is below '+satT+'.');
+    const acc=ids.filter(i=>DATA[i][3][si][3]===0);
+    if(acc.length)li.push('<b>Still growing.</b> The largest '+nm+' in Acceleration at '+lab(si)+': '+topN(acc,4)+'. '+fmt(acc.length)+' in all.');
+    else li.push('<b>Still growing.</b> No '+nm+' with '+minTxt+' are in Acceleration at '+lab(si)+'.');
+    if(view==='rule'){const near=ids.filter(i=>{const d=DATA[i][3][si];return Math.abs(d[6]-satT)<.05||Math.abs(Math.abs(dmo(d,si))-dT)<1}).length;
+      li.unshift('<b>Threshold sensitivity.</b> '+fmt(near)+' '+nm+' ('+pct(near,n)+'%) sit within 0.05 of the saturation limit or within a month of a timing limit, so a small change to a threshold would relabel them. The phase labels are a rule applied to a continuum, not natural categories.')}
+  }else{
+    const W=colorBy==='wave',names=W?WN:AN,G=W?WG:AR,T=W?WTw:WTa,NG=names.length;
+    hd.textContent='In this view: '+(W?'wave groups':'lifepath archetypes')+' at '+lab(si);
+    const core=[...Array(NG)].map(()=>[]),tent=[];
+    for(let i=0;i<N;i++){if(G[i]<0)continue;(T[i]?tent:core[G[i]]).push(i)}
+    const last=i=>{const d=DATA[i][3][LAST];return d?d[2]:0};
+    const nc=core.reduce((a,m)=>a+m.length,0),mem=nc?core:names.map((x,c)=>tent.filter(i=>G[i]===c)),tot=mem.reduce((a,m)=>a+m.reduce((x,i)=>x+last(i),0),0);
+    li.push('<b>Group sizes.</b> '+(nc?fmt(nc)+' '+nm+' with '+(CFG.minCore||100)+'+ papers form the groups: ':'No '+nm+' have 100+ papers, so all '+fmt(tent.length)+' are placed by a timing model into the same groups as for the main terms: ')+names.map((x,c)=>E(x)+' '+mem[c].length+' ('+pct(mem[c].reduce((a,i)=>a+last(i),0),tot)+'% of their mentions)').join(', ')+'.');
+    if(W&&WCURVE.length){li.push('<b>When each group peaked.</b> '+names.map((x,c)=>{const cu=WCURVE[c],mx=Math.max(...cu,1e-9),q=cu.indexOf(mx),rec=cu.slice(-4).reduce((a,b)=>a+b,0)/4;return E(x)+' in '+qlab(q)+' (last four quarters at '+Math.round(100*rec/mx)+'% of that peak)'}).join('; ')+'. Curves are each term’s quarterly volume scaled to its own peak, then averaged.')}
+    else{const med_=names.map((x,c)=>{const m=med(mem[c].map(i=>DATA[i][3][si]?DATA[i][3][si][0]:NaN).filter(isFinite));return E(x)+' '+(isFinite(m)?mname(m):'–')}).join('; ');
+      li.push('<b>Typical inflection date.</b> Median fitted inflection at '+lab(si)+': '+med_+'. Archetypes are told apart by the whole path of inflection date and steepness over the snapshots, not by one date.')}
+    li.push('<b>Phase by group at '+lab(si)+'.</b> Share Deactivated: '+names.map((x,c)=>{const m=mem[c].filter(i=>DATA[i][3][si]&&DATA[i][3][si][2]>=minP);return E(x)+' '+pct(m.filter(i=>DATA[i][3][si][3]===3).length,m.length)+'%'}).join(', ')+'. Share still Accelerating: '+names.map((x,c)=>{const m=mem[c].filter(i=>DATA[i][3][si]&&DATA[i][3][si][2]>=minP);return E(x)+' '+pct(m.filter(i=>DATA[i][3][si][3]===0).length,m.length)+'%'}).join(', ')+'.'+partial);
+    if(W){const X=AR;const lines=names.map((x,c)=>{const m=mem[c].filter(i=>X[i]>=0&&!WTa[i]);if(!m.length)return null;const k=[0,0,0];m.forEach(i=>k[X[i]]++);const b=k.indexOf(Math.max(...k));return E(x)+' is mostly '+AN[b]+' ('+pct(k[b],m.length)+'%)'}).filter(Boolean);
+      if(lines.length)li.push('<b>Overlap with archetypes.</b> '+lines.join('; ')+'. The two groupings use different information (volume against lifepath shape), so they agree only partly.')}
+    else{const lines=names.map((x,c)=>{const m=mem[c].filter(i=>WG[i]>=0&&!WTw[i]);if(!m.length)return null;const k=[0,0,0,0];m.forEach(i=>k[WG[i]]++);const b=k.indexOf(Math.max(...k));return E(x)+' is mostly '+(WN[b]||'')+' ('+pct(k[b],m.length)+'%)'}).filter(Boolean);
+      if(lines.length)li.push('<b>Overlap with wave groups.</b> '+lines.join('; ')+'. The two groupings use different information (lifepath shape against volume), so they agree only partly.')}
+    li.push('<b>Largest '+nm+' per group.</b> '+names.map((x,c)=>E(x)+': '+(mem[c].length?topN(mem[c].filter(i=>DATA[i][3][si]),3)||'–':'–')).join('; ')+'.');
+    if(tent.length){const cf=W?WCf:ACf;li.push('<b>'+(nc?'Smaller '+nm:'Certainty')+'.</b> '+fmt(tent.length)+' '+nm+(nc?' with fewer than '+(CFG.minCore||100)+' papers':'')+' are placed by a timing model, on average '+Math.round(tent.reduce((a,i)=>a+cf[i],0)/tent.length)+'% certain (fainter dots are less certain). Use the certainty filter to keep only the firmer placements.')}
+    const CG=__M.chemical_groups,S=CFG.kind==='diseases'?(W?__M.wave_silhouette:__M.archetype_silhouette):(CG?{by_k:W?CG.wave_silhouette:CG.archetype_silhouette,k_used:W?CG.wave_k:CG.arch_k}:null);
+    if(S&&S.by_k){const bk=S.by_k,ks=Object.keys(bk).map(Number),kb=ks.filter(k=>CFG.kind==='diseases'||k<=(W?4:3)).reduce((a,b)=>bk[b]>bk[a]?b:a,ks[0]),ku=S.k_used;
+      li.push('<b>How firm the groups are.</b> '+(CFG.core?'':'The groups were learned on the main terms. ')+'Mean silhouette at k = '+ku+' is '+bk[ku].toFixed(3)+(kb!==ku?', against '+bk[kb].toFixed(3)+' at k = '+kb:'')+'. Values near 0 mean neighbouring groups overlap, so read these as a descriptive split of a continuum. The chart below shows the scan over k.')}
+  }
+  ul.innerHTML=li.map(x=>'<li>'+x+'</li>').join('')}
+
 // ---- counts panel: one sparkline per phase
-function counts(){
+function counts(){VI();
   const rows=[0,1,2,3].map(p=>{const v=COUNTS.map(c=>c[p]),mx=Math.max(...v,1);const w=150,h=26;
     const pts=v.map((x,k)=>[k/(v.length-1)*w,h-2-(x/mx)*(h-6)]);
     const path='M'+pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L');
@@ -733,7 +801,7 @@ function detail(){queueMicrotask(waves);
   const r=DATA[sel],[id,name,m,s]=r;
   const rows=s.map((d,k)=>d?`<tr class="${k===si?'cur':''}"><td>${lab(k)}</td><td>${fmtDate(d[0])}</td><td>${d[6].toFixed(2)}</td><td>${dmo(d,k).toFixed(1)}</td><td style="text-align:left"><span class="ph"><span class="dot" style="background:var(--c${d[3]})"></span>${PH[d[3]]}</span>${changed(sel,k)?`<span style="color:var(--muted);font:400 11px var(--sans)"> (was ${PH[origPhase(sel,k)]})</span>`:''}</td></tr>`:`<tr class="${k===si?'cur':''}"><td>${lab(k)}</td><td colspan="4" style="text-align:left;color:var(--muted)">no papers yet</td></tr>`).join('');
   $('detail').innerHTML=`<h2>${esc(name)}</h2><div class="id">${esc(id)} · ${fmt(m.reduce((a,b)=>a+b,0))} papers 2020–2026</div>${waveInfo(sel)}${chart(r)}
-   <div class="legend"><span><i style="border-color:var(--ink)"></i>papers so far (gap filled)</span><span><i style="border-color:var(--c2);border-top-style:dashed"></i>as collected</span><span><i style="border-color:var(--accent)"></i>fit at ${lab(si)}</span><span><i style="border-color:var(--accent);border-top-style:dashed"></i>projection</span><span><i style="border-color:var(--muted);border-top-style:dotted"></i>later data</span></div>
+   <div class="legend"><span><i style="border-color:var(--ink)"></i>papers so far${GAP?' (gap filled)':''}</span>${GAP?'<span><i style="border-color:var(--c2);border-top-style:dashed"></i>as collected</span>':''}<span><i style="border-color:var(--accent)"></i>fit at ${lab(si)}</span><span><i style="border-color:var(--accent);border-top-style:dashed"></i>projection</span><span><i style="border-color:var(--muted);border-top-style:dotted"></i>later data</span></div>
    <table><thead><tr><th>Snapshot</th><th>Inflection</th><th>Sat.</th><th>Δ mo</th><th style="text-align:left">Phase</th></tr></thead><tbody>${rows}</tbody></table>
    <p class="note">${note(r)}</p>`}
 function note(r){const d=r[3][si];if(!d)return 'No papers had appeared by '+lab(si)+'.';
@@ -769,13 +837,13 @@ function buildWChips(){const box=$('wchips');box.innerHTML='';$('wfield').style.
 $('allP').addEventListener('input',e=>{allP=e.target.checked;redraw()});$('pth').addEventListener('input',e=>{pathsOn=e.target.checked;dDirty=true;redraw()});
 $('tnt').addEventListener('input',e=>{tentOn=e.target.checked;dDirty=true;redraw();gpanels()});
 $('tcf').addEventListener('input',e=>{minConf=+e.target.value;dDirty=true;redraw();gpanels()});
-$('cby').addEventListener('input',e=>{colorBy=e.target.value;gon.fill(true);buildWChips();dDirty=true;redraw();waves();gpanels();gterms()});
+$('cby').addEventListener('input',e=>{colorBy=e.target.value;gon.fill(true);buildWChips();dDirty=true;redraw();waves();gpanels();gterms();kview();VI()});
 
 function gpanels(){
   const box=$('gpbox'),card=$('gpanels');
   if(colorBy==='phase'){card.style.display='none';return}
   card.style.display='';
-  const NG=colorBy==='wave'?NW:3,names=colorBy==='wave'?WN:AN,cv=colorBy==='wave'?WCV:ACV;
+  const NG=colorBy==='wave'?NW:NA,names=colorBy==='wave'?WN:AN,cv=colorBy==='wave'?WCV:ACV;
   const mem=[];for(let c=0;c<NG;c++)mem.push([]);
   for(let i=0;i<N;i++){const c=colorBy==='wave'?WG[i]:AR[i];if(c>=0)mem[c].push(i)}
   const VW=380,VH=300,L=34,R=8,T=10,B=26,XA=-30,XB=(Date.UTC(2026,5,30)-BASE)/864e5,xs=t=>L+(t-XA)/(XB-XA)*(VW-L-R),ys=y=>T+(y-Y0)/(Y1-Y0)*(VH-T-B);
@@ -798,12 +866,34 @@ function gpanels(){
   $('gpleg').innerHTML='Lines join each term’s snapshots (first fit with 5+ papers onward), colored by group. Dots are colored by phase at that snapshot: '+[0,1,2,3].map(p=>`<span style="white-space:nowrap"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${phCol(p)};margin:0 4px 0 8px"></span>${PH[p]}</span>`).join('')+'. Same axes in every panel. Faint lines are terms under 100 papers, placed by model; the fainter, the less certain.'
 }
 
-function gterms(){const _o=colorBy;if(_o==='phase')colorBy='wave';try{gterms0()}finally{colorBy=_o}}
-window.addEventListener('load',()=>gterms());
-function gterms0(){if(!CFG.core){$('gterms').style.display='none';return}
+function gterms(){if(colorBy==='phase'){$('gterms').style.display='none';return}gterms0()}
+// the explanation of how the groups were chosen follows the colour view: k-means silhouette for waves, DTW silhouette for archetypes, nothing for phases
+function kview(){if(window.glView)window.glView();const w=$('kwave'),a=$('karch'),ok=!!(CFG.cats||CFG.extra);if(w)w.style.display=ok&&colorBy==='wave'?'':'none';if(a)a.style.display=ok&&colorBy==='arch'?'':'none';
+  const kc=$('kchem');if(kc){const G=__M.chemical_groups,on=CFG.kind==='entities'&&CFG.waves&&G&&colorBy!=='phase';if(on&&!kc.dataset.built){kc.innerHTML=chemInfo(G);kc.dataset.built=1}kc.style.display=on?'':'none'}}
+function silSvg(title,by,used){const ks=Object.keys(by).map(Number),W=400,H=230,L=44,R=10,T=26,B=36,vs=ks.map(k=>by[k]),lo=Math.min(0,...vs),hi=Math.max(.1,...vs)*1.15,x=k=>L+(k-ks[0])/(ks[ks.length-1]-ks[0]||1)*(W-L-R),y=v=>T+(1-(v-lo)/(hi-lo))*(H-T-B);
+  let g=`<text x="${L}" y="14" class="ct">${title}</text>`;const st=hi-lo>.5?.2:.1;for(let v=Math.ceil(lo/st)*st;v<=hi+1e-9;v+=st)g+=`<line x1="${L}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" class="gl"/><text x="${L-6}" y="${(y(v)+3).toFixed(1)}" text-anchor="end" class="at">${v.toFixed(1)}</text>`;
+  ks.forEach(k=>g+=`<text x="${x(k).toFixed(1)}" y="${H-18}" text-anchor="middle" class="at">${k}</text>`);
+  g+=`<text x="${(L+W-R)/2}" y="${H-3}" text-anchor="middle" class="at">number of groups k</text><polyline fill="none" stroke="var(--accent,#1a5fb4)" stroke-width="2" points="${ks.map(k=>x(k).toFixed(1)+','+y(by[k]).toFixed(1)).join(' ')}"/>`;
+  ks.forEach(k=>g+=`<circle cx="${x(k).toFixed(1)}" cy="${y(by[k]).toFixed(1)}" r="${k===used?5.5:3}" fill="${k===used?'var(--accent,#1a5fb4)':'var(--surface,#fff)'}" stroke="var(--accent,#1a5fb4)" stroke-width="1.6"/>`);
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}" style="width:100%;height:auto;max-width:400px">${g}</svg>`}
+function chemInfo(G){const f=(v,d)=>v==null?'–':v.toFixed(d==null?3:d),pc=v=>Math.round(v*100)+'%',nw={2:'two',3:'three',4:'four'},kb=(o,mx)=>Object.keys(o).map(Number).filter(k=>k<=mx).reduce((a,b)=>o[b]>o[a]?b:a);
+  const hasA=G.archetype_silhouette&&Object.keys(G.archetype_silhouette).length,wb=kb(G.wave_silhouette,4),ab=hasA?kb(G.archetype_silhouette,3):null;
+  const rows=G.cutoffs.map(c=>`<tr${c.c===G.min_core?' class="sel"':''}><td>${c.c}${c.c===G.min_core?' (used)':''}</td><td>${c.n}</td><td>${pc(c.cov)}</td><td>${f(c.sil)}</td><td>${f(c.split,2)}</td><td>${f(c.boot,2)}</td><td>${f(c.seed,2)}</td></tr>`).join('');
+  const sz=(n,a)=>n.map((x,i)=>x+' ('+a[i]+')').join(', ');
+  return `<summary>How the chemical groups were chosen: which chemicals, and how many groups</summary>
+<p><b>Which chemicals.</b> Chemicals are mentioned far less often than symptoms and comorbidities, so the 100-paper cutoff used for symptoms/comorbidities would leave almost none. Core chemicals here are the ${G.n_core} with at least ${G.min_core} papers, which together carry ${pc(G.share_of_mentions)} of all chemical mentions. The table shows what other cutoffs would do: a higher cutoff gives steadier groups but fewer chemicals. Chemicals below the cutoff are not dropped; they are assigned to a group by a timing model, with a certainty value.</p>
+<p><b>Number of groups.</b> The same silhouette procedure as for symptoms/comorbidities. For wave groups (k-means on each chemical’s quarterly volume scaled to its own peak) the mean silhouette is highest at k=${wb} (${f(G.wave_silhouette[wb])}) among the 2 to 4 groups we can name (the chart shows the full scan); we use <b>${nw[G.wave_k]} wave groups</b>: ${sz(G.wave_names,G.wave_sizes)}. For lifepath archetypes (DTW distances between lifepaths, Ward linkage) ${hasA?`the silhouette is highest at k=${ab} (${f(G.archetype_silhouette[ab])}) among the 2 to 3 archetypes we can name${G.archetype_silhouette[G.arch_k===2?3:2]!=null&&Math.abs(G.archetype_silhouette[2]-G.archetype_silhouette[3])<.02?' (k=2 and k=3 are almost tied)':''}; we use `:'there are too few lifepaths to scan; we use '}<b>${nw[G.arch_k]} archetypes</b>: ${sz(G.arch_names,G.arch_sizes)}. With so few chemicals these are descriptive splits of a continuum, not natural clusters.</p>
+<div class="kgrid">${silSvg('Wave groups (k-means)',G.wave_silhouette,G.wave_k)}${hasA?silSvg('Lifepath archetypes (DTW + Ward)',G.archetype_silhouette,G.arch_k):''}</div>
+<div style="overflow-x:auto"><table class="kt"><thead><tr><th>Minimum papers</th><th>Chemicals</th><th>Mentions covered</th><th>Silhouette (k=${G.wave_k})</th><th>Split-half ARI</th><th>Bootstrap ARI</th><th>Seed ARI</th></tr></thead><tbody>${rows}</tbody></table></div>
+<p style="font-size:12px;line-height:1.5;color:var(--muted);margin:6px 0 0">Split-half ARI: each chemical’s papers are randomly split in two, each half is clustered separately, and the two groupings are compared (mean of 20 splits). Bootstrap ARI: each chemical’s papers are resampled and clustered again, then compared with the original groups. Seed ARI: agreement between k-means runs from different random starts. ARI is 1 for identical groupings and about 0 for unrelated ones.</p>`}
+
+window.addEventListener('load',()=>{gterms();kview();chgrp()});
+function chgrp(){const e=$('chgrp');if(!e||!(CFG.kind==='entities'&&CFG.waves)||!WMETA.length)return;const esc=t=>String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  e.style.display='';e.innerHTML='<strong>Which chemicals are in the groups</strong>Largest chemicals by wave group: '+WMETA.map((m,c)=>esc(WN[c])+' ('+m.n+'): '+m.ex.map(esc).join(', ')).join('; ')+'. Choose a color view above to see the full lists.'}
+function gterms0(){if(CFG.kind!=='diseases'){$('gterms').style.display='none';return}
   const card=$('gterms'),box=$('gtbox');
   card.style.display='';
-  const NG=colorBy==='wave'?NW:3,names=colorBy==='wave'?WN:AN,cv=colorBy==='wave'?WCV:ACV;
+  const NG=colorBy==='wave'?NW:NA,names=colorBy==='wave'?WN:AN,cv=colorBy==='wave'?WCV:ACV;
   const mem=[];for(let c=0;c<NG;c++)mem.push([]);
   for(let i=0;i<N;i++){const c=colorBy==='wave'?WG[i]:AR[i];if(c<0||(colorBy==='wave'?WTw[i]:WTa[i]))continue;
     const s=DATA[i][3];let last=0;for(let k=s.length-1;k>=0;k--)if(s[k]){last=s[k][2];break}
@@ -866,16 +956,18 @@ new MutationObserver(()=>setTimeout(build,50)).observe(document.documentElement,
 if(CFG.lists){{let glMode=0;
  function glLists(){const names=glMode?AN:WN,cols=glMode?ACV:WCV,box=$('glbox');
   const mem=names.map(()=>[]);
-  DATA.forEach((r,i)=>{const t=TENT[r[0]];if(!t)return;const g=glMode?t[1]:t[0];if(g>=0)mem[g].push([i,r[2].reduce((a,b)=>a+b,0),glMode?t[3]:t[2]])});
+  DATA.forEach((r,i)=>{const g=glMode?AR[i]:WG[i];if(g>=0)mem[g].push([i,r[2].reduce((a,b)=>a+b,0),glMode?ACf[i]:WCf[i]])});
   box.innerHTML=mem.map((L,c)=>{L.sort((a,b)=>b[1]-a[1]);
    return `<div><div style="font-weight:600;font-size:13px;margin-bottom:6px"><span class="dot" style="background:var(${cols[c]});margin-right:6px"></span>${names[c]} <span style="color:var(--muted);font-weight:400">(${L.length})</span></div><div style="display:flex;flex-direction:column;gap:2px;max-height:420px;overflow:auto;padding-right:6px">`+
    L.map(([i,n,cf])=>`<button type="button" data-i="${i}" style="all:unset;cursor:pointer;font-size:12px;line-height:1.35;padding:1px 4px;border-radius:3px;display:flex;justify-content:space-between;gap:8px"><span>${esc(NAMES[i])}</span><span style="color:var(--muted);white-space:nowrap">${n} (${cf}%)</span></button>`).join('')+'</div></div>'}).join('');
   box.querySelectorAll('button').forEach(b=>{b.onmouseenter=()=>b.style.background='var(--chip)';b.onmouseleave=()=>b.style.background='';b.onclick=()=>{select(+b.dataset.i);$('plotcard').scrollIntoView({behavior:'smooth',block:'start'})}});
   $('gl1').setAttribute('aria-pressed',!glMode);$('gl2').setAttribute('aria-pressed',!!glMode)}
- $('gl1').onclick=()=>{glMode=0;glLists()};$('gl2').onclick=()=>{glMode=1;glLists()};glLists()}}
+ $('gl1').onclick=()=>{glMode=0;glLists()};$('gl2').onclick=()=>{glMode=1;glLists()};glLists();
+ window.glView=()=>{const g=$('glists');g.style.display=colorBy==='phase'?'none':'';if(colorBy!=='phase'){glMode=colorBy==='arch'?1:0;glLists()}};window.glView()}}
 if(CFG.extra){clusterExtras()}
 try{if(innerWidth>700)$('more').open=true}catch(e){}
 recls();setView('paths');detail();counts();size();
+{const f=new URLSearchParams(location.search).get('find');if(f){const i=DATA.findIndex(r=>r[1].toLowerCase()===f.toLowerCase());if(i>=0){q.value=DATA[i][1];search();select(i);res.hidden=true}}}
 <\/script>
 <style>#lp{padding:14px}#lp .lh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}#lp select{font:inherit;font-size:12px}#lpb{max-height:460px;overflow:auto;margin-top:8px;border-top:1px solid var(--grid)}#lpb button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:4px 6px;font-size:12px;border-bottom:1px solid var(--grid)}#lpb button:hover{background:var(--grid)}#lpb button.cur{background:var(--grid);font-weight:600}#lpb .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#lpb .v{color:var(--muted);font-variant-numeric:tabular-nums}</style><script>
 (function(){
@@ -930,25 +1022,26 @@ const osv=setView;setView=function(v){const on=v==='list';listOn=on;card.classLi
   if(on){$('v1').setAttribute('aria-pressed',false);$('v2').setAttribute('aria-pressed',false);$('xfield').style.display='none';buildList();return}
   osv(v)};
 $('v3').onclick=()=>setView('list');
+{const _sv=setView;setView=function(v){const r=_sv.apply(this,arguments);VI();return r}}
 const hn=$('hint');if(nSp&&hn){const o=hn.textContent;}
 })();
 <\/script></body></html></script>
-<script type="text/plain" id="tpl-cooc"><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Disease–chemical links</title>
+<script type="text/plain" id="tpl-cooc"><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Symptom/comorbidity–chemical links</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: control bar on top; big scatter (inflection time x slope) left, selected-chemical detail right; stacks on phones. */
 :root{
   --bg:#f6f6f3; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#7b7a74; --grid:#e1e0d9; --axis:#c3c2b7;
-  --accent:#2a78d6; --c0:#2a78d6; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
+  --accent:#2a78d6; --c0:#17935f; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
   --serif:'IBM Plex Serif',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:20px 32px}
 .wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
@@ -1106,13 +1199,13 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
     <div class="field"><label for="srt">Sort rows and columns by</label><select id="srt"><option value="groups">Joint group (blocks)</option><option value="freq">Papers (most to fewest)</option><option value="strength">Total association strength</option><option value="alpha">Name (A to Z)</option><option value="auto">Find diagonal blocks automatically</option></select></div>
     <div class="field"><label for="mn">Minimum papers together</label><select id="mn"><option value="1">1</option><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option><option value="20">20</option></select></div>
     <label class="cb"><input type="checkbox" id="sg"> hide pairs that do not pass the significance test</label>
-    <div class="field"><label for="q">Find a disease or chemical</label><input type="search" id="q" list="dl" placeholder="e.g. Mucormycosis, steroids"><datalist id="dl"></datalist></div>
+    <div class="field"><label for="q">Find a symptom/comorbidity or chemical</label><input type="search" id="q" list="dl" placeholder="e.g. Mucormycosis, steroids"><datalist id="dl"></datalist></div>
   </div>
   <div class="cols">
     <div>
       <div class="cw" id="cw"><canvas id="hm"></canvas></div>
       <div class="gl" id="gl"></div>
-      <p class="note">Colour is the positive log ratio of observed to expected co-mentions (a fixed scale, so darker always means a stronger excess). A dot marks a pair that passes the significance test with at least the chosen number of papers together. Each joint group is outlined on the diagonal, and its colour bars and labels run along the sides, so you can see how far the groups hold together and where they overlap. With "Find diagonal blocks automatically" the page ignores the joint groups and looks for blocks itself: it co-clusters the matrix by its leading singular vectors and keeps the number of blocks (2 to 10) with the highest bipartite modularity. Hover a cell for the counts, click a cell, a row label or a column label to see that disease's or chemical's strongest partners.</p>
+      <p class="note">Colour is the positive log ratio of observed to expected co-mentions (a fixed scale, so darker always means a stronger excess). A dot marks a pair that passes the significance test with at least the chosen number of papers together. Each joint group is outlined on the diagonal, and its colour bars and labels run along the sides, so you can see how far the groups hold together and where they overlap. With "Find diagonal blocks automatically" the page ignores the joint groups and looks for blocks itself: it co-clusters the matrix by its leading singular vectors and keeps the number of blocks (2 to 10) with the highest bipartite modularity. Hover a cell for the counts, click a cell, a row label or a column label to see the strongest partners of that symptom/comorbidity or chemical.</p>
     </div>
     <div class="side">
       <aside class="card" id="sel"></aside>
@@ -1225,7 +1318,7 @@ function hit(e){const b=$('hm').getBoundingClientRect(),x=e.clientX-b.left,y=e.c
 const fmtq=q=>q>=50?'<1e-50':Math.pow(10,-q).toExponential(0);
 $('hm').addEventListener('mousemove',e=>{const h=hit(e),t=$('tt');
   if(h.r>=0&&h.c>=0){const i=h.r,j=h.c;t.hidden=false;t.style.left=Math.min(e.clientX+14,innerWidth-320)+'px';t.style.top=(e.clientY+14)+'px';
-    t.innerHTML=`<b>${esc(D[i].n)}</b> with <b>${esc(C[j].n)}</b><br>${X[i][j]} papers together (disease ${D[i].p}, chemical ${C[j].p})<br>about ${OR[i][j]}× the odds expected by chance<br>${S[i][j]?'passes the significance test (q ≈ '+fmtq(Q[i][j])+')':'does not pass the significance test or has fewer than 5 papers'}`}
+    t.innerHTML=`<b>${esc(D[i].n)}</b> with <b>${esc(C[j].n)}</b><br>${X[i][j]} papers together (symptom/comorbidity ${D[i].p}, chemical ${C[j].p})<br>about ${OR[i][j]}× the odds expected by chance<br>${S[i][j]?'passes the significance test (q ≈ '+fmtq(Q[i][j])+')':'does not pass the significance test or has fewer than 5 papers'}`}
   else if(h.r>=0){t.hidden=false;t.style.left=Math.min(e.clientX+14,innerWidth-320)+'px';t.style.top=(e.clientY+14)+'px';t.innerHTML=`<b>${esc(D[h.r].n)}</b><br>${D[h.r].p} papers`}
   else t.hidden=true});
 $('hm').addEventListener('mouseleave',()=>$('tt').hidden=true);
@@ -1234,12 +1327,12 @@ $('hm').addEventListener('click',e=>{const h=hit(e);
 function partners(list,key){return list.filter(o=>o.v>0)}
 function panel(){
   let h='';
-  if(selR<0&&selC<0){h='<h2>Click a disease, a chemical or a cell</h2><p class="note">The panel then lists the strongest partners and the counts behind the colours.</p>'}
+  if(selR<0&&selC<0){h='<h2>Click a symptom/comorbidity, a chemical or a cell</h2><p class="note">The panel then lists the strongest partners and the counts behind the colours.</p>'}
   else if(selR>=0&&selC>=0){const i=selR,j=selC;h=`<h2>${esc(D[i].n)} and ${esc(C[j].n)}</h2><p>${X[i][j]} papers mention both, out of ${D[i].p} for the disease and ${C[j].p} for the chemical (of ${DATA.N.toLocaleString()} papers). That is about ${OR[i][j]} times the odds expected by chance. ${S[i][j]?'The pair passes the significance test (q ≈ '+fmtq(Q[i][j])+').':'The pair does not pass the significance test, or has fewer than 5 papers.'}</p>`}
   if(selR>=0){const i=selR;const l=C.map((c,j)=>({j,x:X[i][j],o:OR[i][j],s:S[i][j]})).filter(o=>o.x>=1).sort((a,b)=>b.x-a.x).slice(0,14);
     h+=`<h3 style="margin-top:10px">Chemicals most often with ${esc(D[i].n)}</h3><div class="lst">`+l.map(o=>`<button data-c="${o.j}" class="${o.s?'':'ns'}"><span>${esc(C[o.j].n)}</span><span class="v">${o.x} papers</span><span class="v">${o.o}×</span></button>`).join('')+'</div>'}
   if(selC>=0){const j=selC;const l=D.map((d,i)=>({i,x:X[i][j],o:OR[i][j],s:S[i][j]})).filter(o=>o.x>=1).sort((a,b)=>b.x-a.x).slice(0,14);
-    h+=`<h3 style="margin-top:10px">Diseases most often with ${esc(C[j].n)}</h3><div class="lst">`+l.map(o=>`<button data-r="${o.i}" class="${o.s?'':'ns'}"><span>${esc(D[o.i].n)}</span><span class="v">${o.x} papers</span><span class="v">${o.o}×</span></button>`).join('')+'</div>'}
+    h+=`<h3 style="margin-top:10px">Symptoms/comorbidities most often with ${esc(C[j].n)}</h3><div class="lst">`+l.map(o=>`<button data-r="${o.i}" class="${o.s?'':'ns'}"><span>${esc(D[o.i].n)}</span><span class="v">${o.x} papers</span><span class="v">${o.o}×</span></button>`).join('')+'</div>'}
   if(selR>=0||selC>=0)h+='<p class="note">Faded rows did not pass the significance test. "×" is the odds ratio against chance.</p>';
   $('sel').innerHTML=h;
   $('sel').querySelectorAll('button[data-c]').forEach(b=>b.onclick=()=>{selC=+b.dataset.c;ensure();draw();panel()});
@@ -1247,7 +1340,7 @@ function panel(){
 function ensure(){if(grp!=='all'){const gs=[selR>=0?gIdx[D[selR].g]:null,selC>=0?gIdx[C[selC].g]:null].filter(v=>v!==null);if(gs.length&&!gs.includes(+grp)){$('grp').value='all';grp='all';setup()}}}
 function gcard(){
   const gi=grp==='all'?-1:+grp;
-  if(gi<0){$('gcard').innerHTML='<h3>Six joint groups</h3>'+G.map((g,k)=>`<p style="margin:6px 0"><span class="dot" style="background:${GC[k]}"></span> <b>${esc(g.name)}</b><br><span style="color:var(--ink2)">${esc(g.desc)}</span></p>`).join('')+'<p class="note">Groups come from a co-clustering of the disease-by-chemical matrix and are moderately stable: adding noise to the counts changes about half of the assignments, with the small groups (fibrotic lung, cardiac and autonomic) the most distinct.</p>';return}
+  if(gi<0){$('gcard').innerHTML='<h3>Six joint groups</h3>'+G.map((g,k)=>`<p style="margin:6px 0"><span class="dot" style="background:${GC[k]}"></span> <b>${esc(g.name)}</b><br><span style="color:var(--ink2)">${esc(g.desc)}</span></p>`).join('')+'<p class="note">Groups come from a co-clustering of the symptom/comorbidity-by-chemical matrix and are moderately stable: adding noise to the counts changes about half of the assignments, with the small groups (fibrotic lung, cardiac and autonomic) the most distinct.</p>';return}
   const g=G[gi],mx=Math.max(...G.map(x=>Math.max(...x.share)),1),w=300,h=70,bw=w/g.share.length;
   $('gcard').innerHTML=`<h3><span class="dot" style="background:${GC[gi]}"></span> ${esc(g.name)}</h3><p style="margin:0 0 8px;color:var(--ink2)">${esc(g.desc)}</p>
   <div class="lab" style="margin-bottom:4px">Share of chemical-tagged papers that mention a chemical of this group</div>
@@ -1280,15 +1373,15 @@ refresh();panel();
 /* Layout: control bar on top; big scatter (inflection time x slope) left, selected-chemical detail right; stacks on phones. */
 :root{
   --bg:#f6f6f3; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#7b7a74; --grid:#e1e0d9; --axis:#c3c2b7;
-  --accent:#2a78d6; --c0:#2a78d6; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
+  --accent:#2a78d6; --c0:#17935f; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
   --serif:'IBM Plex Serif',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:20px 32px}
 .wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
@@ -1451,7 +1544,7 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
     <p class="note" style="margin:6px 0 0"><b>What it does not show.</b></p>
     <ul class="note" style="margin:2px 0 0 18px;padding:0">
       <li>That a gene, cytokine or cell line is a biomarker, a cause or a treatment target. Being named in the same paper does not mean it was measured in patients or differs from controls.</li>
-      <li>That two diseases are linked. A review that lists many topics will join them all.</li>
+      <li>That two symptoms/comorbidities are linked. A review that lists many topics will join them all.</li>
       <li>Anything about testing, treatment or risk for an individual patient.</li>
       <li>A pattern, when it rests on one paper. A single paper that names a long list of terms creates many links at once, so check the papers before relying on a link.</li>
       <li>A reliable count. Only a small share of papers name variants or cell lines, and a few tags are wrong (for example "12p70" is the cytokine IL-12 p70, not a chromosome).</li>
@@ -1490,7 +1583,7 @@ const {nodes,papers}=DATA,NP=papers.length;
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const COL={Variant:'#d9622b',Gene:'#2a78d6',CellLine:'#1a9b7f',Disease:'#8a6fb3',Chromosome:'#c9a227',Chemical:'#8b8a84'};
-const LBL={Variant:'Variants',CellLine:'Cell lines',Chromosome:'Chromosomes and regions',Gene:'Genes',Disease:'Diseases',Chemical:'Chemicals'};
+const LBL={Variant:'Variants',CellLine:'Cell lines',Chromosome:'Chromosomes and regions',Gene:'Genes',Disease:'Symptoms/comorbidities',Chemical:'Chemicals'};
 const TY=['Variant','CellLine','Chromosome','Gene','Disease','Chemical'];
 const MIS={'12p70':'This is tagged as a chromosome region, but "12p70" is almost certainly the cytokine IL-12 p70 (a protein), so the many links through it are a tagging artefact.'};
 const gt=t=>t==='GenomicRegion'?'Chromosome':t;
@@ -1654,6 +1747,104 @@ size();build();
 
 <\/script>
 </body></html></script>
+<script type="text/plain" id="tpl-chemexp"><div class="dens" id="chemexp">
+<style>
+#chemexp summary::-webkit-details-marker{display:none}
+#chemexp details:not([open]) .chev{display:inline-block}
+#chemexp .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:8px 0 10px}
+#chemexp .cg>div{border:1px solid var(--grid);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.5;color:var(--ink2)}
+#chemexp .cg strong{display:block;color:var(--ink);margin-bottom:3px}
+#chemexp .cg em{font-style:normal;color:var(--muted)}
+#chemexp .ex{font-size:12px;line-height:1.7;color:var(--ink2);margin:4px 0 0}
+#chemexp .ex b{color:var(--ink);font-weight:600}
+</style>
+<details id="chemdet"><summary class="dhead" style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px"><span class="h3">What chemicals are here</span><span class="chev" aria-hidden="true" style="font-size:11px;color:var(--muted)">▾ click to expand or collapse</span></summary>
+<div class="cg">
+<div><strong>Substances named in the text</strong>A chemical is any substance the PubTator tagger finds in a paper and links to a MeSH substance identifier: drugs, hormones and other biological compounds, gases, imaging agents and lab chemicals. Genes, proteins, cell lines, species and variants are not chemicals here; they have their own pages. <em>For example remdesivir, glucose, oxygen, fluorodeoxyglucose F18.</em></div>
+<div><strong>Named is not given</strong>A mention only means the substance appears in the paper, not why. The same chemical can play very different roles. <b>Treatments:</b> remdesivir, dexamethasone, steroids, nirmatrelvir and ritonavir, tocilizumab. <b>Supportive care:</b> oxygen, heparin. <b>Measurements and biomarkers:</b> glucose, creatinine, lipids, lactic acid, measured in blood or tissue to describe a patient. <b>Tests and imaging agents:</b> fluorodeoxyglucose F18 and gadolinium for scans; carbon monoxide often stands for the lung-function test DLCO, not for a drug. <b>Exposures or possible causes:</b> a substance a study links to illness rather than to care. The tagger does not tell these apart, so a chemical’s curve shows how often it is discussed, not how often it is used to treat Long COVID.</div>
+<div><strong>How they are counted</strong>Each chemical counts once per paper, however often the paper names it, and only chemicals with enough papers are shown. Mentions without an identifier are left out. Counts are small, so a lifepath rests on few points.</div>
+<div><strong>Chemicals have their own groups</strong>The chemicals above a paper-count cutoff (30 papers by default, see “How the chemical groups were chosen”) are grouped on their own, by volume over time (wave groups) and by lifepath shape (archetypes), with the number of groups chosen by silhouette. Chemicals with fewer papers are placed in the nearest group by a timing model. Read those placements as tentative.</div>
+<div id="chgrp" style="display:none"></div>
+</div>
+<p class="ex" id="chex"></p></details>
+<script>
+(function(){
+ function init(){
+  var el=document.getElementById('chex');if(!el||typeof DATA==='undefined'||!DATA.length)return;
+  var t=DATA.map(function(r){var s=0,c=r[2];for(var i=0;i<c.length;i++)s+=c[i];return [r[1],s]}).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  el.innerHTML='Most-mentioned chemicals in this data: '+t.map(function(x){return '<b>'+esc(x[0])+'</b> ('+x[1].toLocaleString('en-US')+')'}).join(', ')+'. Numbers are papers.';
+ }
+ if(document.readyState==='complete')init();else window.addEventListener('load',init);
+})();
+<\/script>
+</div></script>
+<script type="text/plain" id="tpl-catexp"><div class="dens" id="catexp">
+<style>
+#catexp .stp{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:8px 0 14px}
+#catexp .stp>div{border:1px solid var(--grid);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.5;color:var(--ink2)}
+#catexp .stp strong{display:block;color:var(--ink);margin-bottom:3px}
+#catexp .stp .n{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;margin-right:6px}
+#catexp .tr{border-left:2px solid var(--grid);margin:6px 0 0 8px;padding-left:12px;font-size:12px}
+#catexp .tr .rt{font-weight:600;color:var(--ink)}
+#catexp .tr .cat{margin:6px 0 4px;color:var(--ink);font-weight:600}
+#catexp .tr .cat span{font-weight:400;color:var(--muted)}
+#catexp .tm{display:grid;grid-template-columns:minmax(120px,230px) minmax(60px,1fr) auto;gap:8px;align-items:center;padding:2px 0 2px 12px;border-left:2px solid var(--grid);margin-left:0}
+#catexp .tm .bar{height:8px;border-radius:2px;background:var(--accent);opacity:.55}
+#catexp .tm .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink2)}
+#catexp .tm .v{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+#catexp .tm small{color:var(--muted)}
+#catexp .ov{margin:8px 0 0;font-size:12px;line-height:1.5;color:var(--ink2)}
+</style>
+<div class="dhead"><span class="h3">How terms are grouped into categories</span></div>
+<div class="stp">
+<div><strong><span class="n">1</span>Every term has a place in the MeSH tree</strong>MeSH, the US National Library of Medicine's vocabulary, files each term under one or more paths of a tree that starts at "Diseases".</div>
+<div><strong><span class="n">2</span>The first step down is the category</strong>For the path Diseases › Infections › Respiratory Tract Infections, the category is Infections and the subcategory is Infections › Respiratory Tract Infections (one level deeper).</div>
+<div><strong><span class="n">3</span>Monthly mentions are added up</strong>For each month, the papers that name each member term are summed. A paper naming two terms of the same category counts twice, and a term with several paths is added to each of its categories.</div>
+<div><strong><span class="n">4</span>One curve, one dot</strong>The summed counts get the same logistic fit and phase rule as a single term, so a dot shows when the area as a whole drew attention.</div>
+</div>
+<div class="dhead"><span class="h3" style="font-size:13px">See what sits under a category</span><label>Category <select id="cxsel"></select></label></div>
+<div id="cxout"></div>
+<div class="dleg">Terms are listed with every paper count they have, not only the terms with 100 or more papers. Bars are scaled to the largest term in the category. "Also in" shows the other categories a term is added to. Subcategories work the same way one level deeper; their member terms are not listed here. Terms that are not in the Diseases tree (mental disorders, OMIM and supplementary concepts) are added up as one separate category.</div>
+<script>
+(function(){
+ function init(){
+ var box=document.getElementById('catexp'),T=window.DASH_TERMS;
+ if(!box)return;
+ if(!T||!T.rows||!T.mcat){box.style.display='none';return}
+ var rows=T.rows,mc=T.mcat,by={},tot=[];
+ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ function fmt(n){return n.toLocaleString('en-US')}
+ rows.forEach(function(r,i){var s=0,c=r[2];for(var k=0;k<c.length;k++)s+=c[k];tot[i]=s;(mc[r[0]]||[]).forEach(function(g){(by[g]=by[g]||[]).push(i)})});
+ var names=Object.keys(by);if(!names.length){box.style.display='none';return}
+ var sum={};names.forEach(function(g){sum[g]=by[g].reduce(function(a,i){return a+tot[i]},0)});
+ names.sort(function(a,b){return sum[b]-sum[a]});
+ var sel=document.getElementById('cxsel'),out=document.getElementById('cxout');
+ sel.innerHTML=names.map(function(g){return '<option value="'+esc(g)+'">'+esc(g.length>60?g.slice(0,57)+'…':g)+' ('+by[g].length+' terms)</option>'}).join('');
+ var multi=0,inTree=0,best=-1,bi=-1;
+ rows.forEach(function(r,i){var cs=mc[r[0]]||[];if(cs.length&&cs[0].indexOf('Outside the')!==0){inTree++;if(cs.length>1){multi++;var sc=cs.length*1e6+tot[i];if(sc>best){best=sc;bi=i}}}});
+ function show(){
+  var g=sel.value,idx=by[g].slice().sort(function(a,b){return tot[b]-tot[a]}),mx=tot[idx[0]]||1,top=idx.slice(0,12);
+  var ct=sum[g];try{if(typeof DATA!=='undefined'){for(var q=0;q<DATA.length;q++){if(DATA[q][1]===g&&String(DATA[q][0]).indexOf('L2:')===0){ct=DATA[q][2].reduce(function(a,b){return a+b},0);break}}}}catch(e){}
+  var shown=top.reduce(function(a,i){return a+tot[i]},0);
+  var h='<div class="tr"><div class="rt">MeSH tree</div><div class="cat">'+esc(g)+' <span>category · '+fmt(idx.length)+' terms · '+fmt(ct)+' mentions added up</span></div>';
+  top.forEach(function(i){
+   var o=(mc[rows[i][0]]||[]).filter(function(x){return x!==g});
+   h+='<div class="tm"><span class="nm" title="'+esc(rows[i][1])+'">'+esc(rows[i][1])+(o.length?' <small>also in '+esc(o.slice(0,2).join(', '))+(o.length>2?' +'+(o.length-2):'')+'</small>':'')+'</span><span><div class="bar" style="width:'+Math.max(2,Math.round(100*tot[i]/mx))+'%"></div></span><span class="v">'+fmt(tot[i])+'</span></div>';
+  });
+  if(idx.length>top.length)h+='<div class="tm"><span class="nm"><small>+ '+fmt(idx.length-top.length)+' more terms, '+fmt(Math.max(0,ct-shown))+' mentions</small></span><span></span><span></span></div>';
+  h+='</div>';
+  h+='<p class="ov">These '+fmt(idx.length)+' terms are added month by month into the single lifepath of <b>'+esc(g)+'</b>.'+(g.indexOf('Outside the')===0?' This category collects the terms MeSH does not file under Diseases.':'')+'</p>';
+  out.innerHTML=h;
+ }
+ sel.onchange=show;
+ var d=names.indexOf('Infections');sel.selectedIndex=d>=0?d:0;show();
+ if(multi&&bi>=0){var o=document.createElement('p');o.className='ov';o.innerHTML='In this data, of the '+fmt(inTree)+' terms in the MeSH Diseases tree, '+fmt(multi)+' ('+Math.round(100*multi/inTree)+'%) have more than one tree path and are counted in each of their categories, so category totals overlap and do not add up to the number of mentions. Example: <b>'+esc(rows[bi][1])+'</b> is in '+esc((mc[rows[bi][0]]||[]).slice(0,3).join(', '))+((mc[rows[bi][0]]||[]).length>3?' and '+((mc[rows[bi][0]]||[]).length-3)+' more':'')+'.';out.parentNode.insertBefore(o,out.nextSibling)}
+ }
+ if(document.readyState==='complete')init();else window.addEventListener('load',init);
+})();
+<\/script>
+</div></script>
 <script type="text/plain" id="tpl-celluse"><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{title}}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -1661,15 +1852,15 @@ size();build();
 /* Layout: control bar on top; big scatter (inflection time x slope) left, selected-chemical detail right; stacks on phones. */
 :root{
   --bg:#f6f6f3; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#7b7a74; --grid:#e1e0d9; --axis:#c3c2b7;
-  --accent:#2a78d6; --c0:#2a78d6; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
+  --accent:#2a78d6; --c0:#17935f; --c1:#4a3aa7; --c2:#d9622b; --c3:#8b8a84; --ring:#0b0b0b; --chip:#efeeea; --w0:#d9622b; --w1:#8a6fb3; --w2:#1a9b7f; --w3:#2a78d6;
   --serif:'IBM Plex Serif',Georgia,serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#8f8e88; --grid:#2c2c2a; --axis:#383835;
-  --accent:#3987e5; --c0:#3987e5; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
+  --accent:#3987e5; --c0:#3fbf7f; --c1:#9085e9; --c2:#e66767; --c3:#7d7c76; --ring:#ffffff; --chip:#242422; --w0:#f08a5d; --w1:#b39ddb; --w2:#35c4a6; --w3:#3987e5; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:20px 32px}
 .wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
@@ -1830,12 +2021,12 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
 <div class="hero"><div class="hin"><!--NAV--><header><h1>{{title}}</h1><p class="lead">{{sub}}</p></header></div></div>
 <div class="wrap">
   <details class="card rd" style="padding:12px 16px;margin-bottom:14px"><summary><b>How to read this, and what it does not show</b></summary>
-    <p class="note" style="margin:8px 0 0"><b>What it is.</b> Each row is a cell line, with the diseases, chemicals or genes named in the same papers. It maps what researchers write about together. It is not data from patients.</p>
+    <p class="note" style="margin:8px 0 0"><b>What it is.</b> Each row is a cell line, with the symptoms/comorbidities, chemicals or genes named in the same papers. It maps what researchers write about together. It is not data from patients.</p>
     <p class="note" style="margin:6px 0 0"><b>What it can support.</b> A guide to which topics, genes and lab models are studied together in the Long COVID literature, and a way to reach the papers behind them. Each term links to its PubMed papers, and those papers are the evidence.</p>
     <p class="note" style="margin:6px 0 0"><b>What it does not show.</b></p>
     <ul class="note" style="margin:2px 0 0 18px;padding:0">
       <li>That a gene, cytokine or cell line is a biomarker, a cause or a treatment target. Being named in the same paper does not mean it was measured in patients or differs from controls.</li>
-      <li>That two diseases are linked. A review that lists many topics will join them all.</li>
+      <li>That two symptoms/comorbidities are linked. A review that lists many topics will join them all.</li>
       <li>Anything about testing, treatment or risk for an individual patient.</li>
       <li>A pattern, when it rests on one paper. A single paper that names a long list of terms creates many links at once, so check the papers before relying on a link.</li>
       <li>A reliable count. Only a small share of papers name variants or cell lines, and a few tags are wrong (for example "12p70" is the cytokine IL-12 p70, not a chromosome).</li>
@@ -1850,7 +2041,7 @@ input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px
   </div>
   <div class="ctl">
     <div class="field"><label for="cview">Show as</label><select id="cview"><option value="table" selected>Table</option><option value="matrix">Matrix</option></select></div>
-    <div class="field"><label for="ct">Topics</label><select id="ct"><option value="Disease">Diseases</option><option value="Chemical">Chemicals</option><option value="Gene">Genes</option></select></div>
+    <div class="field"><label for="ct">Topics</label><select id="ct"><option value="Disease">Symptoms/comorbidities</option><option value="Chemical">Chemicals</option><option value="Gene">Genes</option></select></div>
     <div class="field mx"><label for="cc">Minimum papers per cell</label><select id="cc"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></div>
     <div class="field mx"><label for="cm">Minimum papers per column</label><select id="cm"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option></select></div>
     <label class="cb"><input type="checkbox" id="chub" checked> hide terms named in more than 30% of these papers</label>
@@ -1894,7 +2085,7 @@ $('bars').innerHTML=rowsB.map(r=>`<div style="display:grid;grid-template-columns
 $('spleg').innerHTML=Object.keys(SPC).map(s=>`<span><i style="background:${SPC[s]}"></i>${s}</span>`).join('');
 $('barnote').innerHTML=`${NPc} papers name at least one of ${cells.length} cell-line tags. A paper that names lines from two tissues counts once in each bar. Groups come from a small hand-made lookup of ${Object.keys(BYID).length} accession numbers; tags that are really mouse strains (BALB/c, C57Bl/6) or other things are kept apart, and the rest have only a code as their name.`;
 // ---- matrix
-const TYPES={Disease:'diseases',Chemical:'chemicals',Gene:'genes'};
+const TYPES={Disease:'symptoms/comorbidities',Chemical:'chemicals',Gene:'genes'};
 const MORE=new Set();
 function table(){
   const ty=$('ct').value,hide=$('chub').checked,hideCode=$('ccode').checked;
@@ -1963,14 +2154,17 @@ async function get(name){
   try{const r=await fetch(DIR+'/'+name+'.json');if(!r.ok)throw new Error(r.status);return await r.json()}
   catch(e){await loadJs(DIR+'/'+name+'.js');if(window.DASH_DATA&&window.DASH_DATA[name])return window.DASH_DATA[name];throw e}}
 const TPL=id=>document.getElementById(id).textContent.replace(/<\\\/script>/g,'<'+'/script>');
-const TIPS={diseases:'Every MeSH disease and symptom term as a lifepath: when its publication growth peaked, how steep the rise was, and which phase it is in. Start here.',categories:'Terms added up under higher-level MeSH disease categories (for example Infections or Nervous System), with one lifepath per category.',clusters:'Six groups of terms that gained or lost share of the literature in a similar way, each with its own lifepath and a chart of its share over time.',chemicals:'Lifepaths of chemicals (MeSH substances such as drugs and tests), showing when attention to each rose and settled. Counts are small, so read them as tentative.',cooc:'A heat map of which diseases and chemicals are named in the same papers more often than chance, grouped into joint groups.',net:'A network of the variants, cell lines, chromosomes, genes and diseases named in the same papers.',celluse:'Which cell lines are named with which diseases, chemicals and genes, grouped by tissue and species.',variants:'Genetic variants named in the papers, each with a lifepath. Counts are tiny, so read them as when a variant first turned up.',celllines:'Cell lines named in the papers, each with a lifepath. Counts are tiny, so read them as when a cell line first turned up.',chromosomes:'Chromosomes and genomic regions named in the papers, each with a lifepath. Counts are tiny, so read them as when a term first turned up.'};
-function nav(man,cur){return '<nav class="pgnav" aria-label="Dashboards">'+man.pages.map(p=>'<a href="?page='+p.id+DQ+'"'+(p.id===cur?' aria-current="page"':'')+' data-tip="'+$e(TIPS[p.id]||('Lifepaths for '+p.nav.toLowerCase()+'.'))+'">'+$e(p.nav)+'</a>').join('')+'</nav>'}
+const TIPS={diseases:'Every symptom and comorbidity named in the Long COVID literature as a lifepath: when its publication growth peaked, how steep the rise was, and which phase it is in. Together they show how Long COVID took shape. Start here.',categories:'Terms added up under higher-level MeSH categories (for example Infections or Nervous System), with one lifepath per category.',clusters:'Six groups of terms that gained or lost share of the literature in a similar way, each with its own lifepath and a chart of its share over time.',chemicals:'Lifepaths of chemicals (MeSH substances such as drugs and tests), showing when attention to each rose and settled. Counts are small, so read them as tentative.',cooc:'A heat map of which symptoms/comorbidities and chemicals are named in the same papers more often than chance, grouped into joint groups.',net:'A network of the variants, cell lines, chromosomes, genes and symptoms/comorbidities named in the same papers.',celluse:'Which cell lines are named with which symptoms/comorbidities, chemicals and genes, grouped by tissue and species.',variants:'Genetic variants named in the papers, each with a lifepath. Counts are tiny, so read them as when a variant first turned up.',celllines:'Cell lines named in the papers, each with a lifepath. Counts are tiny, so read them as when a cell line first turned up.',chromosomes:'Chromosomes and genomic regions named in the papers, each with a lifepath. Counts are tiny, so read them as when a term first turned up.'};
+const HIDDEN_PAGES=['variants','celllines','chromosomes','net','celluse'];
+const NAVLAB={diseases:'Symptoms/comorbidities',cooc:'Symptom/comorbidity–chemical links'};
+function nav(man,cur){return '<nav class="pgnav" aria-label="Dashboards">'+man.pages.filter(p=>!HIDDEN_PAGES.includes(p.id)).map(p=>'<a href="?page='+p.id+DQ+'"'+(p.id===cur?' aria-current="page"':'')+' data-tip="'+$e(TIPS[p.id]||('Lifepaths for '+p.nav.toLowerCase()+'.'))+'">'+$e(NAVLAB[p.id]||p.nav)+'</a>').join('')+'</nav>'}
 function leadFor(c){
   const n=c.noun||'term',ns=c.nouns||'terms';
   const tail=' A four-phase rule then says where it stands today. Use the controls to move through time, search for a '+n+', and change the rule to see how sensitive each label is.';
-  if(c.kind==='cooc')return 'Which chemicals are written about together with which diseases? Each cell compares how often a disease and a chemical appear in the same paper with how often they would by chance. Rows are diseases and columns are chemicals, grouped so that related ones sit together. Use it to see which treatments, tests and mechanisms the literature attaches to which conditions, and how that changed over time.';
-  if(c.kind==='categories')return 'A lifepath follows one topic through the literature over time. Here a topic is a MeSH disease category: the monthly mentions of every term under it are added up, a growth curve (a sigmoid) is fitted to the running total at half-year snapshots, and the fit gives an inflection date, when publication growth peaked, and a steepness, how sharp the rise was. Joining a category’s snapshots gives its lifepath.'+tail;
-  if(c.kind==='clusters')return 'A lifepath follows one topic through the literature over time. Here a topic is a cluster of terms that gained or lost share of the literature in a similar way: the monthly mentions of its member terms are added up, a growth curve (a sigmoid) is fitted to the running total at half-year snapshots, and the fit gives an inflection date, when publication growth peaked, and a steepness, how sharp the rise was. Joining a cluster’s snapshots gives its lifepath.'+tail;
+  if(c.kind==='cooc')return 'Which chemicals are written about together with which symptoms/comorbidities? Each cell compares how often a symptom/comorbidity and a chemical appear in the same paper with how often they would by chance. Rows are symptoms/comorbidities and columns are chemicals, grouped so that related ones sit together. Use it to see which treatments, tests and mechanisms the literature attaches to which conditions, and how that changed over time.';
+  if(c.kind==='categories')return 'A lifepath follows one topic through the literature over time. Here a topic is a MeSH category: the monthly mentions of every term under it are added up, a growth curve (a sigmoid) is fitted to the running total at half-year snapshots, and the fit gives an inflection date, when publication growth peaked, and a steepness, how sharp the rise was. Joining a category’s snapshots gives its lifepath.'+tail;
+  if(c.kind==='clusters')return 'A lifepath follows one topic through the literature over time. Here a topic is a cluster of symptom and comorbidity terms (PubTator disease tags linked to MeSH, so the clusters are based on disease tags only) that gained or lost share of the literature in a similar way: the monthly mentions of its member terms are added up, a growth curve (a sigmoid) is fitted to the running total at half-year snapshots, and the fit gives an inflection date, when publication growth peaked, and a steepness, how sharp the rise was. Joining a cluster’s snapshots gives its lifepath.'+tail;
+  if(c.id==='diseases')return 'Long COVID is a complex system of symptoms and comorbidities that, taken together, make up the condition. This page shows how each of them was researched and represented in '+(leadFor.NP?leadFor.NP.toLocaleString('en-US'):'thousands of')+' PubMed publications on Long COVID'+(leadFor.R?', dated '+leadFor.R:'')+'. A lifepath follows one symptom or comorbidity through that literature over time. For each one we count the papers that mention it month by month, fit a growth curve (a sigmoid) to the running total at half-year snapshots, and read two numbers off the fit: the inflection date, when publication growth peaked, and the steepness, how sharp the rise was. Joining a term’s snapshots gives its lifepath. Read side by side, the lifepaths show how Long COVID took shape as a collective: which symptoms and comorbidities the literature took up first, which rose together, and which are still accelerating. The page also holds the lifepaths of COVID-19 itself and of Post-Acute COVID-19 Syndrome, the MeSH term for Long COVID, so the two can be compared. Long COVID emerged later than acute COVID-19 and then caught up with it in the number of papers, and because MeSH files it under Infections, it is indexed as an infection-related condition and also appears in the Infections category (see the Categories page). Search for either term to follow its path. Counts are papers in this Long COVID collection, so the COVID-19 lifepath shows its place within Long COVID research, not the whole COVID-19 literature. A four-phase rule then says where each one stands today. Use the controls to move through time, search for a symptom or comorbidity, and change the rule to see how sensitive each label is.';
   const nn=c.id==='diseases'?'disease or symptom term':n;
   return 'A lifepath follows one '+nn+' through the literature over time. For each one we count the papers that mention it month by month, fit a growth curve (a sigmoid) to the running total at half-year snapshots, and read two numbers off the fit: the inflection date, when publication growth peaked, and the steepness, how sharp the rise was. Joining a '+n+'’s snapshots gives its lifepath.'+tail}
 function insightsFor(c){
@@ -1979,24 +2173,39 @@ function insightsFor(c){
   return parts.map(x=>'<li>'+x+'</li>').join('')}
 function fill(s,vars){return s.replace(/\{\{(\w+)\}\}/g,(m,k)=>vars[k]===undefined?'':vars[k])}
 function build(man,P){
+  leadFor.NP=man.papers;{const MN=['January','February','March','April','May','June','July','August','September','October','November','December'],f=s=>s?MN[+s.slice(5,7)-1]+' '+s.slice(0,4):'';leadFor.R=man.first_month&&man.last_month?f(man.first_month)+' to '+f(man.last_month):''}
   const c=P.cfg;let s;
+  if(c.id==='diseases')c.title='Long COVID lifepaths';
+  if(c.id==='categories')c.title='Top MeSH category lifepaths';
   if(c.kind==='net'||c.kind==='celluse'){return fill(TPL('tpl-'+c.kind),{title:$e(c.title),sub:$e(c.sub||'')}).replace('<!--NAV-->',nav(man,c.id))}
   if(c.kind==='cooc'){
     s=fill(TPL('tpl-cooc'),{title:$e(c.title),lead:leadFor(c),insights:insightsFor(c)}).replace('<!--NAV-->',nav(man,c.id));
     return s}
   s=TPL('tpl-app');
   const isMain=c.id==='diseases';
+  // the table of terms grouped by MeSH category belongs on the MeSH categories page, not on the Diseases page
+  const CTX=/<div class="dens" id="cattab" data-cats>[\s\S]*?header to sort\.<\/div>\s*<\/div>/;let catBlock='';
+  if(isMain||c.kind==='categories'){const m=s.match(CTX);if(m){catBlock=m[0];s=s.replace(CTX,'<!--CATTAB-->')}}
   const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+  if(isMain){s=s.replace('No disease name matches','No symptom/comorbidity name matches').replace('the wave groups and the selected disease','the wave groups and the selected symptom/comorbidity').replace('Search diseases by name','Search symptoms/comorbidities by name').replace('aria-label="Scatter of diseases"','aria-label="Scatter of symptoms and comorbidities"')}
   if(!isMain){s=s.replace(/diseases/g,c.nouns).replace(/disease/g,c.noun).replace(/Disease/g,cap(c.noun))}
-  if(!isMain){s=s.replace('Include terms under 100 papers (assigned by model; fainter when less certain)','Show '+c.nouns+' assigned by the timing model (fainter when less certain)').replace('Wave group (publication volume)','Wave group (same four as diseases)')}
+  if(!isMain){s=s.replace('Include terms under 100 papers (assigned by model; fainter when less certain)','Show '+c.nouns+' assigned by the timing model (fainter when less certain)')}
+  if(c.id==='chemicals')s=s.replace('<p class="lead">{{lead}}</p>','<p class="lead" data-fold="1">{{lead}}</p>');   // show the full explanation, not the folded version
+  if(c.id==='chemicals'){const GL=/      <div class="card" id="glists" data-lists>[\s\S]*?<\/div><\/div>\n/;const m=s.match(GL);
+    if(m){s=s.replace(GL,'');s=s.replace('      <div class="dens" id="gterms"',m[0].replace('class="card" id="glists"','class="dens" id="glists"')+'      <div class="dens" id="gterms"')}}   // chemicals by group sits under "Lifepaths by group"
+  const staleNote=(c.id==='chemicals'&&!c.an)?'<p style="margin:8px 0 0;padding:10px 14px;border:2px solid #c0392b;border-radius:8px;font-size:13px;color:var(--ink)"><b>This data folder is out of date.</b> The chemicals on this page are still using the groups borrowed from symptoms/comorbidities. The new chemical groups (their own two wave groups and two archetypes) are in <b>data_chemical_groups.zip</b>: unzip it and replace every file in the <code>data/</code> folder next to this page, then reload with a hard refresh (Ctrl/Cmd+Shift+R).</p>':'';
+  const gapNote=staleNote+(c.gap?'<p style="margin:8px 0 0;padding:8px 12px;border:1px solid var(--grid);border-radius:8px;font-size:12px;color:var(--ink2)">This data folder was built with the 2024 collection gap filled in. Gap filling is now off by default: re-run build_dashboard_data.py and replace the data folder to see the data as collected.</p>':'');
   const opts=(c.minopts||[0]).map(v=>'<option value="'+v+'"'+(v===c.minP?' selected':'')+'>'+(v===0?'All':v.toLocaleString('en-US')+'+')+'</option>').join('');
-  s=fill(s,{title:$e(c.title),lead:leadFor(c),insights:insightsFor(c),ph:$e(c.ph||''),minN:c.minN||5,lastSnap:man.snaps.length-1}).replace('<!--MINOPTS-->',opts).replace('<!--NAV-->',nav(man,c.id));
+  s=fill(s,{title:$e(c.title),lead:leadFor(c),insights:insightsFor(c),ph:$e(c.ph||''),minN:c.minN||5,lastSnap:man.snaps.length-1}).replace('<!--MINOPTS-->',opts).replace('<!--NAV-->',nav(man,c.id)+gapNote);
+  if(s.indexOf('<!--CATTAB-->')>=0)s=s.replace('<!--CATTAB-->',c.kind==='categories'&&window.DASH_TERMS?TPL('tpl-catexp')+catBlock.replace(' data-cats>','>').replace('Click a row to list its terms, or a header to sort.','Click a row to list its terms, a term to follow its lifepath on the Symptoms/comorbidities page, or a header to sort.').replace('minimum-papers filter above','minimum-papers filter above (applied to each term)'):'');
+  if(c.id==='chemicals')s=s.replace('<div class="wrap">\n\n  <div class="bar">','<div class="wrap">\n'+TPL('tpl-chemexp')+'\n  <div class="bar">');   // what chemicals are: right under the title, before the controls
   // sections that only make sense for some pages
   const hide=a=>{s=s.split(' '+a+'>').join(' style="display:none">').split(' '+a+' ').join(' style="display:none" ')};
   const flags={'data-gap':!!c.gap,'data-cats':!!c.cats||!!c.extra,'data-waves':!!c.waves,'data-levels':!!c.levels,'data-lists':!!c.lists};
   Object.keys(flags).forEach(k=>{if(flags[k]){s=s.split(' '+k+'>').join('>').split(' '+k+' ').join(' ')}else hide(k)});
   if(!c.waves)s=s.replace('<select id="cby">','<select id="cby" disabled>');
   return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+s}
+const FOLD="(function(){\n var st=document.createElement('style');st.textContent='.fold-more[hidden]{display:none}.fold-btn{all:unset;cursor:pointer;color:var(--accent,#1a5fb4);text-decoration:underline;text-underline-offset:2px;margin-left:6px;font-size:inherit;white-space:nowrap}.fold-btn:focus-visible{outline:2px solid var(--accent,#1a5fb4);outline-offset:2px}';document.head.appendChild(st);\n var bal=function(s){return (s.match(/<b>/g)||[]).length===(s.match(/<\\/b>/g)||[]).length};\n document.querySelectorAll('header .lead, header .sub').forEach(function(el,n){\n  if(el.dataset.fold)return;var h=el.innerHTML;if(h.length<420)return;\n  var parts=[],last=0,re=/[.?!](\\s+)(?=[A-Z<\u201c\"])/g,m;while((m=re.exec(h))){parts.push(h.slice(last,m.index+1));last=m.index+m[0].length}parts.push(h.slice(last));if(parts.length<3)return;\n  var k=0,len=0;while(k<parts.length-1&&len<260){len+=parts[k].length+1;k++}\n  var a=parts.slice(0,k).join(' '),b=parts.slice(k).join(' ');if(!b||!bal(a)||!bal(b))return;\n  var id='fold'+n;el.dataset.fold=1;\n  el.innerHTML=a+' <span class=\"fold-more\" id=\"'+id+'\" hidden>'+b+'</span><button type=\"button\" class=\"fold-btn\" aria-expanded=\"false\" aria-controls=\"'+id+'\">Read more</button>';\n  var btn=el.querySelector('.fold-btn'),sp=el.querySelector('.fold-more');\n  btn.onclick=function(){var open=sp.hidden;sp.hidden=!open;btn.setAttribute('aria-expanded',String(open));btn.textContent=open?'Show less':'Read more'};\n });\n})();\n";
 async function main(){
   try{
     msg('Loading data…');
@@ -2004,7 +2213,8 @@ async function main(){
     let pid=man.pages.some(p=>p.id===PAGE)?PAGE:man.pages[0].id;
     const P=await get(pid);
     window.DASH_MAN=man;window.DASH_PAGE=P;
-    const html=build(man,P);
+    if(P.cfg&&P.cfg.kind==='categories'&&man.pages.some(p=>p.id==='diseases')){try{window.DASH_TERMS=await get('diseases')}catch(e){}}
+    const html=build(man,P)+'<script>'+FOLD+'<\/script>';
     document.open();document.write(html);document.close();
   }catch(e){msg('Could not load the data from <code>'+$e(DIR)+'/</code> ('+$e(e.message)+'). Run build_dashboard_data.py first, keep this file next to the data folder, and either open it over http (python3 -m http.server) or keep the .js copies that the script writes.')}}
 main();
