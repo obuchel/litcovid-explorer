@@ -1,234 +1,234 @@
-entity_id,name,papers,wave_group,wave_certainty_pct,archetype,archetype_certainty_pct
-MESH:D010100,Oxygen,771,Late symptom,54,Late settling,84
-MESH:D013256,Steroids,375,Broad first wave,59,Broad wave,84
-MESH:D002248,Carbon Monoxide,222,Late symptom,57,Late settling,84
-MESH:D008055,Lipids,126,Chronic core,87,Late settling,100
-MESH:C000606551,remdesivir,121,Chronic core,52,Late settling,88
-MESH:D005947,Glucose,113,Chronic core,86,Late settling,100
-MESH:D008775,Methylprednisolone,112,Acute early,86,Early exit,72
-MESH:D019788,Fluorodeoxyglucose F18,86,Broad first wave,66,Broad wave,82
-MESH:D000069283,Rituximab,85,Broad first wave,53,Broad wave,67
-MESH:C000719967,nirmatrelvir and ritonavir drug combination,83,Chronic core,99,Late settling,100
-MESH:D006854,Hydrocortisone,78,Chronic core,95,Late settling,100
-MESH:D005682,Gadolinium,77,Acute early,84,Broad wave,78
-MESH:D014807,Vitamin D,71,Chronic core,94,Late settling,100
-MESH:D003907,Dexamethasone,71,Broad first wave,58,Broad wave,83
-MESH:D009569,Nitric Oxide,69,Chronic core,65,Late settling,99
-MESH:D003404,Creatinine,65,Late symptom,57,Late settling,85
-MESH:D011239,Prednisolone,61,Chronic core,50,Late settling,73
-MESH:D002118,Calcium,55,Chronic core,87,Late settling,100
-MESH:D017382,Reactive Oxygen Species,55,Chronic core,66,Late settling,100
-MESH:D000438,Alcohols,55,Chronic core,96,Late settling,100
-MESH:D002244,Carbon,49,Chronic core,48,Late settling,87
-MESH:D001786,Blood Glucose,48,Chronic core,61,Late settling,97
-MESH:D011241,Prednisone,46,Late symptom,52,Late settling,82
-MESH:D013739,Testosterone,46,Late symptom,53,Late settling,94
-MESH:D006886,Hydroxychloroquine,45,Acute early,82,Early exit,88
-MESH:D002784,Cholesterol,45,Chronic core,83,Late settling,100
-MESH:D014364,Tryptophan,45,Chronic core,73,Late settling,100
-MESH:D014280,Triglycerides,44,Chronic core,79,Late settling,100
-MESH:D002245,Carbon Dioxide,44,Late symptom,54,Late settling,80
-MESH:D008687,Metformin,41,Chronic core,99,Late settling,100
-MESH:C502936,tocilizumab,41,Acute early,51,Broad wave,53
-MESH:D019344,Lactic Acid,38,Chronic core,67,Late settling,98
-MESH:D007737,Kynurenine,37,Chronic core,57,Late settling,99
-MESH:C000656703,molnupiravir,35,Chronic core,98,Late settling,100
-MESH:D014867,Water,34,Chronic core,92,Late settling,100
-MESH:D000666,Amphotericin B,31,Acute early,84,Early exit,79
-MESH:D012701,Serotonin,30,Chronic core,98,Late settling,100
-MESH:D007501,Iron,30,Chronic core,91,Late settling,100
-MESH:D006493,Heparin,29,Acute early,96,Early exit,96
-MESH:D000255,Adenosine Triphosphate,29,Chronic core,78,Late settling,94
-MESH:D012964,Sodium,29,Broad first wave,44,Broad wave,67
-MESH:D001120,Arginine,29,Chronic core,55,Late settling,94
-MESH:D001241,Aspirin,29,Acute early,97,Early exit,95
-MESH:D014284,Triiodothyronine,28,Acute early,45,Broad wave,67
-MESH:C093844,pirfenidone,28,Broad first wave,73,Early exit,86
-MESH:D008070,Lipopolysaccharides,27,Late symptom,51,Late settling,99
-MESH:D013974,Thyroxine,27,Chronic core,39,Broad wave,57
-MESH:D047311,Luteolin,26,Chronic core,68,Late settling,94
-MESH:D017963,Azithromycin,26,Broad first wave,45,Broad wave,56
-MESH:D003078,Colchicine,24,Broad first wave,46,Early exit,63
-MESH:D001205,Ascorbic Acid,23,Late symptom,48,Late settling,90
-MESH:C530716,nintedanib,23,Broad first wave,65,Broad wave,83
-MESH:D005978,Glutathione,23,Chronic core,87,Late settling,99
-MESH:D019793,Fluorescein,22,Chronic core,55,Late settling,72
-MESH:D005232,Fatty Acids Volatile,21,Chronic core,87,Late settling,97
-MESH:D001663,Bilirubin,21,Chronic core,52,Late settling,77
-MESH:D007328,Insulin,21,Chronic core,63,Late settling,67
-MESH:D004298,Dopamine,21,Broad first wave,55,Broad wave,63
-MESH:D005419,Flavonoids,20,Chronic core,75,Late settling,94
-MESH:D008727,Methotrexate,19,Chronic core,56,Late settling,68
-MESH:D011188,Potassium,19,Chronic core,86,Late settling,99
-MESH:D000077550,Ivabradine,19,Chronic core,46,Late settling,83
-MESH:D018698,Glutamic Acid,19,Chronic core,90,Late settling,100
-MESH:D000450,Aldosterone,19,Chronic core,63,Broad wave,61
-MESH:D003401,Creatine,19,Chronic core,82,Late settling,96
-MESH:D005227,Fatty Acids,18,Chronic core,57,Late settling,82
-MESH:D014527,Uric Acid,18,Chronic core,72,Late settling,91
-MESH:D004958,Estradiol,18,Late symptom,47,Late settling,69
-MESH:D016666,Fluvoxamine,18,Chronic core,58,Late settling,97
-MESH:D008274,Magnesium,17,Chronic core,45,Late settling,81
-MESH:D008550,Melatonin,17,Chronic core,68,Late settling,97
-MESH:C005958,palmidrol,17,Chronic core,45,Late settling,81
-MESH:D009271,Naltrexone,17,Chronic core,90,Late settling,100
-MESH:D001379,Azathioprine,16,Chronic core,68,Late settling,94
-MESH:C000718217,nirmatrelvir,16,Chronic core,85,Late settling,99
-MESH:D008315,Malondialdehyde,16,Late symptom,49,Late settling,95
-MESH:C024989,coenzyme Q10,15,Chronic core,70,Late settling,95
-MESH:D010743,Phospholipids,15,Broad first wave,40,Broad wave,66
-MESH:D002241,Carbohydrates,15,Chronic core,79,Late settling,96
-MESH:D015032,Zinc,15,Chronic core,88,Late settling,99
-MESH:D000109,Acetylcholine,14,Chronic core,52,Late settling,58
-MESH:C104450,25-hydroxyvitamin D,14,Chronic core,71,Late settling,85
-MESH:D009173,Mycophenolic Acid,14,Broad first wave,35,Late settling,57
-MESH:D011794,Quercetin,14,Chronic core,53,Late settling,88
-MESH:D012492,Salts,14,Chronic core,47,Broad wave,75
-MESH:D000069461,Bendamustine Hydrochloride,14,Chronic core,66,Late settling,82
-MESH:C000711967,sotrovimab,13,Chronic core,56,Late settling,95
-MESH:D009584,Nitrogen,13,Broad first wave,52,Broad wave,68
-MESH:D015525,Fatty Acids Omega-3,13,Chronic core,65,Late settling,88
-MESH:D000111,Acetylcysteine,13,Chronic core,62,Late settling,79
-MESH:D000082,Acetaminophen,13,Broad first wave,61,Late settling,74
-MESH:D007559,Ivermectin,13,Chronic core,51,Late settling,93
-MESH:D006859,Hydrogen,13,Chronic core,48,Late settling,82
-MESH:D002794,Choline,13,Chronic core,58,Late settling,83
-MESH:D014508,Urea,12,Chronic core,37,Late settling,59
-MESH:D005492,Folic Acid,12,Chronic core,55,Late settling,75
-MESH:D001569,Benzodiazepines,12,Broad first wave,48,Broad wave,61
-MESH:C000711487,casirivimab,12,Late symptom,33,Late settling,61
-MESH:C000711488,imdevimab,12,Late symptom,33,Late settling,61
-MESH:D009243,NAD,12,Chronic core,70,Late settling,91
-MESH:D002395,Catecholamines,12,Broad first wave,49,Late settling,68
-MESH:D019438,Ritonavir,12,Chronic core,80,Late settling,97
-MESH:D000078784,Vortioxetine,12,Chronic core,84,Late settling,98
-MESH:D017984,Enoxaparin,11,Acute early,57,Broad wave,52
-MESH:D002087,Butyrates,11,Chronic core,72,Late settling,87
-MESH:D002762,Cholecalciferol,11,Chronic core,65,Late settling,86
-MESH:D012965,Sodium Chloride,11,Chronic core,48,Late settling,87
-MESH:D006820,Hyaluronic Acid,11,Chronic core,67,Late settling,92
-MESH:C543332,obinutuzumab,11,Chronic core,69,Late settling,80
-MESH:D003520,Cyclophosphamide,11,Broad first wave,37,Late settling,46
-MESH:D005973,Glutamine,11,Chronic core,78,Late settling,95
-MESH:D000596,Amino Acids,11,Chronic core,89,Late settling,99
-MESH:D000077206,Gabapentin,10,Broad first wave,39,Broad wave,54
-MESH:D013654,Taurine,10,Chronic core,61,Late settling,82
-MESH:D005680,gamma-Aminobutyric Acid,10,Chronic core,58,Late settling,64
-MESH:D002738,Chloroquine,10,Broad first wave,46,Broad wave,52
-MESH:D006632,Histamine,10,Acute early,56,Early exit,46
-MESH:D006710,Homocysteine,10,Acute early,42,Early exit,49
-MESH:C000179,N-acetylaspartate,10,Chronic core,51,Late settling,91
-MESH:D059808,Polyphenols,9,Chronic core,47,Late settling,71
-MESH:D000241,Adenosine,9,Acute early,47,Early exit,50
-MESH:D000073893,Sugars,9,Broad first wave,37,Late settling,45
-MESH:D005438,Fludrocortisone,9,Broad first wave,38,Broad wave,54
-MESH:D010718,Phosphatidylserines,9,Late symptom,41,Late settling,53
-MESH:D007052,Ibuprofen,9,Broad first wave,47,Late settling,56
-MESH:D016718,Arachidonic Acid,9,Chronic core,48,Late settling,72
-MESH:D008713,Methimazole,9,Chronic core,42,Late settling,72
-MESH:D007736,Kynurenic Acid,9,Chronic core,72,Late settling,91
-MESH:D006495,Heparin Low-Molecular-Weight,9,Acute early,46,Early exit,48
-MESH:D013455,Sulfur,9,Chronic core,45,Late settling,75
-MESH:D014801,Vitamin A,9,Chronic core,53,Late settling,81
-MESH:C000722354,ensitrelvir,9,Chronic core,81,Late settling,94
-MESH:D001761,Bleomycin,8,Chronic core,34,Late settling,51
-MESH:D019798,Neopterin,8,Chronic core,53,Late settling,75
-MESH:D017392,Thiobarbituric Acid Reactive Substances,8,Chronic core,52,Late settling,73
-MESH:C462182,favipiravir,8,Acute early,71,Early exit,75
-MESH:D014805,Vitamin B 12,8,Chronic core,52,Late settling,83
-MESH:D011134,Polysaccharides,8,Broad first wave,31,Late settling,48
-MESH:D010126,Ozone,8,Chronic core,62,Late settling,80
-MESH:D010725,Phosphocreatine,8,Chronic core,56,Late settling,82
-MESH:D015738,Famotidine,8,Broad first wave,39,Late settling,48
-MESH:D012643,Selenium,8,Broad first wave,32,Broad wave,45
-MESH:D011433,Propranolol,8,Broad first wave,41,Late settling,51
-MESH:D000069552,Rivaroxaban,8,Broad first wave,55,Late settling,65
-MESH:D013972,Thyrotropin,8,Acute early,44,Early exit,44
-MESH:D000069285,Infliximab,8,Acute early,63,Early exit,50
-MESH:D002443,Ceftriaxone,8,Chronic core,73,Late settling,85
-MESH:D010649,Phenylalanine,8,Chronic core,69,Late settling,90
-MESH:D013438,Sulfhydryl Compounds,7,Chronic core,69,Late settling,91
-MESH:D009638,Norepinephrine,7,Chronic core,36,Late settling,53
-MESH:D009573,Nitrites,7,Late symptom,42,Late settling,65
-MESH:C101425,posaconazole,7,Acute early,40,Broad wave,46
-MESH:D010758,Phosphorus,7,Broad first wave,35,Late settling,46
-MESH:D063388,Endocannabinoids,7,Chronic core,42,Late settling,61
-MESH:C030985,purine,7,Chronic core,34,Broad wave,46
-MESH:C000711751,casirivimab and imdevimab drug combination,7,Acute early,56,Early exit,49
-MESH:D008911,Minocycline,7,Chronic core,64,Late settling,82
-MESH:D019819,Budesonide,7,Chronic core,41,Late settling,67
-MESH:D005231,Fatty Acids Unsaturated,7,Broad first wave,33,Late settling,45
-MESH:D003474,Curcumin,7,Chronic core,62,Late settling,78
-MESH:C000596027,baricitinib,7,Chronic core,56,Late settling,69
-MESH:D008063,Thioctic Acid,7,Chronic core,65,Late settling,82
-MESH:D011453,Prostaglandins,7,Chronic core,46,Late settling,66
-MESH:D005732,Gangliosides,7,Chronic core,29,Broad wave,50
-MESH:D009566,Nitrates,7,Chronic core,48,Late settling,71
-MESH:D017378,Quinolinic Acid,7,Chronic core,65,Late settling,86
-MESH:C522181,apixaban,7,Broad first wave,43,Broad wave,55
-MESH:C007858,glucuronyl glucosamine glycan sulfate,7,Chronic core,66,Late settling,81
-MESH:D014978,Xenon,7,Broad first wave,39,Late settling,50
-MESH:D010713,Phosphatidylcholines,7,Acute early,63,Early exit,51
-MESH:D005609,Free Radicals,7,Chronic core,48,Late settling,60
-MESH:D011729,Pyridostigmine Bromide,7,Acute early,40,Early exit,49
-MESH:C558899,lopinavir-ritonavir drug combination,7,Acute early,82,Early exit,85
-MESH:D009614,Nobelium,7,Chronic core,79,Late settling,94
-MESH:D006861,Hydrogen Peroxide,7,Chronic core,56,Late settling,82
-MESH:D007980,Levodopa,6,Chronic core,42,Late settling,63
-MESH:D009538,Nicotine,6,Chronic core,58,Late settling,77
-MESH:D065819,Voriconazole,6,Acute early,45,Early exit,43
-MESH:D061466,Lopinavir,6,Broad first wave,40,Broad wave,46
-MESH:D012828,Silicones,6,Broad first wave,34,Late settling,47
-MESH:D002331,Carnitine,6,Chronic core,33,Early exit,53
-MESH:D019289,Pyruvic Acid,6,Chronic core,57,Late settling,80
-MESH:D000068879,Adalimumab,6,Chronic core,43,Late settling,63
-MESH:D017291,Clarithromycin,6,Broad first wave,42,Early exit,54
-MESH:D014635,Valproic Acid,6,Chronic core,63,Late settling,74
-MESH:D009822,Oils Volatile,6,Chronic core,47,Late settling,71
-MESH:D000639,Amitriptyline,6,Chronic core,67,Late settling,85
-MESH:D003300,Copper,6,Broad first wave,37,Broad wave,54
-MESH:D013107,Sphingolipids,6,Broad first wave,39,Late settling,49
-MESH:D004492,Edetic Acid,6,Chronic core,47,Late settling,71
-MESH:D008774,Methylphenidate,6,Chronic core,62,Late settling,80
-MESH:D000212,Acyclovir,6,Chronic core,45,Late settling,70
-MESH:D009599,Nitroprusside,6,Chronic core,46,Late settling,62
-MESH:C029943,potassium hydroxide,6,Broad first wave,39,Early exit,49
-MESH:C093875,montelukast,6,Broad first wave,41,Early exit,55
-MESH:D008790,Metoprolol,6,Late symptom,34,Late settling,45
-MESH:D002096,C-Peptide,6,Acute early,56,Early exit,49
-MESH:D016559,Tacrolimus,6,Chronic core,51,Late settling,67
-MESH:D008715,Methionine,6,Chronic core,72,Late settling,82
-MESH:D000420,Albuterol,6,Broad first wave,36,Late settling,50
-MESH:D013866,Thioguanine,6,Chronic core,64,Late settling,80
-MESH:D000547,Amantadine,5,Chronic core,57,Late settling,77
-MESH:D008012,Lidocaine,5,Chronic core,43,Late settling,69
-MESH:D010710,Phosphates,5,Chronic core,45,Late settling,72
-MESH:D008094,Lithium,5,Chronic core,53,Late settling,78
-MESH:D013806,Theophylline,5,Chronic core,47,Late settling,79
-MESH:D004164,Diphosphonates,5,Chronic core,56,Late settling,70
-MESH:D019802,Succinic Acid,5,Broad first wave,33,Late settling,46
-MESH:C000711749,bamlanivimab,5,Broad first wave,37,Late settling,48
-MESH:D000068656,Mometasone Furoate,5,Broad first wave,30,Late settling,50
-MESH:D004176,Dipyridamole,5,Broad first wave,42,Broad wave,48
-MESH:D008140,Lorazepam,5,Broad first wave,33,Late settling,45
-MESH:D020404,Glycerophospholipids,5,Broad first wave,33,Late settling,44
-MESH:D000077287,Levetiracetam,5,Acute early,41,Early exit,47
-MESH:C507879,cytoflavin,5,Broad first wave,35,Early exit,43
-MESH:D055549,Volatile Organic Compounds,5,Chronic core,47,Late settling,68
-MESH:D014859,Warfarin,5,Acute early,59,Early exit,54
-MESH:D020280,Sertraline,5,Chronic core,57,Late settling,84
-MESH:D000409,Alanine,5,Chronic core,53,Late settling,75
-MESH:D011392,Proline,5,Chronic core,44,Late settling,67
-MESH:D008879,Midodrine,5,Broad first wave,34,Late settling,48
-MESH:D000108,Acetylcarnitine,5,Chronic core,51,Late settling,67
-MESH:D010716,Phosphatidylinositols,5,Chronic core,50,Late settling,68
-MESH:D007208,Indocyanine Green,5,Chronic core,35,Late settling,47
-MESH:D006418,Heme,5,Chronic core,58,Late settling,70
-MESH:D014580,Ursodeoxycholic Acid,5,Chronic core,43,Late settling,62
-MESH:D015232,Dinoprostone,5,Chronic core,59,Late settling,78
-MESH:D011562,Psilocybin,5,Late symptom,38,Late settling,68
-MESH:D000089983,Escitalopram,5,Chronic core,39,Late settling,62
-MESH:D009536,Niacinamide,5,Chronic core,47,Late settling,70
-MESH:D016316,Guanfacine,5,Chronic core,49,Late settling,82
-MESH:D007294,Inositol,5,Chronic core,44,Late settling,84
-MESH:D008670,Metals,5,Chronic core,54,Late settling,75
+entity_id,name,papers,wave_group,wave_certainty_pct,archetype,archetype_certainty_pct,basis
+MESH:D010100,Oxygen,771,Early wave,100,Early exit,100,core
+MESH:D013256,Steroids,375,Early wave,100,Early exit,100,core
+MESH:D002248,Carbon Monoxide,222,Early wave,100,Early exit,100,core
+MESH:D008055,Lipids,126,Sustained,100,Late settling,100,core
+MESH:C000606551,remdesivir,121,Early wave,100,Early exit,100,core
+MESH:D005947,Glucose,113,Sustained,100,Late settling,100,core
+MESH:D008775,Methylprednisolone,112,Early wave,100,Early exit,100,core
+MESH:D019788,Fluorodeoxyglucose F18,86,Early wave,100,Early exit,100,core
+MESH:D000069283,Rituximab,85,Early wave,100,Early exit,100,core
+MESH:C000719967,nirmatrelvir and ritonavir drug combination,83,Sustained,100,Late settling,100,core
+MESH:D006854,Hydrocortisone,78,Sustained,100,Late settling,100,core
+MESH:D005682,Gadolinium,77,Early wave,100,Early exit,100,core
+MESH:D014807,Vitamin D,71,Sustained,100,Late settling,100,core
+MESH:D003907,Dexamethasone,71,Early wave,100,Early exit,100,core
+MESH:D009569,Nitric Oxide,69,Early wave,100,Late settling,100,core
+MESH:D003404,Creatinine,65,Early wave,100,Early exit,100,core
+MESH:D011239,Prednisolone,61,Early wave,100,Early exit,100,core
+MESH:D002118,Calcium,55,Sustained,100,Late settling,100,core
+MESH:D017382,Reactive Oxygen Species,55,Sustained,100,Late settling,100,core
+MESH:D000438,Alcohols,55,Sustained,100,Late settling,100,core
+MESH:D002244,Carbon,49,Early wave,100,Early exit,100,core
+MESH:D001786,Blood Glucose,48,Early wave,100,Late settling,100,core
+MESH:D011241,Prednisone,46,Early wave,100,Early exit,100,core
+MESH:D013739,Testosterone,46,Early wave,100,Early exit,100,core
+MESH:D006886,Hydroxychloroquine,45,Early wave,100,Early exit,100,core
+MESH:D002784,Cholesterol,45,Sustained,100,Late settling,100,core
+MESH:D014364,Tryptophan,45,Sustained,100,Late settling,100,core
+MESH:D014280,Triglycerides,44,Sustained,100,Late settling,100,core
+MESH:D002245,Carbon Dioxide,44,Early wave,100,Early exit,100,core
+MESH:D008687,Metformin,41,Sustained,100,Late settling,100,core
+MESH:C502936,tocilizumab,41,Early wave,100,Early exit,100,core
+MESH:D019344,Lactic Acid,38,Early wave,100,Late settling,100,core
+MESH:D007737,Kynurenine,37,Sustained,100,Late settling,100,core
+MESH:C000656703,molnupiravir,35,Sustained,100,Late settling,100,core
+MESH:D014867,Water,34,Sustained,100,Late settling,100,core
+MESH:D000666,Amphotericin B,31,Early wave,100,Early exit,100,core
+MESH:D012701,Serotonin,30,Sustained,100,Late settling,100,core
+MESH:D007501,Iron,30,Sustained,100,Late settling,100,core
+MESH:D006493,Heparin,29,Early wave,100,Early exit,100,tentative
+MESH:D000255,Adenosine Triphosphate,29,Early wave,53,Early exit,66,tentative
+MESH:D012964,Sodium,29,Early wave,100,Early exit,100,tentative
+MESH:D001120,Arginine,29,Early wave,74,Late settling,80,tentative
+MESH:D001241,Aspirin,29,Early wave,100,Early exit,100,tentative
+MESH:D014284,Triiodothyronine,28,Early wave,100,Early exit,100,tentative
+MESH:C093844,pirfenidone,28,Early wave,100,Early exit,100,tentative
+MESH:D008070,Lipopolysaccharides,27,Sustained,99,Late settling,100,tentative
+MESH:D013974,Thyroxine,27,Early wave,99,Early exit,99,tentative
+MESH:D047311,Luteolin,26,Early wave,62,Early exit,71,tentative
+MESH:D017963,Azithromycin,26,Early wave,100,Early exit,99,tentative
+MESH:D003078,Colchicine,24,Early wave,100,Early exit,99,tentative
+MESH:D001205,Ascorbic Acid,23,Early wave,85,Late settling,70,tentative
+MESH:C530716,nintedanib,23,Early wave,100,Early exit,100,tentative
+MESH:D005978,Glutathione,23,Sustained,99,Late settling,100,tentative
+MESH:D019793,Fluorescein,22,Early wave,82,Early exit,86,tentative
+MESH:D005232,Fatty Acids Volatile,21,Sustained,92,Late settling,96,tentative
+MESH:D001663,Bilirubin,21,Early wave,94,Late settling,79,tentative
+MESH:D007328,Insulin,21,Early wave,96,Early exit,66,tentative
+MESH:D004298,Dopamine,21,Early wave,100,Early exit,99,tentative
+MESH:D005419,Flavonoids,20,Sustained,84,Late settling,82,tentative
+MESH:D008727,Methotrexate,19,Early wave,95,Early exit,86,tentative
+MESH:D011188,Potassium,19,Sustained,99,Late settling,100,tentative
+MESH:D000077550,Ivabradine,19,Early wave,51,Early exit,51,tentative
+MESH:D018698,Glutamic Acid,19,Sustained,100,Late settling,100,tentative
+MESH:D000450,Aldosterone,19,Early wave,92,Early exit,58,tentative
+MESH:D003401,Creatine,19,Sustained,100,Late settling,100,tentative
+MESH:D005227,Fatty Acids,18,Early wave,93,Late settling,91,tentative
+MESH:D014527,Uric Acid,18,Sustained,51,Late settling,65,tentative
+MESH:D004958,Estradiol,18,Early wave,90,Early exit,87,tentative
+MESH:D016666,Fluvoxamine,18,Sustained,95,Late settling,97,tentative
+MESH:D008274,Magnesium,17,Early wave,85,Late settling,54,tentative
+MESH:D008550,Melatonin,17,Sustained,88,Late settling,92,tentative
+MESH:C005958,palmidrol,17,Early wave,68,Early exit,70,tentative
+MESH:D009271,Naltrexone,17,Sustained,100,Late settling,100,tentative
+MESH:D001379,Azathioprine,16,Sustained,85,Late settling,95,tentative
+MESH:C000718217,nirmatrelvir,16,Sustained,99,Late settling,99,tentative
+MESH:D008315,Malondialdehyde,16,Sustained,89,Late settling,94,tentative
+MESH:C024989,coenzyme Q10,15,Sustained,80,Early exit,84,tentative
+MESH:D010743,Phospholipids,15,Early wave,99,Early exit,97,tentative
+MESH:D002241,Carbohydrates,15,Sustained,99,Late settling,100,tentative
+MESH:D015032,Zinc,15,Sustained,100,Late settling,100,tentative
+MESH:D000109,Acetylcholine,14,Sustained,71,Late settling,83,tentative
+MESH:C104450,25-hydroxyvitamin D,14,Sustained,93,Late settling,96,tentative
+MESH:D009173,Mycophenolic Acid,14,Early wave,89,Early exit,84,tentative
+MESH:D011794,Quercetin,14,Sustained,65,Late settling,53,tentative
+MESH:D012492,Salts,14,Early wave,68,Early exit,67,tentative
+MESH:D000069461,Bendamustine Hydrochloride,14,Sustained,60,Late settling,64,tentative
+MESH:C000711967,sotrovimab,13,Sustained,85,Late settling,92,tentative
+MESH:D009584,Nitrogen,13,Early wave,99,Early exit,96,tentative
+MESH:D015525,Fatty Acids Omega-3,13,Sustained,72,Late settling,82,tentative
+MESH:D000111,Acetylcysteine,13,Sustained,57,Late settling,67,tentative
+MESH:D000082,Acetaminophen,13,Early wave,73,Early exit,69,tentative
+MESH:D007559,Ivermectin,13,Sustained,89,Late settling,91,tentative
+MESH:D006859,Hydrogen,13,Sustained,58,Early exit,62,tentative
+MESH:D002794,Choline,13,Sustained,98,Late settling,98,tentative
+MESH:D014508,Urea,12,Early wave,90,Early exit,77,tentative
+MESH:D005492,Folic Acid,12,Early wave,84,Early exit,66,tentative
+MESH:D001569,Benzodiazepines,12,Early wave,99,Early exit,99,tentative
+MESH:C000711487,casirivimab,12,Early wave,98,Late settling,92,tentative
+MESH:C000711488,imdevimab,12,Early wave,98,Late settling,92,tentative
+MESH:D009243,NAD,12,Sustained,85,Late settling,90,tentative
+MESH:D002395,Catecholamines,12,Early wave,76,Early exit,65,tentative
+MESH:D019438,Ritonavir,12,Sustained,97,Late settling,98,tentative
+MESH:D000078784,Vortioxetine,12,Sustained,98,Late settling,99,tentative
+MESH:D017984,Enoxaparin,11,Early wave,100,Early exit,99,tentative
+MESH:D002087,Butyrates,11,Sustained,74,Late settling,83,tentative
+MESH:D002762,Cholecalciferol,11,Sustained,86,Late settling,95,tentative
+MESH:D012965,Sodium Chloride,11,Early wave,55,Late settling,68,tentative
+MESH:D006820,Hyaluronic Acid,11,Sustained,89,Late settling,93,tentative
+MESH:C543332,obinutuzumab,11,Sustained,64,Late settling,81,tentative
+MESH:D003520,Cyclophosphamide,11,Early wave,99,Early exit,97,tentative
+MESH:D005973,Glutamine,11,Sustained,98,Late settling,99,tentative
+MESH:D000596,Amino Acids,11,Sustained,100,Late settling,100,tentative
+MESH:D000077206,Gabapentin,10,Early wave,92,Early exit,90,tentative
+MESH:D013654,Taurine,10,Sustained,69,Late settling,84,tentative
+MESH:D005680,gamma-Aminobutyric Acid,10,Sustained,91,Late settling,90,tentative
+MESH:D002738,Chloroquine,10,Early wave,100,Early exit,100,tentative
+MESH:D006632,Histamine,10,Early wave,99,Early exit,99,tentative
+MESH:D006710,Homocysteine,10,Early wave,98,Early exit,97,tentative
+MESH:C000179,N-acetylaspartate,10,Sustained,95,Late settling,96,tentative
+MESH:D059808,Polyphenols,9,Sustained,56,Late settling,63,tentative
+MESH:D000241,Adenosine,9,Early wave,98,Early exit,97,tentative
+MESH:D000073893,Sugars,9,Early wave,85,Late settling,81,tentative
+MESH:D005438,Fludrocortisone,9,Early wave,96,Early exit,90,tentative
+MESH:D010718,Phosphatidylserines,9,Early wave,70,Early exit,57,tentative
+MESH:D007052,Ibuprofen,9,Early wave,91,Late settling,81,tentative
+MESH:D016718,Arachidonic Acid,9,Sustained,55,Late settling,71,tentative
+MESH:D008713,Methimazole,9,Early wave,76,Late settling,71,tentative
+MESH:D007736,Kynurenic Acid,9,Sustained,93,Late settling,92,tentative
+MESH:D006495,Heparin Low-Molecular-Weight,9,Early wave,99,Early exit,99,tentative
+MESH:D013455,Sulfur,9,Sustained,51,Late settling,70,tentative
+MESH:D014801,Vitamin A,9,Sustained,88,Late settling,88,tentative
+MESH:C000722354,ensitrelvir,9,Sustained,96,Late settling,98,tentative
+MESH:D001761,Bleomycin,8,Early wave,85,Early exit,65,tentative
+MESH:D019798,Neopterin,8,Sustained,60,Late settling,68,tentative
+MESH:D017392,Thiobarbituric Acid Reactive Substances,8,Early wave,65,Early exit,57,tentative
+MESH:C462182,favipiravir,8,Early wave,100,Early exit,100,tentative
+MESH:D014805,Vitamin B 12,8,Sustained,62,Late settling,73,tentative
+MESH:D011134,Polysaccharides,8,Early wave,83,Early exit,76,tentative
+MESH:D010126,Ozone,8,Sustained,73,Late settling,88,tentative
+MESH:D010725,Phosphocreatine,8,Sustained,83,Late settling,86,tentative
+MESH:D015738,Famotidine,8,Early wave,74,Late settling,59,tentative
+MESH:D012643,Selenium,8,Early wave,88,Early exit,83,tentative
+MESH:D011433,Propranolol,8,Early wave,96,Early exit,93,tentative
+MESH:D000069552,Rivaroxaban,8,Early wave,68,Late settling,73,tentative
+MESH:D013972,Thyrotropin,8,Early wave,98,Early exit,98,tentative
+MESH:D000069285,Infliximab,8,Early wave,99,Early exit,99,tentative
+MESH:D002443,Ceftriaxone,8,Sustained,80,Late settling,77,tentative
+MESH:D010649,Phenylalanine,8,Sustained,91,Late settling,92,tentative
+MESH:D013438,Sulfhydryl Compounds,7,Sustained,91,Late settling,93,tentative
+MESH:D009638,Norepinephrine,7,Early wave,68,Late settling,66,tentative
+MESH:D009573,Nitrites,7,Early wave,57,Late settling,59,tentative
+MESH:C101425,posaconazole,7,Early wave,96,Early exit,89,tentative
+MESH:D010758,Phosphorus,7,Early wave,88,Early exit,72,tentative
+MESH:D063388,Endocannabinoids,7,Early wave,68,Late settling,75,tentative
+MESH:C030985,purine,7,Early wave,88,Early exit,73,tentative
+MESH:C000711751,casirivimab and imdevimab drug combination,7,Early wave,99,Early exit,99,tentative
+MESH:D008911,Minocycline,7,Sustained,89,Late settling,95,tentative
+MESH:D019819,Budesonide,7,Sustained,62,Late settling,70,tentative
+MESH:D005231,Fatty Acids Unsaturated,7,Early wave,92,Late settling,88,tentative
+MESH:D003474,Curcumin,7,Sustained,80,Late settling,78,tentative
+MESH:C000596027,baricitinib,7,Early wave,52,Late settling,53,tentative
+MESH:D008063,Thioctic Acid,7,Sustained,82,Late settling,88,tentative
+MESH:D011453,Prostaglandins,7,Sustained,53,Late settling,63,tentative
+MESH:D005732,Gangliosides,7,Early wave,77,Early exit,73,tentative
+MESH:D009566,Nitrates,7,Sustained,70,Late settling,73,tentative
+MESH:D017378,Quinolinic Acid,7,Sustained,92,Late settling,93,tentative
+MESH:C522181,apixaban,7,Early wave,65,Early exit,70,tentative
+MESH:C007858,glucuronyl glucosamine glycan sulfate,7,Sustained,92,Late settling,94,tentative
+MESH:D014978,Xenon,7,Early wave,92,Early exit,78,tentative
+MESH:D010713,Phosphatidylcholines,7,Early wave,99,Early exit,98,tentative
+MESH:D005609,Free Radicals,7,Early wave,56,Late settling,52,tentative
+MESH:D011729,Pyridostigmine Bromide,7,Early wave,97,Early exit,88,tentative
+MESH:C558899,lopinavir-ritonavir drug combination,7,Early wave,100,Early exit,100,tentative
+MESH:D009614,Nobelium,7,Sustained,93,Late settling,96,tentative
+MESH:D006861,Hydrogen Peroxide,7,Sustained,90,Late settling,95,tentative
+MESH:D007980,Levodopa,6,Early wave,58,Late settling,50,tentative
+MESH:D009538,Nicotine,6,Sustained,76,Late settling,83,tentative
+MESH:D065819,Voriconazole,6,Early wave,92,Early exit,92,tentative
+MESH:D061466,Lopinavir,6,Early wave,99,Early exit,97,tentative
+MESH:D012828,Silicones,6,Early wave,85,Late settling,74,tentative
+MESH:D002331,Carnitine,6,Early wave,75,Early exit,73,tentative
+MESH:D019289,Pyruvic Acid,6,Sustained,84,Late settling,92,tentative
+MESH:D000068879,Adalimumab,6,Early wave,82,Late settling,63,tentative
+MESH:D017291,Clarithromycin,6,Early wave,93,Early exit,84,tentative
+MESH:D014635,Valproic Acid,6,Early wave,53,Late settling,57,tentative
+MESH:D009822,Oils Volatile,6,Sustained,75,Late settling,77,tentative
+MESH:D000639,Amitriptyline,6,Sustained,74,Late settling,88,tentative
+MESH:D003300,Copper,6,Early wave,84,Early exit,72,tentative
+MESH:D013107,Sphingolipids,6,Sustained,63,Late settling,57,tentative
+MESH:D004492,Edetic Acid,6,Sustained,64,Late settling,66,tentative
+MESH:D008774,Methylphenidate,6,Sustained,72,Late settling,84,tentative
+MESH:D000212,Acyclovir,6,Sustained,76,Late settling,79,tentative
+MESH:D009599,Nitroprusside,6,Early wave,52,Late settling,62,tentative
+MESH:C029943,potassium hydroxide,6,Early wave,91,Early exit,85,tentative
+MESH:C093875,montelukast,6,Early wave,90,Early exit,83,tentative
+MESH:D008790,Metoprolol,6,Early wave,81,Late settling,66,tentative
+MESH:D002096,C-Peptide,6,Early wave,98,Early exit,93,tentative
+MESH:D016559,Tacrolimus,6,Sustained,60,Late settling,66,tentative
+MESH:D008715,Methionine,6,Sustained,85,Late settling,92,tentative
+MESH:D000420,Albuterol,6,Early wave,86,Late settling,83,tentative
+MESH:D013866,Thioguanine,6,Sustained,63,Late settling,69,tentative
+MESH:D000547,Amantadine,5,Sustained,63,Late settling,67,tentative
+MESH:D008012,Lidocaine,5,Sustained,53,Late settling,70,tentative
+MESH:D010710,Phosphates,5,Sustained,74,Late settling,76,tentative
+MESH:D008094,Lithium,5,Sustained,68,Late settling,78,tentative
+MESH:D013806,Theophylline,5,Sustained,85,Late settling,89,tentative
+MESH:D004164,Diphosphonates,5,Sustained,60,Late settling,73,tentative
+MESH:D019802,Succinic Acid,5,Early wave,86,Late settling,64,tentative
+MESH:C000711749,bamlanivimab,5,Early wave,83,Early exit,80,tentative
+MESH:D000068656,Mometasone Furoate,5,Early wave,72,Late settling,61,tentative
+MESH:D004176,Dipyridamole,5,Early wave,71,Early exit,71,tentative
+MESH:D008140,Lorazepam,5,Early wave,67,Late settling,74,tentative
+MESH:D020404,Glycerophospholipids,5,Early wave,84,Early exit,80,tentative
+MESH:D000077287,Levetiracetam,5,Early wave,95,Early exit,92,tentative
+MESH:C507879,cytoflavin,5,Early wave,92,Early exit,92,tentative
+MESH:D055549,Volatile Organic Compounds,5,Sustained,77,Late settling,74,tentative
+MESH:D014859,Warfarin,5,Early wave,96,Early exit,96,tentative
+MESH:D020280,Sertraline,5,Sustained,92,Late settling,93,tentative
+MESH:D000409,Alanine,5,Sustained,72,Late settling,80,tentative
+MESH:D011392,Proline,5,Sustained,61,Late settling,70,tentative
+MESH:D008879,Midodrine,5,Early wave,78,Late settling,59,tentative
+MESH:D000108,Acetylcarnitine,5,Sustained,52,Late settling,55,tentative
+MESH:D010716,Phosphatidylinositols,5,Sustained,58,Late settling,68,tentative
+MESH:D007208,Indocyanine Green,5,Early wave,85,Early exit,80,tentative
+MESH:D006418,Heme,5,Early wave,51,Late settling,67,tentative
+MESH:D014580,Ursodeoxycholic Acid,5,Sustained,53,Late settling,64,tentative
+MESH:D015232,Dinoprostone,5,Sustained,85,Late settling,92,tentative
+MESH:D011562,Psilocybin,5,Sustained,79,Late settling,85,tentative
+MESH:D000089983,Escitalopram,5,Sustained,51,Late settling,57,tentative
+MESH:D009536,Niacinamide,5,Sustained,82,Late settling,88,tentative
+MESH:D016316,Guanfacine,5,Sustained,87,Late settling,91,tentative
+MESH:D007294,Inositol,5,Sustained,84,Late settling,88,tentative
+MESH:D008670,Metals,5,Sustained,63,Late settling,77,tentative
