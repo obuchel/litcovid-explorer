@@ -1,6 +1,6 @@
 entity_id,term,papers,wave_group,wave_certainty_pct,archetype,archetype_certainty_pct,basis
 MESH:D000086382,COVID-19,16493,Broad first wave,100,Broad wave,100,core
-MESH:D000094024,Post-Acute COVID-19 Syndrome,12469,Chronic core,100,Late settling,100,core
+MESH:D000094024,Post-Acute COVID-19 Syndrome,12488,Chronic core,100,Late settling,100,core
 MESH:D007239,Infections,5208,Chronic core,100,Late settling,100,core
 MESH:D005221,Fatigue,3421,Chronic core,100,Late settling,100,core
 MESH:D007249,Inflammation,2848,Chronic core,100,Broad wave,100,core
@@ -8,11 +8,11 @@ MESH:D003072,Cognition Disorders,1907,Chronic core,100,Late settling,100,core
 MESH:D004417,Dyspnea,1872,Chronic core,100,Late settling,100,core
 MESH:D003866,Depressive Disorder,1783,Chronic core,100,Late settling,100,core
 MESH:D001007,Anxiety,1671,Chronic core,100,Late settling,100,core
+MESH:D001523,Mental Disorders,1285,Chronic core,100,Late settling,100,core
 MESH:D000857,Olfaction Disorders,1260,Broad first wave,100,Broad wave,100,core
 MESH:D009461,Neurologic Manifestations,1172,Broad first wave,100,Broad wave,100,core
-MESH:D001523,Mental Disorders,1113,Chronic core,100,Late settling,100,core
+MESH:D008171,Lung Diseases,1049,Broad first wave,100,Broad wave,100,core
 MESH:D006331,Heart Diseases,1018,Broad first wave,100,Broad wave,100,core
-MESH:D008171,Lung Diseases,973,Broad first wave,100,Broad wave,100,core
 MESH:D006261,Headache,964,Broad first wave,100,Broad wave,100,core
 MESH:D003643,Death,909,Broad first wave,100,Broad wave,100,core
 MESH:D010146,Pain,881,Chronic core,100,Late settling,100,core
@@ -37,7 +37,7 @@ MESH:D012818,Signs and Symptoms Respiratory,486,Broad first wave,100,Broad wave,
 MESH:D002493,Central Nervous System Diseases,483,Acute early,100,Early exit,100,core
 MESH:D006973,Hypertension,456,Chronic core,100,Late settling,100,core
 MESH:D018908,Muscle Weakness,454,Late symptom,100,Broad wave,100,core
-MESH:D001327,Autoimmune Diseases,441,Chronic core,100,Broad wave,100,core
+MESH:D001327,Autoimmune Diseases,442,Chronic core,100,Broad wave,100,core
 MESH:D002637,Chest Pain,437,Broad first wave,100,Late settling,100,core
 MESH:D009422,Nervous System Diseases,435,Broad first wave,100,Broad wave,100,core
 MESH:D005355,Fibrosis,433,Broad first wave,100,Broad wave,100,core
@@ -48,6 +48,7 @@ MESH:D013927,Thrombosis,404,Broad first wave,100,Broad wave,100,core
 MESH:D009205,Myocarditis,397,Acute early,100,Early exit,100,core
 MESH:D009765,Obesity,395,Chronic core,100,Late settling,100,core
 MESH:D000090862,Neuroinflammatory Diseases,388,Chronic core,100,Late settling,100,core
+MESH:D007154,Immune System Diseases,385,Chronic core,100,Late settling,100,core
 MESH:D020521,Stroke,378,Broad first wave,100,Broad wave,100,core
 MESH:D003141,Communicable Diseases,377,Broad first wave,100,Broad wave,100,core
 MESH:D001927,Brain Diseases,372,Acute early,100,Early exit,100,core
@@ -67,15 +68,13 @@ MESH:D009102,Multiple Organ Failure,281,Acute early,100,Early exit,100,core
 MESH:D009369,Neoplasms,279,Chronic core,100,Late settling,100,core
 MESH:D017563,Lung Diseases Interstitial,275,Broad first wave,100,Broad wave,100,core
 MESH:D000860,Hypoxia,270,Broad first wave,100,Broad wave,100,core
-OMIM:614878,614878,265,Late symptom,100,Late settling,100,core
+MESH:D001145,Arrhythmias Cardiac,256,Broad first wave,100,Broad wave,100,core
 MESH:D045169,Severe Acute Respiratory Syndrome,255,Acute early,100,Early exit,100,core
 MESH:D012141,Respiratory Tract Infections,252,Broad first wave,100,Broad wave,100,core
 MESH:D006333,Heart Failure,251,Broad first wave,100,Broad wave,100,core
-MESH:D001145,Arrhythmias Cardiac,250,Broad first wave,100,Broad wave,100,core
 MESH:D000092202,Exercise-Induced Allergies,245,Late symptom,100,Late settling,100,core
 MESH:D004408,Dysgeusia,242,Broad first wave,100,Broad wave,100,core
 MESH:D020275,Guillain-Barre Syndrome,237,Acute early,100,Early exit,100,core
-OMIM:603663,603663,227,Late symptom,100,Broad wave,100,core
 MESH:D029424,Pulmonary Disease Chronic Obstructive,215,Late symptom,100,Late settling,100,core
 MESH:C567712,Retinitis Pigmentosa Concentric,215,Chronic core,100,Late settling,100,core
 MESH:D019964,Mood Disorders,214,Late symptom,100,Late settling,100,core
@@ -84,7 +83,7 @@ MESH:D000014,Abnormalities Drug-Induced,210,Late symptom,100,Late settling,100,c
 MESH:D012817,Signs and Symptoms Digestive,209,Broad first wave,100,Late settling,100,core
 MESH:D001249,Asthma,209,Chronic core,100,Late settling,100,core
 MESH:D001342,Autonomic Nervous System Diseases,208,Chronic core,100,Late settling,100,core
-MESH:D060825,Cognitive Dysfunction,206,Chronic core,100,Late settling,100,core
+MESH:D060825,Cognitive Dysfunction,207,Chronic core,100,Late settling,100,core
 MESH:D008107,Liver Diseases,204,Broad first wave,100,Broad wave,100,core
 MESH:D054972,Postural Orthostatic Tachycardia Syndrome,204,Chronic core,100,Late settling,100,core
 MESH:D007251,Influenza Human,204,Late symptom,100,Broad wave,100,core
@@ -120,7 +119,6 @@ MESH:D003924,Diabetes Mellitus Type 2,148,Chronic core,100,Late settling,100,cor
 MESH:D019965,Neurocognitive Disorders,148,Chronic core,100,Late settling,100,core
 MESH:D051437,Renal Insufficiency,141,Chronic core,100,Broad wave,100,core
 MESH:D015746,Abdominal Pain,136,Acute early,100,Broad wave,100,core
-MESH:D007154,Immune System Diseases,136,Chronic core,100,Late settling,100,core
 MESH:C000657744,postintensive care syndrome,135,Broad first wave,100,Early exit,100,core
 MESH:D009203,Myocardial Infarction,135,Acute early,100,Broad wave,100,core
 MESH:D013651,Taste Disorders,135,Broad first wave,100,Broad wave,100,core
@@ -141,7 +139,6 @@ MESH:D003711,Demyelinating Diseases,115,Acute early,100,Early exit,100,core
 MESH:D057772,Vascular System Injuries,115,Late symptom,100,Broad wave,100,core
 MESH:D000080424,Cytokine Release Syndrome,114,Acute early,100,Early exit,100,core
 MESH:D018487,Ventricular Dysfunction Left,114,Acute early,100,Broad wave,100,core
-OMIM:608852,608852,113,Chronic core,100,Broad wave,100,core
 MESH:D006323,Heart Arrest,112,Late symptom,100,Late settling,100,core
 MESH:D009325,Nausea,111,Broad first wave,100,Broad wave,100,core
 MESH:D009410,Nerve Degeneration,108,Late symptom,100,Broad wave,100,core
@@ -155,1004 +152,996 @@ MESH:D009437,Neuralgia,102,Chronic core,100,Late settling,100,core
 MESH:D018746,Systemic Inflammatory Response Syndrome,101,Acute early,100,Early exit,100,core
 MESH:D013610,Tachycardia,101,Late symptom,100,Late settling,100,core
 MESH:D011618,Psychotic Disorders,100,Broad first wave,100,Broad wave,100,core
-MESH:D000073496,Frailty,100,Late symptom,100,Broad wave,100,core
+MESH:D000073496,Frailty,100,Late symptom,100,Late settling,100,core
 MESH:D051436,Renal Insufficiency Chronic,100,Late symptom,100,Late settling,100,core
 MESH:D000067073,Psychological Trauma,100,Late symptom,100,Broad wave,100,core
 MESH:D020196,Trauma Nervous System,100,Acute early,100,Early exit,100,core
 MESH:C564972,Myopathy with Lactic Acidosis Hereditary,99,Chronic core,87,Late settling,100,tentative
-MESH:D012877,Skin Manifestations,97,Acute early,65,Broad wave,58,tentative
-MESH:D009069,Movement Disorders,97,Broad first wave,71,Broad wave,84,tentative
-MESH:D010612,Pharyngitis,97,Late symptom,47,Broad wave,77,tentative
+MESH:D020246,Venous Thrombosis,98,Broad first wave,55,Broad wave,84,tentative
+MESH:D012877,Skin Manifestations,97,Acute early,65,Broad wave,55,tentative
+MESH:D009069,Movement Disorders,97,Broad first wave,70,Broad wave,85,tentative
+MESH:D010612,Pharyngitis,97,Late symptom,49,Broad wave,74,tentative
 MESH:D003324,Coronary Artery Disease,96,Broad first wave,59,Broad wave,86,tentative
-MESH:D020246,Venous Thrombosis,95,Broad first wave,64,Broad wave,89,tentative
-MESH:D005076,Exanthema,94,Acute early,100,Early exit,100,tentative
-MESH:D008231,Lymphopenia,93,Acute early,81,Early exit,58,tentative
-MESH:D017566,Microvascular Angina,93,Broad first wave,54,Broad wave,80,tentative
-MESH:D013577,Syndrome,92,Broad first wave,56,Early exit,74,tentative
-MESH:D054971,Orthostatic Intolerance,90,Chronic core,70,Late settling,99,tentative
-MESH:D001987,Bronchiectasis,90,Late symptom,62,Late settling,51,tentative
-MESH:D012216,Rheumatic Diseases,89,Broad first wave,70,Broad wave,90,tentative
-MESH:D001259,Ataxia,88,Acute early,50,Broad wave,57,tentative
-MESH:D017093,Liver Failure,88,Broad first wave,87,Broad wave,96,tentative
-MESH:D001068,Feeding and Eating Disorders,88,Late symptom,57,Late settling,86,tentative
-MESH:D009358,Congenital Hereditary and Neonatal Diseases and Abnormalities,86,Broad first wave,57,Broad wave,76,tentative
+MESH:D005076,Exanthema,94,Acute early,100,Early exit,99,tentative
+MESH:D008231,Lymphopenia,93,Acute early,81,Early exit,57,tentative
+MESH:D017566,Microvascular Angina,93,Broad first wave,59,Broad wave,79,tentative
+MESH:D013577,Syndrome,92,Broad first wave,56,Early exit,73,tentative
+MESH:D054971,Orthostatic Intolerance,90,Chronic core,79,Late settling,99,tentative
+MESH:D001987,Bronchiectasis,90,Late symptom,65,Late settling,51,tentative
+MESH:D012216,Rheumatic Diseases,89,Broad first wave,70,Broad wave,89,tentative
+MESH:D001259,Ataxia,88,Acute early,50,Broad wave,58,tentative
+MESH:D017093,Liver Failure,88,Broad first wave,87,Broad wave,95,tentative
+MESH:D001068,Feeding and Eating Disorders,88,Late symptom,55,Late settling,87,tentative
+MESH:D009358,Congenital Hereditary and Neonatal Diseases and Abnormalities,86,Broad first wave,57,Broad wave,73,tentative
 MESH:D014839,Vomiting,86,Acute early,93,Early exit,81,tentative
 MESH:D012769,Shock,86,Acute early,100,Early exit,100,tentative
-MESH:D020274,Autoimmune Diseases of the Nervous System,85,Broad first wave,77,Broad wave,89,tentative
-MESH:D005356,Fibromyalgia,85,Chronic core,95,Late settling,100,tentative
+MESH:D020274,Autoimmune Diseases of the Nervous System,85,Broad first wave,79,Broad wave,87,tentative
+MESH:D005356,Fibromyalgia,85,Chronic core,96,Late settling,100,tentative
 MESH:C538190,Muscular dystrophy congenital with central nervous system involvement,83,Acute early,99,Early exit,100,tentative
-MESH:D001247,Asthenia,82,Broad first wave,38,Late settling,60,tentative
-MESH:D007153,Immunologic Deficiency Syndromes,82,Chronic core,65,Late settling,91,tentative
-MESH:D044342,Malnutrition,82,Broad first wave,62,Broad wave,82,tentative
-MESH:D018805,Sepsis,81,Broad first wave,52,Broad wave,91,tentative
-MESH:D015619,Respiratory System Abnormalities,80,Broad first wave,90,Broad wave,98,tentative
-MESH:C000726808,general anxiety disorder,80,Chronic core,92,Late settling,100,tentative
-MESH:D013959,Thyroid Diseases,80,Broad first wave,68,Broad wave,89,tentative
-MESH:D015658,HIV Infections,80,Chronic core,91,Late settling,100,tentative
-MESH:D010292,Paresthesia,80,Broad first wave,52,Broad wave,71,tentative
-MESH:D001168,Arthritis,79,Broad first wave,62,Broad wave,89,tentative
-MESH:D010493,Pericarditis,79,Broad first wave,69,Broad wave,79,tentative
+MESH:D001247,Asthenia,82,Broad first wave,40,Late settling,52,tentative
+MESH:D007153,Immunologic Deficiency Syndromes,82,Chronic core,69,Late settling,92,tentative
+MESH:D044342,Malnutrition,82,Broad first wave,60,Broad wave,81,tentative
+MESH:D018805,Sepsis,81,Late symptom,51,Broad wave,90,tentative
+MESH:D015619,Respiratory System Abnormalities,80,Broad first wave,91,Broad wave,98,tentative
+MESH:C000726808,general anxiety disorder,80,Chronic core,94,Late settling,100,tentative
+MESH:D013959,Thyroid Diseases,80,Broad first wave,70,Broad wave,88,tentative
+MESH:D015658,HIV Infections,80,Chronic core,94,Late settling,100,tentative
+MESH:D010292,Paresthesia,80,Broad first wave,51,Broad wave,67,tentative
+MESH:D001168,Arthritis,79,Broad first wave,61,Broad wave,90,tentative
+MESH:D010493,Pericarditis,79,Broad first wave,69,Broad wave,80,tentative
 MESH:D056486,Chemical and Drug Induced Liver Injury,77,Broad first wave,59,Broad wave,87,tentative
-MESH:D045745,Scleroderma Limited,74,Late symptom,43,Late settling,82,tentative
-MESH:D012120,Respiration Disorders,74,Broad first wave,79,Broad wave,78,tentative
-MESH:D034381,Hearing Loss,74,Chronic core,38,Late settling,54,tentative
-MESH:D020773,Headache Disorders,73,Chronic core,67,Late settling,99,tentative
-MESH:D050177,Overweight,73,Chronic core,85,Late settling,99,tentative
-MESH:D007511,Ischemia,72,Broad first wave,53,Broad wave,63,tentative
-MESH:D059352,Musculoskeletal Pain,72,Chronic core,93,Late settling,100,tentative
-MESH:D021081,Chronobiology Disorders,72,Chronic core,94,Late settling,100,tentative
-MESH:D014012,Tinnitus,71,Broad first wave,38,Broad wave,60,tentative
-MESH:D009220,Myositis,70,Broad first wave,82,Broad wave,96,tentative
-MESH:C564676,Dyskinesia Familial with Facial Myokymia,70,Acute early,75,Broad wave,71,tentative
+MESH:D045745,Scleroderma Limited,74,Late symptom,44,Late settling,81,tentative
+MESH:D012120,Respiration Disorders,74,Broad first wave,79,Broad wave,81,tentative
+MESH:D034381,Hearing Loss,74,Late symptom,37,Late settling,56,tentative
+MESH:D020773,Headache Disorders,73,Chronic core,64,Late settling,99,tentative
+MESH:D050177,Overweight,73,Chronic core,87,Late settling,100,tentative
+MESH:D007511,Ischemia,72,Broad first wave,53,Broad wave,65,tentative
+MESH:D059352,Musculoskeletal Pain,72,Chronic core,95,Late settling,100,tentative
+MESH:D021081,Chronobiology Disorders,72,Chronic core,96,Late settling,100,tentative
+MESH:D014012,Tinnitus,71,Broad first wave,39,Broad wave,57,tentative
+MESH:D009220,Myositis,70,Broad first wave,82,Broad wave,95,tentative
+MESH:C564676,Dyskinesia Familial with Facial Myokymia,70,Acute early,76,Broad wave,69,tentative
 MESH:D064806,Dysbiosis,69,Chronic core,84,Late settling,100,tentative
 MESH:D013966,Thyroiditis,69,Broad first wave,56,Broad wave,73,tentative
-MESH:D008881,Migraine Disorders,69,Late symptom,60,Late settling,94,tentative
-MESH:D054990,Idiopathic Pulmonary Fibrosis,66,Chronic core,67,Late settling,91,tentative
-MESH:D056784,Leukoencephalopathies,65,Late symptom,70,Late settling,79,tentative
-MESH:D008180,Lupus Erythematosus Systemic,65,Late symptom,38,Broad wave,66,tentative
+MESH:D008881,Migraine Disorders,69,Late symptom,58,Late settling,95,tentative
+MESH:D054990,Idiopathic Pulmonary Fibrosis,66,Chronic core,66,Late settling,92,tentative
+MESH:D056784,Leukoencephalopathies,65,Late symptom,72,Late settling,80,tentative
+MESH:D008180,Lupus Erythematosus Systemic,65,Late symptom,38,Broad wave,67,tentative
 MESH:D007238,Infarction,65,Acute early,99,Early exit,99,tentative
-MESH:D024821,Metabolic Syndrome,65,Chronic core,93,Late settling,100,tentative
-MESH:D006987,Hypesthesia,64,Broad first wave,70,Broad wave,89,tentative
-MESH:D001172,Arthritis Rheumatoid,64,Late symptom,53,Broad wave,55,tentative
-MESH:C566343,Hereditary Myopathy with Early Respiratory Failure,64,Chronic core,64,Late settling,86,tentative
-MESH:D007333,Insulin Resistance,64,Chronic core,81,Late settling,99,tentative
-MESH:D014717,Vertigo,64,Broad first wave,73,Broad wave,86,tentative
-MESH:D002534,Hypoxia Brain,64,Acute early,81,Early exit,88,tentative
-MESH:D008607,Intellectual Disability,63,Broad first wave,74,Broad wave,86,tentative
-MESH:D008133,Long QT Syndrome,63,Chronic core,56,Late settling,82,tentative
-MESH:D017695,Soft Tissue Injuries,62,Late symptom,48,Broad wave,84,tentative
-MESH:D009468,Neuromuscular Diseases,61,Acute early,52,Broad wave,55,tentative
-MESH:D006943,Hyperglycemia,61,Chronic core,51,Late settling,86,tentative
-MESH:D003922,Diabetes Mellitus Type 1,61,Late symptom,37,Late settling,54,tentative
-MESH:D012891,Sleep Apnea Syndromes,61,Late symptom,50,Late settling,93,tentative
-MESH:D009059,Mouth Diseases,61,Broad first wave,85,Broad wave,96,tentative
+MESH:D024821,Metabolic Syndrome,65,Chronic core,94,Late settling,100,tentative
+MESH:D006987,Hypesthesia,64,Broad first wave,70,Broad wave,88,tentative
+MESH:D001172,Arthritis Rheumatoid,64,Late symptom,51,Broad wave,58,tentative
+MESH:C566343,Hereditary Myopathy with Early Respiratory Failure,64,Chronic core,65,Late settling,88,tentative
+MESH:D007333,Insulin Resistance,64,Chronic core,86,Late settling,99,tentative
+MESH:D014717,Vertigo,64,Broad first wave,70,Broad wave,84,tentative
+MESH:D002534,Hypoxia Brain,64,Acute early,82,Early exit,88,tentative
+MESH:D008607,Intellectual Disability,63,Broad first wave,73,Broad wave,84,tentative
+MESH:D008133,Long QT Syndrome,63,Chronic core,53,Late settling,82,tentative
+MESH:D017695,Soft Tissue Injuries,62,Chronic core,55,Broad wave,87,tentative
+MESH:D009468,Neuromuscular Diseases,61,Acute early,52,Broad wave,56,tentative
+MESH:D006943,Hyperglycemia,61,Chronic core,48,Late settling,88,tentative
+MESH:D003922,Diabetes Mellitus Type 1,61,Late symptom,40,Late settling,51,tentative
+MESH:D012891,Sleep Apnea Syndromes,61,Late symptom,49,Late settling,95,tentative
+MESH:D009059,Mouth Diseases,61,Broad first wave,84,Broad wave,96,tentative
 MESH:D009188,Myelitis Transverse,61,Acute early,99,Early exit,99,tentative
-MESH:D007037,Hypothyroidism,61,Broad first wave,77,Broad wave,94,tentative
-MESH:D010490,Pericardial Effusion,61,Acute early,69,Broad wave,54,tentative
-MESH:D004342,Drug Hypersensitivity,60,Chronic core,99,Late settling,100,tentative
+MESH:D007037,Hypothyroidism,61,Broad first wave,79,Broad wave,94,tentative
+MESH:D010490,Pericardial Effusion,61,Acute early,69,Broad wave,51,tentative
+MESH:D004342,Drug Hypersensitivity,60,Chronic core,100,Late settling,100,tentative
 MESH:D004673,Encephalomyelitis Acute Disseminated,59,Acute early,97,Early exit,97,tentative
-MESH:D007024,Hypotension Orthostatic,59,Chronic core,94,Late settling,100,tentative
-MESH:D017202,Myocardial Ischemia,59,Late symptom,57,Late settling,96,tentative
+MESH:D007024,Hypotension Orthostatic,59,Chronic core,97,Late settling,100,tentative
+MESH:D017202,Myocardial Ischemia,59,Late symptom,58,Late settling,97,tentative
 MESH:D000076082,Travel-Related Illness,59,Broad first wave,88,Broad wave,95,tentative
-MESH:D004700,Endocrine System Diseases,59,Broad first wave,81,Broad wave,93,tentative
-MESH:D012173,Retinitis,58,Acute early,66,Broad wave,61,tentative
-MESH:D001281,Atrial Fibrillation,58,Chronic core,63,Late settling,75,tentative
-MESH:D007172,Erectile Dysfunction,58,Chronic core,57,Late settling,75,tentative
+MESH:D004700,Endocrine System Diseases,59,Broad first wave,82,Broad wave,93,tentative
+MESH:D012173,Retinitis,58,Acute early,66,Broad wave,57,tentative
+MESH:D001281,Atrial Fibrillation,58,Chronic core,59,Late settling,76,tentative
+MESH:D007172,Erectile Dysfunction,58,Chronic core,57,Late settling,78,tentative
 MESH:D003244,Consciousness Disorders,58,Acute early,100,Early exit,100,tentative
-MESH:D004827,Epilepsy,57,Broad first wave,83,Broad wave,91,tentative
-MESH:D009336,Necrosis,55,Acute early,79,Broad wave,61,tentative
-MESH:D006976,Hypertension Pulmonary,55,Broad first wave,54,Broad wave,81,tentative
-MESH:D001424,Bacterial Infections,54,Broad first wave,66,Broad wave,92,tentative
-MESH:D055948,Sarcopenia,54,Late symptom,39,Late settling,60,tentative
-MESH:D002545,Brain Ischemia,53,Broad first wave,79,Broad wave,90,tentative
-MESH:D064420,Drug-Related Side Effects and Adverse Reactions,53,Late symptom,43,Broad wave,73,tentative
-MESH:D009668,Nose Diseases,53,Chronic core,53,Late settling,66,tentative
+MESH:D004827,Epilepsy,57,Broad first wave,84,Broad wave,90,tentative
+MESH:D009336,Necrosis,55,Acute early,78,Broad wave,60,tentative
+MESH:D006976,Hypertension Pulmonary,55,Broad first wave,56,Broad wave,79,tentative
+MESH:D001424,Bacterial Infections,54,Broad first wave,68,Broad wave,92,tentative
+MESH:D055948,Sarcopenia,54,Late symptom,39,Late settling,56,tentative
+MESH:D002545,Brain Ischemia,53,Broad first wave,79,Broad wave,89,tentative
+MESH:D064420,Drug-Related Side Effects and Adverse Reactions,53,Late symptom,46,Broad wave,75,tentative
+MESH:D009668,Nose Diseases,53,Chronic core,48,Late settling,69,tentative
 MESH:D011115,Polyneuropathies,53,Acute early,98,Early exit,99,tentative
-MESH:D000084063,Reinfection,53,Broad first wave,63,Broad wave,88,tentative
-MESH:D020763,Pathological Conditions Anatomical,52,Chronic core,73,Broad wave,82,tentative
-MESH:D013575,Syncope,52,Broad first wave,62,Broad wave,88,tentative
+MESH:D000084063,Reinfection,53,Broad first wave,64,Broad wave,89,tentative
+MESH:D020763,Pathological Conditions Anatomical,52,Chronic core,77,Broad wave,85,tentative
+MESH:D013575,Syncope,52,Broad first wave,67,Broad wave,87,tentative
 MESH:D002494,Central Nervous System Infections,52,Acute early,94,Early exit,99,tentative
-MESH:D012678,Sensation Disorders,52,Broad first wave,36,Broad wave,56,tentative
-MESH:D008228,Lymphoma Non-Hodgkin,52,Broad first wave,56,Broad wave,80,tentative
-MESH:D016388,Tooth Loss,51,Broad first wave,58,Broad wave,81,tentative
-MESH:D019973,Alcohol-Related Disorders,50,Chronic core,85,Late settling,100,tentative
-MESH:D002547,Cerebral Palsy,50,Broad first wave,51,Broad wave,75,tentative
-MESH:D014832,Voice Disorders,50,Late symptom,49,Late settling,72,tentative
-MESH:D002543,Cerebral Hemorrhage,49,Broad first wave,54,Broad wave,51,tentative
-MESH:D006319,Hearing Loss Sensorineural,49,Broad first wave,91,Broad wave,96,tentative
+MESH:D012678,Sensation Disorders,52,Broad first wave,39,Late settling,56,tentative
+MESH:D008228,Lymphoma Non-Hodgkin,52,Broad first wave,61,Broad wave,76,tentative
+MESH:D016388,Tooth Loss,51,Broad first wave,60,Broad wave,78,tentative
+MESH:D019973,Alcohol-Related Disorders,50,Chronic core,89,Late settling,100,tentative
+MESH:D002547,Cerebral Palsy,50,Broad first wave,50,Broad wave,76,tentative
+MESH:D014832,Voice Disorders,50,Late symptom,45,Late settling,75,tentative
+MESH:D002543,Cerebral Hemorrhage,49,Broad first wave,54,Broad wave,53,tentative
+MESH:D006319,Hearing Loss Sensorineural,49,Broad first wave,90,Broad wave,96,tentative
 MESH:D001930,Brain Injuries,49,Broad first wave,84,Broad wave,93,tentative
-MESH:D019337,Hematologic Neoplasms,49,Chronic core,96,Late settling,100,tentative
-MESH:D020263,Lead Poisoning Nervous System,48,Broad first wave,87,Broad wave,96,tentative
+MESH:D019337,Hematologic Neoplasms,49,Chronic core,97,Late settling,100,tentative
+MESH:D020263,Lead Poisoning Nervous System,48,Broad first wave,85,Broad wave,96,tentative
 MESH:D010302,Parkinson Disease Secondary,48,Acute early,67,Broad wave,68,tentative
-MESH:D043183,Irritable Bowel Syndrome,48,Chronic core,96,Late settling,100,tentative
+MESH:D043183,Irritable Bowel Syndrome,48,Chronic core,97,Late settling,100,tentative
 MESH:D019042,Muscle Neoplasms,48,Chronic core,89,Late settling,99,tentative
-MESH:D007022,Hypotension,48,Acute early,99,Early exit,92,tentative
-MESH:D000309,Adrenal Insufficiency,48,Broad first wave,56,Broad wave,73,tentative
-MESH:D003327,Coronary Disease,48,Late symptom,52,Late settling,93,tentative
+MESH:D007022,Hypotension,48,Acute early,99,Early exit,91,tentative
+MESH:D000309,Adrenal Insufficiency,48,Broad first wave,59,Broad wave,69,tentative
+MESH:D003327,Coronary Disease,48,Late symptom,55,Late settling,94,tentative
 MESH:D054058,Acute Coronary Syndrome,48,Acute early,96,Early exit,98,tentative
-MESH:D016918,Arthritis Reactive,48,Broad first wave,64,Broad wave,84,tentative
-MESH:D006111,Graves Disease,47,Broad first wave,67,Broad wave,79,tentative
-MESH:D006402,Hematologic Diseases,47,Chronic core,62,Broad wave,63,tentative
-MESH:D013967,Thyroiditis Autoimmune,46,Broad first wave,41,Broad wave,64,tentative
-MESH:D050197,Atherosclerosis,46,Late symptom,71,Late settling,84,tentative
-MESH:D012871,Skin Diseases,46,Acute early,67,Early exit,61,tentative
-MESH:D014202,Tremor,45,Late symptom,47,Late settling,69,tentative
-MESH:D013968,Thyroiditis Subacute,45,Acute early,92,Early exit,87,tentative
+MESH:D016918,Arthritis Reactive,48,Broad first wave,63,Broad wave,85,tentative
+MESH:D006111,Graves Disease,47,Broad first wave,66,Broad wave,78,tentative
+MESH:D006402,Hematologic Diseases,47,Chronic core,59,Late settling,70,tentative
+MESH:D013967,Thyroiditis Autoimmune,46,Broad first wave,43,Broad wave,63,tentative
+MESH:D050197,Atherosclerosis,46,Late symptom,69,Late settling,86,tentative
+MESH:D012871,Skin Diseases,46,Acute early,68,Early exit,62,tentative
+MESH:D014202,Tremor,45,Late symptom,50,Late settling,69,tentative
+MESH:D013968,Thyroiditis Subacute,45,Acute early,92,Early exit,85,tentative
 MESH:D008580,Meningism,44,Acute early,99,Early exit,100,tentative
-MESH:D001925,Brain Damage Chronic,44,Broad first wave,68,Broad wave,88,tentative
-MESH:D012164,Retinal Diseases,44,Acute early,87,Early exit,87,tentative
+MESH:D001925,Brain Damage Chronic,44,Broad first wave,69,Broad wave,87,tentative
+MESH:D012164,Retinal Diseases,44,Acute early,87,Early exit,88,tentative
 MESH:D009187,Myelitis,44,Acute early,99,Early exit,99,tentative
 MESH:D003231,Conjunctivitis,44,Acute early,100,Early exit,100,tentative
-MESH:D014808,Vitamin D Deficiency,44,Chronic core,85,Late settling,99,tentative
-MESH:D015208,Smoke Inhalation Injury,44,Chronic core,65,Late settling,98,tentative
-MESH:D009894,Opportunistic Infections,44,Broad first wave,52,Broad wave,86,tentative
+MESH:D014808,Vitamin D Deficiency,44,Chronic core,87,Late settling,99,tentative
+MESH:D015208,Smoke Inhalation Injury,44,Chronic core,70,Late settling,99,tentative
+MESH:D009894,Opportunistic Infections,44,Broad first wave,48,Broad wave,85,tentative
 MESH:D013001,Somatoform Disorders,44,Chronic core,89,Late settling,100,tentative
-MESH:D006970,Disorders of Excessive Somnolence,43,Chronic core,84,Late settling,100,tentative
-MESH:D001284,Atrophy,43,Chronic core,71,Late settling,98,tentative
-MESH:D003865,Depressive Disorder Major,43,Chronic core,86,Late settling,97,tentative
-MESH:D010020,Osteonecrosis,43,Late symptom,49,Late settling,72,tentative
-MESH:D051346,Mobility Limitation,42,Chronic core,59,Late settling,87,tentative
-MESH:D000740,Anemia,42,Broad first wave,57,Late settling,66,tentative
-MESH:D011660,Pulmonary Heart Disease,42,Late symptom,51,Broad wave,73,tentative
-MESH:D000071075,Small Fiber Neuropathy,41,Chronic core,72,Late settling,99,tentative
-MESH:D014086,Tooth Mobility,41,Broad first wave,76,Broad wave,88,tentative
+MESH:D006970,Disorders of Excessive Somnolence,43,Chronic core,87,Late settling,100,tentative
+MESH:D001284,Atrophy,43,Chronic core,77,Late settling,98,tentative
+MESH:D003865,Depressive Disorder Major,43,Chronic core,88,Late settling,98,tentative
+MESH:D010020,Osteonecrosis,43,Late symptom,48,Late settling,76,tentative
+MESH:D051346,Mobility Limitation,42,Chronic core,63,Late settling,89,tentative
+MESH:D000740,Anemia,42,Broad first wave,52,Late settling,66,tentative
+MESH:D011660,Pulmonary Heart Disease,42,Late symptom,49,Broad wave,77,tentative
+MESH:D000071075,Small Fiber Neuropathy,41,Chronic core,79,Late settling,100,tentative
+MESH:D014086,Tooth Mobility,41,Broad first wave,76,Broad wave,87,tentative
 MESH:D011030,Pneumothorax,41,Acute early,94,Early exit,97,tentative
 MESH:D003389,Cranial Nerve Diseases,41,Acute early,98,Early exit,99,tentative
-MESH:D009133,Muscular Atrophy,41,Broad first wave,50,Broad wave,79,tentative
-MESH:D020258,Neurotoxicity Syndromes,40,Late symptom,44,Broad wave,69,tentative
-MESH:D002311,Cardiomyopathy Dilated,40,Acute early,65,Broad wave,54,tentative
-MESH:D013616,Tachycardia Sinus,40,Late symptom,63,Late settling,64,tentative
-MESH:D000071896,Medically Unexplained Symptoms,39,Chronic core,86,Late settling,100,tentative
-MESH:D009902,Optic Neuritis,39,Acute early,56,Broad wave,60,tentative
-MESH:D013921,Thrombocytopenia,39,Acute early,95,Early exit,92,tentative
-MESH:D000402,Airway Obstruction,39,Late symptom,36,Broad wave,54,tentative
-MESH:D000090882,Thromboinflammation,39,Chronic core,55,Late settling,85,tentative
-MESH:D012170,Retinal Vein Occlusion,38,Acute early,87,Early exit,85,tentative
-MESH:D012559,Schizophrenia,37,Chronic core,63,Late settling,87,tentative
-MESH:D002313,Cardiomyopathy Restrictive,37,Acute early,94,Early exit,83,tentative
-MESH:D005598,Fractures Spontaneous,37,Broad first wave,73,Broad wave,85,tentative
-MESH:D009157,Myasthenia Gravis,36,Broad first wave,54,Broad wave,84,tentative
-MESH:D008223,Lymphoma,36,Broad first wave,61,Broad wave,78,tentative
-MESH:D013226,Status Epilepticus,36,Acute early,94,Early exit,94,tentative
-MESH:D001416,Back Pain,36,Late symptom,42,Late settling,65,tentative
-MESH:D012507,Sarcoidosis,36,Chronic core,83,Late settling,97,tentative
-MESH:C000721427,Crazy paving pattern,36,Broad first wave,50,Broad wave,88,tentative
-MESH:D050171,Dyslipidemias,35,Chronic core,91,Late settling,99,tentative
-MESH:D004834,Epilepsy Post-Traumatic,35,Chronic core,45,Late settling,83,tentative
+MESH:D009133,Muscular Atrophy,41,Broad first wave,54,Broad wave,76,tentative
+MESH:D020258,Neurotoxicity Syndromes,40,Late symptom,44,Broad wave,74,tentative
+MESH:D002311,Cardiomyopathy Dilated,40,Acute early,65,Broad wave,52,tentative
+MESH:D013616,Tachycardia Sinus,40,Late symptom,64,Late settling,71,tentative
+MESH:D000071896,Medically Unexplained Symptoms,39,Chronic core,89,Late settling,100,tentative
+MESH:D009902,Optic Neuritis,39,Acute early,56,Broad wave,62,tentative
+MESH:D013921,Thrombocytopenia,39,Acute early,95,Early exit,90,tentative
+MESH:D000402,Airway Obstruction,39,Late symptom,36,Broad wave,58,tentative
+MESH:D000090882,Thromboinflammation,39,Chronic core,64,Late settling,89,tentative
+MESH:D012170,Retinal Vein Occlusion,38,Acute early,88,Early exit,85,tentative
+MESH:D012559,Schizophrenia,37,Chronic core,66,Late settling,88,tentative
+MESH:D002313,Cardiomyopathy Restrictive,37,Acute early,94,Early exit,82,tentative
+MESH:D005598,Fractures Spontaneous,37,Broad first wave,73,Broad wave,83,tentative
+MESH:D009157,Myasthenia Gravis,36,Broad first wave,56,Broad wave,84,tentative
+MESH:D008223,Lymphoma,36,Broad first wave,63,Broad wave,78,tentative
+MESH:D013226,Status Epilepticus,36,Acute early,94,Early exit,93,tentative
+MESH:D001416,Back Pain,36,Late symptom,44,Late settling,66,tentative
+MESH:D012507,Sarcoidosis,36,Chronic core,85,Late settling,97,tentative
+MESH:C000721427,Crazy paving pattern,36,Broad first wave,50,Broad wave,87,tentative
+MESH:D050171,Dyslipidemias,35,Chronic core,92,Late settling,99,tentative
+MESH:D004834,Epilepsy Post-Traumatic,35,Chronic core,45,Late settling,82,tentative
 MESH:D019966,Substance-Related Disorders,35,Broad first wave,44,Broad wave,70,tentative
-OMIM:176430,176430,35,Chronic core,91,Late settling,100,tentative
-MESH:D015212,Inflammatory Bowel Diseases,34,Late symptom,60,Late settling,60,tentative
-MESH:D020181,Sleep Apnea Obstructive,34,Chronic core,52,Broad wave,78,tentative
-MESH:D016883,Diabetic Ketoacidosis,34,Acute early,90,Early exit,89,tentative
-MESH:D006980,Hyperthyroidism,34,Chronic core,66,Late settling,72,tentative
-MESH:D001791,Blood Platelet Disorders,34,Chronic core,91,Late settling,99,tentative
-MESH:D000855,Anorexia,34,Broad first wave,58,Early exit,88,tentative
-MESH:C567355,CD59 Deficiency,33,Broad first wave,45,Broad wave,70,tentative
-MESH:C566386,Thyroid Adenoma Hyperfunctioning,33,Broad first wave,61,Broad wave,78,tentative
+MESH:D015212,Inflammatory Bowel Diseases,34,Late symptom,62,Late settling,63,tentative
+MESH:D020181,Sleep Apnea Obstructive,34,Chronic core,57,Broad wave,80,tentative
+MESH:D016883,Diabetic Ketoacidosis,34,Acute early,90,Early exit,88,tentative
+MESH:D006980,Hyperthyroidism,34,Chronic core,66,Late settling,73,tentative
+MESH:D001791,Blood Platelet Disorders,34,Chronic core,91,Late settling,100,tentative
+MESH:D000855,Anorexia,34,Broad first wave,59,Early exit,87,tentative
+MESH:C567355,CD59 Deficiency,33,Broad first wave,46,Broad wave,67,tentative
+MESH:C566386,Thyroid Adenoma Hyperfunctioning,33,Broad first wave,62,Broad wave,79,tentative
 MESH:D012770,Shock Cardiogenic,33,Acute early,100,Early exit,100,tentative
-MESH:D003318,Corneal Opacity,33,Broad first wave,67,Broad wave,85,tentative
-MESH:D020031,Epstein-Barr Virus Infections,33,Chronic core,61,Late settling,99,tentative
-MESH:D000069451,Long Term Adverse Effects,32,Chronic core,64,Late settling,94,tentative
-MESH:D003240,Connective Tissue Diseases,32,Broad first wave,58,Late settling,76,tentative
-MESH:D009759,Nystagmus Pathologic,32,Broad first wave,46,Broad wave,71,tentative
-MESH:C536203,Elejalde Disease,32,Broad first wave,69,Broad wave,85,tentative
-MESH:D003428,Cross Infection,32,Acute early,48,Broad wave,74,tentative
-MESH:D019547,Neck Pain,31,Broad first wave,72,Broad wave,90,tentative
-MESH:D001714,Bipolar Disorder,31,Broad first wave,72,Broad wave,88,tentative
-MESH:C564288,Dystonia 18,31,Chronic core,40,Broad wave,59,tentative
-MESH:D000080363,White Dot Syndromes,31,Chronic core,86,Late settling,92,tentative
-MESH:D019958,Attention Deficit and Disruptive Behavior Disorders,31,Chronic core,56,Late settling,67,tentative
-MESH:C536030,MASS syndrome,31,Broad first wave,49,Broad wave,60,tentative
-MESH:D000168,Acrocephalosyndactylia,31,Chronic core,77,Late settling,74,tentative
-MESH:D006258,Head and Neck Neoplasms,31,Acute early,68,Early exit,58,tentative
-MESH:D034721,Mastocytosis Systemic,31,Broad first wave,47,Broad wave,63,tentative
-MESH:D055154,Dysphonia,30,Chronic core,39,Late settling,62,tentative
-MESH:D005764,Gastroesophageal Reflux,30,Chronic core,79,Late settling,99,tentative
-MESH:D010195,Pancreatitis,30,Broad first wave,68,Broad wave,86,tentative
-MESH:D000079225,Psychological Distress,30,Chronic core,67,Late settling,82,tentative
-MESH:D008224,Lymphoma Follicular,30,Chronic core,68,Late settling,95,tentative
+MESH:D003318,Corneal Opacity,33,Broad first wave,67,Broad wave,83,tentative
+MESH:D020031,Epstein-Barr Virus Infections,33,Chronic core,65,Late settling,99,tentative
+MESH:D000069451,Long Term Adverse Effects,32,Chronic core,64,Late settling,95,tentative
+MESH:D003240,Connective Tissue Diseases,32,Broad first wave,62,Late settling,75,tentative
+MESH:D009759,Nystagmus Pathologic,32,Broad first wave,45,Broad wave,69,tentative
+MESH:C536203,Elejalde Disease,32,Broad first wave,67,Broad wave,87,tentative
+MESH:D003428,Cross Infection,32,Acute early,48,Broad wave,73,tentative
+MESH:D019547,Neck Pain,31,Broad first wave,76,Broad wave,89,tentative
+MESH:D001714,Bipolar Disorder,31,Broad first wave,75,Broad wave,87,tentative
+MESH:C564288,Dystonia 18,31,Chronic core,38,Broad wave,61,tentative
+MESH:D000080363,White Dot Syndromes,31,Chronic core,87,Late settling,94,tentative
+MESH:D019958,Attention Deficit and Disruptive Behavior Disorders,31,Chronic core,56,Late settling,71,tentative
+MESH:C536030,MASS syndrome,31,Broad first wave,48,Broad wave,59,tentative
+MESH:D000168,Acrocephalosyndactylia,31,Chronic core,77,Late settling,77,tentative
+MESH:D006258,Head and Neck Neoplasms,31,Acute early,68,Early exit,54,tentative
+MESH:D034721,Mastocytosis Systemic,31,Broad first wave,49,Broad wave,60,tentative
+MESH:D055154,Dysphonia,30,Late symptom,38,Late settling,65,tentative
+MESH:D005764,Gastroesophageal Reflux,30,Chronic core,82,Late settling,99,tentative
+MESH:D010195,Pancreatitis,30,Broad first wave,69,Broad wave,86,tentative
+MESH:D000079225,Psychological Distress,30,Chronic core,68,Late settling,82,tentative
+MESH:D008224,Lymphoma Follicular,30,Chronic core,72,Late settling,96,tentative
 MESH:D012206,Rhabdomyolysis,29,Acute early,99,Early exit,98,tentative
-MESH:C000718787,AA amyloidosis,29,Chronic core,91,Late settling,100,tentative
-MESH:D004617,Embolism,29,Acute early,68,Early exit,59,tentative
-MESH:D006212,Hallucinations,29,Acute early,60,Broad wave,53,tentative
-MESH:D003128,Coma,29,Acute early,86,Early exit,87,tentative
-MESH:D000081029,Pulmonary Arterial Hypertension,29,Broad first wave,59,Broad wave,74,tentative
-MESH:D003586,Cytomegalovirus Infections,29,Chronic core,82,Late settling,87,tentative
-MESH:C000719218,Technophobia,29,Acute early,88,Early exit,81,tentative
-MESH:D001480,Basal Ganglia Diseases,29,Late symptom,47,Late settling,50,tentative
+MESH:C000718787,AA amyloidosis,29,Chronic core,94,Late settling,100,tentative
+MESH:D004617,Embolism,29,Acute early,68,Early exit,62,tentative
+MESH:D006212,Hallucinations,29,Acute early,61,Broad wave,55,tentative
+MESH:D003128,Coma,29,Acute early,86,Early exit,86,tentative
+MESH:D000081029,Pulmonary Arterial Hypertension,29,Broad first wave,60,Broad wave,72,tentative
+MESH:D003586,Cytomegalovirus Infections,29,Chronic core,84,Late settling,88,tentative
+MESH:C000719218,Technophobia,29,Acute early,88,Early exit,80,tentative
+MESH:D001480,Basal Ganglia Diseases,29,Late symptom,49,Late settling,52,tentative
 MESH:D012772,Shock Septic,29,Acute early,100,Early exit,100,tentative
-MESH:D015356,Retinal Artery Occlusion,28,Acute early,98,Early exit,97,tentative
-MESH:D006359,Heat Exhaustion,28,Chronic core,55,Late settling,80,tentative
-MESH:D051359,Lymphohistiocytosis Hemophagocytic,28,Acute early,94,Early exit,92,tentative
-MESH:D001157,Arterial Occlusive Diseases,28,Acute early,52,Early exit,65,tentative
+MESH:D015356,Retinal Artery Occlusion,28,Acute early,98,Early exit,96,tentative
+MESH:D006359,Heat Exhaustion,28,Chronic core,54,Late settling,84,tentative
+MESH:D051359,Lymphohistiocytosis Hemophagocytic,28,Acute early,94,Early exit,91,tentative
+MESH:D001157,Arterial Occlusive Diseases,28,Acute early,53,Early exit,63,tentative
 MESH:D011507,Proteinuria,28,Acute early,58,Early exit,50,tentative
-MESH:D007676,Kidney Failure Chronic,28,Late symptom,52,Late settling,78,tentative
-MESH:D003248,Constipation,28,Chronic core,48,Late settling,86,tentative
+MESH:D007676,Kidney Failure Chronic,28,Late symptom,51,Late settling,79,tentative
+MESH:D003248,Constipation,28,Chronic core,50,Late settling,89,tentative
 MESH:D054038,Posterior Leukoencephalopathy Syndrome,28,Acute early,99,Early exit,99,tentative
-MESH:D050031,Hashimoto Disease,27,Broad first wave,46,Broad wave,67,tentative
-OMIM:115700,115700,27,Chronic core,78,Late settling,100,tentative
-MESH:D015209,Cholangitis Sclerosing,27,Chronic core,52,Late settling,81,tentative
-MESH:D016757,Death Sudden Cardiac,27,Acute early,64,Early exit,54,tentative
-MESH:D018754,Ventricular Dysfunction,27,Broad first wave,52,Broad wave,72,tentative
-MESH:D011595,Psychomotor Agitation,26,Broad first wave,55,Broad wave,78,tentative
-MESH:D009223,Myotonic Dystrophy,26,Chronic core,58,Late settling,84,tentative
+MESH:D050031,Hashimoto Disease,27,Broad first wave,45,Broad wave,67,tentative
+MESH:D015209,Cholangitis Sclerosing,27,Chronic core,51,Late settling,81,tentative
+MESH:D016757,Death Sudden Cardiac,27,Acute early,64,Early exit,55,tentative
+MESH:D018754,Ventricular Dysfunction,27,Broad first wave,54,Broad wave,67,tentative
+MESH:D011595,Psychomotor Agitation,26,Broad first wave,57,Broad wave,74,tentative
+MESH:D009223,Myotonic Dystrophy,26,Chronic core,57,Late settling,85,tentative
 MESH:D017254,Leukemic Infiltration,26,Broad first wave,60,Broad wave,79,tentative
-MESH:D000007,Abdominal Injuries,26,Chronic core,41,Late settling,70,tentative
-MESH:D007410,Intestinal Diseases,26,Acute early,62,Early exit,68,tentative
-MESH:D012135,Respiratory Sounds,26,Chronic core,37,Late settling,54,tentative
-MESH:D020233,Gait Disorders Neurologic,26,Broad first wave,67,Broad wave,86,tentative
-MESH:D018497,Ventricular Dysfunction Right,26,Broad first wave,53,Broad wave,78,tentative
-MESH:D007592,Joint Diseases,26,Chronic core,53,Late settling,85,tentative
-MESH:D001261,Pulmonary Atelectasis,26,Broad first wave,48,Early exit,69,tentative
+MESH:D000007,Abdominal Injuries,26,Chronic core,42,Late settling,71,tentative
+MESH:D007410,Intestinal Diseases,26,Acute early,62,Early exit,67,tentative
+MESH:D012135,Respiratory Sounds,26,Chronic core,38,Late settling,53,tentative
+MESH:D020233,Gait Disorders Neurologic,26,Broad first wave,68,Broad wave,86,tentative
+MESH:D018497,Ventricular Dysfunction Right,26,Broad first wave,52,Broad wave,76,tentative
+MESH:D007592,Joint Diseases,26,Chronic core,52,Late settling,86,tentative
+MESH:D001261,Pulmonary Atelectasis,26,Broad first wave,48,Early exit,67,tentative
 MESH:D010996,Pleural Effusion,25,Broad first wave,48,Broad wave,72,tentative
-MESH:D003221,Confusion,25,Chronic core,84,Late settling,98,tentative
-MESH:D009771,Obsessive-Compulsive Disorder,25,Broad first wave,77,Broad wave,82,tentative
-MESH:D004066,Digestive System Diseases,25,Chronic core,76,Late settling,97,tentative
-MESH:D008175,Lung Neoplasms,25,Chronic core,71,Late settling,89,tentative
+MESH:D003221,Confusion,25,Chronic core,89,Late settling,98,tentative
+MESH:D009771,Obsessive-Compulsive Disorder,25,Broad first wave,78,Broad wave,82,tentative
+MESH:D004066,Digestive System Diseases,25,Chronic core,80,Late settling,97,tentative
+MESH:D008175,Lung Neoplasms,25,Chronic core,72,Late settling,88,tentative
 MESH:D001072,Apraxias,24,Broad first wave,66,Broad wave,79,tentative
-MESH:D013118,Spinal Cord Diseases,24,Acute early,89,Early exit,91,tentative
-MESH:D014376,Tuberculosis,24,Late symptom,51,Late settling,52,tentative
-MESH:D007246,Infertility,24,Broad first wave,39,Broad wave,57,tentative
+MESH:D013118,Spinal Cord Diseases,24,Acute early,89,Early exit,90,tentative
+MESH:D014376,Tuberculosis,24,Late symptom,53,Late settling,49,tentative
+MESH:D007246,Infertility,24,Broad first wave,41,Broad wave,54,tentative
 MESH:D004415,Dyspepsia,24,Late symptom,50,Late settling,96,tentative
-MESH:D008476,Mediastinal Cyst,24,Acute early,70,Early exit,61,tentative
-MESH:D009207,Myoclonus,24,Acute early,96,Early exit,96,tentative
-MESH:D005234,Fatty Liver,24,Broad first wave,45,Broad wave,67,tentative
-MESH:D014987,Xerostomia,24,Chronic core,83,Late settling,95,tentative
-MESH:D012852,Sinusitis,24,Broad first wave,52,Broad wave,77,tentative
-MESH:D020257,Ventricular Remodeling,24,Acute early,43,Broad wave,66,tentative
+MESH:D008476,Mediastinal Cyst,24,Acute early,69,Early exit,60,tentative
+MESH:D009207,Myoclonus,24,Acute early,96,Early exit,95,tentative
+MESH:D005234,Fatty Liver,24,Broad first wave,47,Broad wave,64,tentative
+MESH:D014987,Xerostomia,24,Chronic core,87,Late settling,95,tentative
+MESH:D012852,Sinusitis,24,Broad first wave,54,Broad wave,74,tentative
+MESH:D020257,Ventricular Remodeling,24,Acute early,44,Broad wave,67,tentative
 MESH:D003323,Coronary Aneurysm,24,Acute early,98,Early exit,98,tentative
-MESH:D012735,Sexual Dysfunction Physiological,23,Broad first wave,50,Late settling,65,tentative
+MESH:D012735,Sexual Dysfunction Physiological,23,Broad first wave,51,Late settling,66,tentative
 MESH:D065606,Metabolic Side Effects of Drugs and Substances,23,Broad first wave,41,Late settling,64,tentative
-MESH:D019578,Multiple System Atrophy,23,Chronic core,85,Late settling,90,tentative
-MESH:D013898,Thoracic Injuries,23,Broad first wave,59,Broad wave,82,tentative
-MESH:D015837,Vestibular Diseases,23,Late symptom,40,Late settling,53,tentative
-MESH:D009471,Neuromyelitis Optica,23,Acute early,58,Broad wave,50,tentative
+MESH:D019578,Multiple System Atrophy,23,Chronic core,86,Late settling,90,tentative
+MESH:D013898,Thoracic Injuries,23,Broad first wave,62,Broad wave,81,tentative
+MESH:D015837,Vestibular Diseases,23,Late symptom,41,Late settling,51,tentative
+MESH:D009471,Neuromyelitis Optica,23,Acute early,58,Broad wave,49,tentative
 MESH:D003925,Diabetic Angiopathies,23,Broad first wave,48,Early exit,61,tentative
-MESH:D006985,Hyperventilation,23,Broad first wave,35,Broad wave,59,tentative
-MESH:D002779,Cholestasis,23,Broad first wave,39,Late settling,53,tentative
-MESH:D017116,Low Back Pain,23,Broad first wave,61,Broad wave,77,tentative
-MESH:D004427,Ear Diseases,23,Chronic core,71,Late settling,78,tentative
+MESH:D006985,Hyperventilation,23,Broad first wave,36,Broad wave,57,tentative
+MESH:D002779,Cholestasis,23,Broad first wave,37,Late settling,55,tentative
+MESH:D017116,Low Back Pain,23,Broad first wave,60,Broad wave,77,tentative
+MESH:D004427,Ear Diseases,23,Chronic core,70,Late settling,80,tentative
 MESH:D001946,Breech Presentation,23,Acute early,98,Early exit,98,tentative
-MESH:D012213,Rheumatic Fever,23,Late symptom,56,Late settling,77,tentative
-MESH:D008206,Lymphatic Diseases,23,Acute early,54,Broad wave,63,tentative
-MESH:D000070642,Brain Injuries Traumatic,22,Chronic core,80,Late settling,88,tentative
-MESH:C536830,Glut1 Deficiency Syndrome,22,Late symptom,43,Broad wave,71,tentative
-MESH:D006099,Granuloma,22,Chronic core,60,Late settling,91,tentative
-MESH:D006311,Hearing Disorders,22,Broad first wave,43,Broad wave,68,tentative
-MESH:D020141,Hemostatic Disorders,22,Chronic core,48,Late settling,83,tentative
-MESH:D017436,Kallmann Syndrome,22,Acute early,63,Broad wave,61,tentative
-MESH:D015352,Dry Eye Syndromes,22,Chronic core,77,Late settling,94,tentative
-MESH:D010243,Paralysis,22,Acute early,62,Broad wave,55,tentative
-MESH:D011565,Psoriasis,22,Broad first wave,39,Broad wave,60,tentative
+MESH:D012213,Rheumatic Fever,23,Late symptom,53,Late settling,76,tentative
+MESH:D008206,Lymphatic Diseases,23,Acute early,55,Broad wave,64,tentative
+MESH:D000070642,Brain Injuries Traumatic,22,Chronic core,80,Late settling,89,tentative
+MESH:C536830,Glut1 Deficiency Syndrome,22,Late symptom,41,Late settling,73,tentative
+MESH:D006099,Granuloma,22,Chronic core,59,Late settling,91,tentative
+MESH:D006311,Hearing Disorders,22,Broad first wave,41,Broad wave,67,tentative
+MESH:D020141,Hemostatic Disorders,22,Chronic core,50,Late settling,84,tentative
+MESH:D017436,Kallmann Syndrome,22,Acute early,63,Broad wave,60,tentative
+MESH:D015352,Dry Eye Syndromes,22,Chronic core,82,Late settling,95,tentative
+MESH:D010243,Paralysis,22,Acute early,62,Broad wave,51,tentative
+MESH:D011565,Psoriasis,22,Broad first wave,41,Broad wave,60,tentative
 MESH:D060085,Coinfection,22,Late symptom,40,Broad wave,58,tentative
-MESH:D006330,Heart Defects Congenital,22,Late symptom,51,Late settling,56,tentative
-MESH:D000092562,Allergic Fungal Sinusitis,22,Acute early,48,Early exit,61,tentative
-MESH:D005067,Euthyroid Sick Syndromes,21,Chronic core,44,Late settling,52,tentative
-MESH:D006030,Glycosuria Renal,21,Late symptom,42,Broad wave,58,tentative
-MESH:D010211,Papilledema,21,Acute early,97,Early exit,94,tentative
-MESH:D014605,Uveitis,21,Broad first wave,38,Broad wave,68,tentative
-MESH:D023341,Chills,21,Chronic core,42,Late settling,67,tentative
-MESH:D012220,Rhinitis,21,Broad first wave,56,Broad wave,72,tentative
-MESH:D001847,Bone Diseases,21,Late symptom,44,Late settling,69,tentative
-MESH:D005911,Gliosis,21,Broad first wave,39,Late settling,54,tentative
-MESH:D000038,Abscess,21,Acute early,54,Broad wave,51,tentative
-MESH:D009916,Orbital Diseases,21,Acute early,78,Early exit,65,tentative
-MESH:D018149,Glucose Intolerance,20,Chronic core,72,Late settling,96,tentative
-MESH:D020277,Polyradiculoneuropathy Chronic Inflammatory Demyelinating,20,Acute early,83,Early exit,81,tentative
-MESH:C564765,Thyrotropin Biologically Inactive,20,Chronic core,70,Late settling,90,tentative
-MESH:D012607,Scotoma,20,Chronic core,44,Late settling,55,tentative
-MESH:D012851,Sinus Thrombosis Intracranial,20,Acute early,96,Early exit,98,tentative
-MESH:D009123,Muscle Hypotonia,20,Broad first wave,37,Late settling,49,tentative
+MESH:D006330,Heart Defects Congenital,22,Late symptom,54,Late settling,54,tentative
+MESH:D000092562,Allergic Fungal Sinusitis,22,Acute early,49,Early exit,57,tentative
+MESH:D005067,Euthyroid Sick Syndromes,21,Chronic core,42,Late settling,58,tentative
+MESH:D006030,Glycosuria Renal,21,Late symptom,40,Broad wave,61,tentative
+MESH:D010211,Papilledema,21,Acute early,97,Early exit,93,tentative
+MESH:D012851,Sinus Thrombosis Intracranial,21,Acute early,95,Early exit,97,tentative
+MESH:D014605,Uveitis,21,Broad first wave,39,Broad wave,66,tentative
+MESH:D023341,Chills,21,Chronic core,42,Late settling,70,tentative
+MESH:D012220,Rhinitis,21,Broad first wave,55,Broad wave,73,tentative
+MESH:D001847,Bone Diseases,21,Late symptom,43,Late settling,72,tentative
+MESH:D005911,Gliosis,21,Broad first wave,39,Late settling,53,tentative
+MESH:D000038,Abscess,21,Acute early,54,Broad wave,49,tentative
+MESH:D009916,Orbital Diseases,21,Acute early,78,Early exit,66,tentative
+MESH:D018149,Glucose Intolerance,20,Chronic core,74,Late settling,96,tentative
+MESH:D020277,Polyradiculoneuropathy Chronic Inflammatory Demyelinating,20,Acute early,84,Early exit,81,tentative
+MESH:C564765,Thyrotropin Biologically Inactive,20,Chronic core,70,Late settling,92,tentative
+MESH:D012607,Scotoma,20,Chronic core,40,Late settling,54,tentative
+MESH:D009123,Muscle Hypotonia,20,Broad first wave,37,Late settling,52,tentative
 MESH:D015508,Nasal Obstruction,20,Broad first wave,58,Early exit,52,tentative
-MESH:D000506,Alopecia Areata,20,Chronic core,76,Late settling,96,tentative
+MESH:D000506,Alopecia Areata,20,Chronic core,78,Late settling,97,tentative
 MESH:D008590,Meningoencephalitis,20,Acute early,96,Early exit,97,tentative
-MESH:D002658,Developmental Disabilities,20,Broad first wave,58,Broad wave,71,tentative
-MESH:D056648,Anti-Neutrophil Cytoplasmic Antibody-Associated Vasculitis,20,Acute early,49,Early exit,66,tentative
-MESH:C566112,Stiff Skin Syndrome,20,Chronic core,53,Late settling,93,tentative
-MESH:D014890,Granulomatosis with Polyangiitis,20,Chronic core,38,Broad wave,51,tentative
-MESH:D005158,Facial Paralysis,20,Acute early,64,Early exit,59,tentative
-MESH:D005128,Eye Diseases,20,Broad first wave,45,Late settling,65,tentative
-MESH:D000090122,Livedoid Vasculopathy,20,Acute early,91,Early exit,89,tentative
-MESH:D001919,Bradycardia,20,Acute early,47,Early exit,66,tentative
-MESH:D017180,Tachycardia Ventricular,19,Broad first wave,55,Broad wave,78,tentative
+MESH:D002658,Developmental Disabilities,20,Broad first wave,57,Broad wave,72,tentative
+MESH:D056648,Anti-Neutrophil Cytoplasmic Antibody-Associated Vasculitis,20,Acute early,50,Early exit,66,tentative
+MESH:C566112,Stiff Skin Syndrome,20,Chronic core,59,Late settling,94,tentative
+MESH:D014890,Granulomatosis with Polyangiitis,20,Chronic core,40,Broad wave,51,tentative
+MESH:D005158,Facial Paralysis,20,Acute early,64,Early exit,61,tentative
+MESH:D005128,Eye Diseases,20,Broad first wave,46,Late settling,63,tentative
+MESH:D000090122,Livedoid Vasculopathy,20,Acute early,91,Early exit,87,tentative
+MESH:D001919,Bradycardia,20,Acute early,47,Broad wave,67,tentative
+MESH:D017180,Tachycardia Ventricular,19,Broad first wave,55,Broad wave,77,tentative
 MESH:C536223,Cushing's symphalangism,19,Acute early,84,Early exit,81,tentative
-MESH:D000787,Angina Pectoris,19,Chronic core,57,Late settling,75,tentative
-MESH:D005921,Glomerulonephritis,19,Acute early,46,Early exit,61,tentative
-MESH:D007964,Leukocytosis,19,Acute early,91,Early exit,93,tentative
-MESH:C566527,Muscular Dystrophy Congenital Megaconial Type,19,Late symptom,41,Late settling,67,tentative
-MESH:D005642,Fuchs' Endothelial Dystrophy,19,Broad first wave,73,Early exit,87,tentative
-MESH:D001750,Urinary Bladder Neurogenic,19,Chronic core,87,Late settling,99,tentative
-MESH:D055371,Acute Lung Injury,19,Broad first wave,58,Broad wave,85,tentative
-MESH:D012595,Scleroderma Systemic,19,Broad first wave,36,Broad wave,57,tentative
+MESH:D000787,Angina Pectoris,19,Chronic core,56,Late settling,77,tentative
+MESH:D005921,Glomerulonephritis,19,Acute early,48,Early exit,58,tentative
+MESH:D007964,Leukocytosis,19,Acute early,91,Early exit,92,tentative
+MESH:C566527,Muscular Dystrophy Congenital Megaconial Type,19,Late symptom,40,Late settling,72,tentative
+MESH:D005642,Fuchs' Endothelial Dystrophy,19,Broad first wave,73,Early exit,86,tentative
+MESH:D001750,Urinary Bladder Neurogenic,19,Chronic core,89,Late settling,99,tentative
+MESH:D055371,Acute Lung Injury,19,Broad first wave,61,Broad wave,83,tentative
+MESH:D012595,Scleroderma Systemic,19,Broad first wave,37,Broad wave,52,tentative
 MESH:D057049,Thrombotic Microangiopathies,19,Acute early,53,Broad wave,58,tentative
-MESH:D000437,Alcoholism,19,Chronic core,51,Broad wave,58,tentative
-MESH:D006949,Hyperlipidemias,18,Chronic core,54,Late settling,90,tentative
-MESH:D004211,Disseminated Intravascular Coagulation,18,Acute early,53,Broad wave,52,tentative
-MESH:D014766,Viremia,18,Chronic core,36,Broad wave,53,tentative
-MESH:D003251,Constriction Pathologic,18,Chronic core,36,Late settling,52,tentative
-MESH:D007248,Infertility Male,18,Late symptom,36,Broad wave,49,tentative
-MESH:D058447,Eye Pain,18,Chronic core,34,Late settling,50,tentative
-MESH:D008944,Mitral Valve Insufficiency,18,Chronic core,44,Late settling,78,tentative
-MESH:D053609,Lethargy,18,Broad first wave,41,Broad wave,57,tentative
-MESH:D020968,Brachial Plexus Neuritis,18,Acute early,68,Early exit,49,tentative
-MESH:D004412,Dysmenorrhea,18,Chronic core,71,Late settling,97,tentative
-MESH:D000275,Adjustment Disorders,18,Broad first wave,36,Broad wave,59,tentative
+MESH:D000437,Alcoholism,19,Chronic core,54,Broad wave,61,tentative
+MESH:D006949,Hyperlipidemias,18,Chronic core,56,Late settling,92,tentative
+MESH:D004211,Disseminated Intravascular Coagulation,18,Acute early,53,Broad wave,53,tentative
+MESH:D014766,Viremia,18,Chronic core,37,Broad wave,51,tentative
+MESH:D003251,Constriction Pathologic,18,Chronic core,36,Late settling,55,tentative
+MESH:D007248,Infertility Male,18,Late symptom,33,Broad wave,50,tentative
+MESH:D058447,Eye Pain,18,Broad first wave,33,Late settling,51,tentative
+MESH:D008944,Mitral Valve Insufficiency,18,Chronic core,46,Late settling,81,tentative
+MESH:D053609,Lethargy,18,Broad first wave,42,Broad wave,55,tentative
+MESH:D020968,Brachial Plexus Neuritis,18,Acute early,68,Early exit,51,tentative
+MESH:D004412,Dysmenorrhea,18,Chronic core,77,Late settling,97,tentative
+MESH:D000275,Adjustment Disorders,18,Broad first wave,39,Broad wave,55,tentative
 MESH:D019846,Miller Fisher Syndrome,18,Acute early,97,Early exit,98,tentative
-MESH:D007006,Hypogonadism,18,Acute early,77,Early exit,76,tentative
+MESH:D007006,Hypogonadism,18,Acute early,77,Early exit,77,tentative
 MESH:D015362,Child Nutrition Disorders,18,Acute early,78,Early exit,56,tentative
-MESH:D004630,Emergencies,18,Acute early,87,Early exit,87,tentative
-MESH:D030342,Genetic Diseases Inborn,18,Broad first wave,40,Early exit,61,tentative
-MESH:D016736,Antiphospholipid Syndrome,18,Acute early,81,Early exit,80,tentative
-MESH:D016553,Purpura Thrombocytopenic Idiopathic,18,Acute early,61,Early exit,56,tentative
-MESH:D002921,Cicatrix,18,Broad first wave,42,Late settling,60,tentative
+MESH:D004630,Emergencies,18,Acute early,87,Early exit,88,tentative
+MESH:D030342,Genetic Diseases Inborn,18,Broad first wave,40,Early exit,60,tentative
+MESH:D016736,Antiphospholipid Syndrome,18,Acute early,81,Early exit,79,tentative
+MESH:D016553,Purpura Thrombocytopenic Idiopathic,18,Acute early,62,Early exit,55,tentative
+MESH:D002921,Cicatrix,18,Broad first wave,42,Late settling,58,tentative
 MESH:D002647,Chilblains,18,Acute early,90,Early exit,93,tentative
-MESH:D014456,Ulcer,18,Chronic core,64,Late settling,90,tentative
-MESH:D004646,Emphysema,17,Broad first wave,53,Broad wave,58,tentative
+MESH:D014456,Ulcer,18,Chronic core,67,Late settling,91,tentative
+MESH:D004646,Emphysema,17,Broad first wave,53,Broad wave,59,tentative
 MESH:D003645,Death Sudden,17,Broad first wave,58,Early exit,72,tentative
 MESH:D006469,Hemoptysis,17,Acute early,43,Broad wave,53,tentative
-MESH:C536681,Warburg Sjo Fledelius syndrome,17,Acute early,91,Early exit,88,tentative
-MESH:D065631,Rhinitis Allergic,17,Chronic core,43,Late settling,68,tentative
-MESH:C564543,Intrauterine Growth Retardation Metaphyseal Dysplasia Adrenal Hypoplasia Congenita And Genital Anomalies,17,Broad first wave,41,Late settling,54,tentative
-MESH:D013585,Synovitis,17,Chronic core,33,Late settling,49,tentative
-MESH:D000647,Amnesia,17,Chronic core,39,Late settling,57,tentative
+MESH:C536681,Warburg Sjo Fledelius syndrome,17,Acute early,91,Early exit,87,tentative
+MESH:D065631,Rhinitis Allergic,17,Chronic core,43,Late settling,72,tentative
+MESH:C564543,Intrauterine Growth Retardation Metaphyseal Dysplasia Adrenal Hypoplasia Congenita And Genital Anomalies,17,Broad first wave,39,Late settling,53,tentative
+MESH:D013585,Synovitis,17,Late symptom,33,Late settling,49,tentative
+MESH:D000647,Amnesia,17,Chronic core,38,Late settling,62,tentative
 MESH:D018917,Optic Neuropathy Ischemic,17,Acute early,89,Early exit,89,tentative
-MESH:D000086722,Rhinorrhea,17,Late symptom,51,Late settling,70,tentative
+MESH:D000086722,Rhinorrhea,17,Late symptom,53,Late settling,72,tentative
 MESH:D010291,Paresis,17,Broad first wave,47,Broad wave,66,tentative
 MESH:D009920,Orchitis,17,Acute early,76,Early exit,69,tentative
 MESH:D010301,Parkinson Disease Postencephalitic,17,Acute early,88,Early exit,91,tentative
-MESH:D018792,Encephalitis Viral,17,Acute early,83,Early exit,84,tentative
-MESH:D040701,Stress Disorders Traumatic Acute,17,Acute early,80,Early exit,70,tentative
+MESH:D018792,Encephalitis Viral,17,Acute early,83,Early exit,83,tentative
+MESH:D040701,Stress Disorders Traumatic Acute,17,Acute early,80,Early exit,71,tentative
 MESH:D004172,Diplopia,17,Broad first wave,49,Broad wave,69,tentative
-MESH:D004401,Dysarthria,17,Broad first wave,55,Broad wave,71,tentative
-MESH:D020767,Intracranial Thrombosis,17,Acute early,59,Broad wave,67,tentative
+MESH:D004401,Dysarthria,17,Broad first wave,56,Broad wave,71,tentative
+MESH:D020767,Intracranial Thrombosis,17,Acute early,58,Broad wave,65,tentative
 MESH:D007010,Hyponatremia,17,Acute early,73,Early exit,66,tentative
-MESH:D000090267,Mast Cell Activation Syndrome,17,Broad first wave,40,Broad wave,59,tentative
-MESH:D020879,Neuromuscular Manifestations,17,Acute early,69,Early exit,55,tentative
-MESH:D000072716,Cancer Pain,17,Chronic core,57,Late settling,74,tentative
+MESH:D000090267,Mast Cell Activation Syndrome,17,Broad first wave,43,Broad wave,55,tentative
+MESH:D020879,Neuromuscular Manifestations,17,Acute early,69,Early exit,53,tentative
+MESH:D000072716,Cancer Pain,17,Chronic core,56,Late settling,76,tentative
 MESH:D000080902,Mandibular Nerve Injuries,17,Acute early,85,Early exit,82,tentative
-MESH:D005207,Fasciculation,17,Acute early,72,Early exit,76,tentative
-MESH:D012859,Sjogren's Syndrome,17,Chronic core,44,Late settling,67,tentative
-MESH:D054537,Atrioventricular Block,16,Acute early,73,Early exit,62,tentative
-MESH:D015430,Weight Gain,16,Chronic core,64,Late settling,75,tentative
-MESH:D018781,Tension-Type Headache,16,Late symptom,34,Late settling,60,tentative
-MESH:D001308,Auditory Perceptual Disorders,16,Late symptom,40,Late settling,65,tentative
-MESH:D006984,Hypertrophy,16,Chronic core,32,Late settling,49,tentative
+MESH:D005207,Fasciculation,17,Acute early,72,Early exit,77,tentative
+MESH:D012859,Sjogren's Syndrome,17,Chronic core,46,Late settling,67,tentative
+MESH:D054537,Atrioventricular Block,16,Acute early,73,Early exit,61,tentative
+MESH:D015430,Weight Gain,16,Chronic core,63,Late settling,76,tentative
+MESH:D018781,Tension-Type Headache,16,Chronic core,33,Late settling,63,tentative
+MESH:D001308,Auditory Perceptual Disorders,16,Late symptom,41,Late settling,67,tentative
+MESH:D006984,Hypertrophy,16,Late symptom,32,Late settling,51,tentative
 MESH:D009503,Neutropenia,16,Acute early,79,Early exit,61,tentative
-MESH:D007827,Laryngitis,16,Chronic core,67,Late settling,81,tentative
-MESH:D000073397,Occupational Stress,16,Chronic core,53,Late settling,71,tentative
+MESH:D007827,Laryngitis,16,Chronic core,70,Late settling,83,tentative
+MESH:D000073397,Occupational Stress,16,Chronic core,54,Late settling,73,tentative
 MESH:D055501,Macrophage Activation Syndrome,16,Acute early,82,Early exit,72,tentative
-MESH:D011537,Pruritus,16,Chronic core,35,Late settling,52,tentative
-MESH:D019693,Hepatitis Autoimmune,16,Broad first wave,38,Broad wave,56,tentative
-MESH:D010019,Osteomyelitis,16,Late symptom,53,Late settling,79,tentative
-MESH:D010024,Osteoporosis,16,Broad first wave,40,Late settling,53,tentative
-MESH:D016584,Panic Disorder,16,Chronic core,36,Late settling,53,tentative
-MESH:C537863,Ocular Albinism type 1,16,Late symptom,45,Late settling,68,tentative
-OMIM:212500,212500,16,Broad first wave,67,Broad wave,78,tentative
-MESH:C565423,Hypomagnesemia 5 Renal with Ocular Involvement,16,Acute early,71,Early exit,71,tentative
+MESH:D011537,Pruritus,16,Chronic core,35,Late settling,53,tentative
+MESH:D019693,Hepatitis Autoimmune,16,Broad first wave,39,Broad wave,56,tentative
+MESH:D010019,Osteomyelitis,16,Late symptom,55,Late settling,81,tentative
+MESH:D010024,Osteoporosis,16,Broad first wave,43,Late settling,50,tentative
+MESH:D016584,Panic Disorder,16,Chronic core,36,Late settling,49,tentative
+MESH:C537863,Ocular Albinism type 1,16,Late symptom,46,Late settling,71,tentative
+MESH:C565423,Hypomagnesemia 5 Renal with Ocular Involvement,16,Acute early,72,Early exit,71,tentative
 MESH:D002524,Cerebellar Ataxia,16,Acute early,84,Early exit,78,tentative
-MESH:D012892,Sleep Deprivation,16,Chronic core,43,Late settling,74,tentative
+MESH:D012892,Sleep Deprivation,16,Chronic core,47,Late settling,76,tentative
 MESH:C536897,Tang Hsi Ryu syndrome,16,Acute early,82,Early exit,75,tentative
-MESH:D063726,Delusional Parasitosis,16,Broad first wave,56,Broad wave,71,tentative
-MESH:D020018,Sexual Dysfunctions Psychological,16,Broad first wave,55,Broad wave,67,tentative
+MESH:D063726,Delusional Parasitosis,16,Broad first wave,56,Broad wave,69,tentative
+MESH:D020018,Sexual Dysfunctions Psychological,16,Broad first wave,55,Broad wave,66,tentative
 MESH:D015835,Ocular Motility Disorders,16,Acute early,77,Early exit,64,tentative
-MESH:D006562,Herpes Zoster,16,Chronic core,70,Late settling,89,tentative
-MESH:D013543,Sweat Gland Diseases,15,Acute early,62,Early exit,50,tentative
-MESH:D010468,Perceptual Disorders,15,Broad first wave,35,Late settling,50,tentative
-MESH:D012791,Shy-Drager Syndrome,15,Chronic core,50,Broad wave,61,tentative
-MESH:D065630,Hernias Diaphragmatic Congenital,15,Chronic core,46,Late settling,70,tentative
-MESH:D009402,Nephrosis Lipoid,15,Broad first wave,50,Late settling,71,tentative
-MESH:D000071072,Acute Febrile Encephalopathy,15,Acute early,47,Broad wave,53,tentative
-MESH:D003550,Cystic Fibrosis,15,Chronic core,42,Late settling,68,tentative
-MESH:D000163,Acquired Immunodeficiency Syndrome,15,Chronic core,47,Late settling,84,tentative
+MESH:D006562,Herpes Zoster,16,Chronic core,72,Late settling,88,tentative
+MESH:D013543,Sweat Gland Diseases,15,Acute early,62,Early exit,51,tentative
+MESH:D010468,Perceptual Disorders,15,Late symptom,36,Late settling,50,tentative
+MESH:D012791,Shy-Drager Syndrome,15,Chronic core,51,Broad wave,64,tentative
+MESH:D065630,Hernias Diaphragmatic Congenital,15,Chronic core,46,Late settling,72,tentative
+MESH:D009402,Nephrosis Lipoid,15,Broad first wave,52,Late settling,69,tentative
+MESH:D000071072,Acute Febrile Encephalopathy,15,Broad first wave,47,Broad wave,53,tentative
+MESH:D003550,Cystic Fibrosis,15,Chronic core,40,Late settling,68,tentative
+MESH:D000163,Acquired Immunodeficiency Syndrome,15,Chronic core,47,Late settling,85,tentative
 MESH:D006940,Hyperemia,15,Acute early,73,Early exit,57,tentative
 MESH:D015441,Leprosy Tuberculoid,15,Acute early,86,Early exit,74,tentative
 MESH:D054549,Takotsubo Cardiomyopathy,15,Acute early,57,Early exit,48,tentative
-MESH:D000070603,Coxa Magna,15,Chronic core,74,Late settling,96,tentative
-MESH:D000077260,Sleepiness,15,Chronic core,73,Late settling,95,tentative
-MESH:D003882,Dermatomyositis,15,Broad first wave,47,Broad wave,67,tentative
-MESH:D013733,Testicular Diseases,15,Acute early,37,Broad wave,54,tentative
-MESH:D009784,Occupational Diseases,15,Chronic core,57,Late settling,73,tentative
+MESH:D000070603,Coxa Magna,15,Chronic core,76,Late settling,97,tentative
+MESH:D000077260,Sleepiness,15,Chronic core,75,Late settling,95,tentative
+MESH:D003882,Dermatomyositis,15,Broad first wave,48,Broad wave,68,tentative
+MESH:D013733,Testicular Diseases,15,Acute early,37,Broad wave,52,tentative
+MESH:D009784,Occupational Diseases,15,Chronic core,57,Late settling,72,tentative
 MESH:D016055,Urinary Retention,15,Broad first wave,54,Early exit,71,tentative
 MESH:D019522,Vaginal Discharge,15,Broad first wave,44,Early exit,65,tentative
-MESH:D020422,Mononeuropathies,15,Acute early,36,Broad wave,50,tentative
-MESH:D007859,Learning Disabilities,15,Chronic core,63,Late settling,60,tentative
-MESH:C537955,Cerulean cataract,15,Chronic core,74,Late settling,88,tentative
-MESH:D059411,Lower Urinary Tract Symptoms,15,Chronic core,52,Late settling,73,tentative
-MESH:D020335,Paraparesis,14,Acute early,71,Early exit,63,tentative
-MESH:D020278,Demyelinating Autoimmune Diseases CNS,14,Broad first wave,43,Late settling,64,tentative
-MESH:D018410,Pneumonia Bacterial,14,Broad first wave,52,Broad wave,67,tentative
-MESH:D014135,Tracheal Stenosis,14,Broad first wave,45,Broad wave,61,tentative
-MESH:D006417,Hematuria,14,Late symptom,45,Broad wave,65,tentative
-MESH:C538101,Paine syndrome,14,Broad first wave,39,Early exit,54,tentative
+MESH:D020422,Mononeuropathies,15,Acute early,36,Broad wave,47,tentative
+MESH:D007859,Learning Disabilities,15,Chronic core,63,Late settling,62,tentative
+MESH:C537955,Cerulean cataract,15,Chronic core,75,Late settling,90,tentative
+MESH:D059411,Lower Urinary Tract Symptoms,15,Chronic core,55,Late settling,74,tentative
+MESH:D020335,Paraparesis,14,Acute early,71,Early exit,64,tentative
+MESH:D020278,Demyelinating Autoimmune Diseases CNS,14,Broad first wave,43,Late settling,62,tentative
+MESH:D018410,Pneumonia Bacterial,14,Broad first wave,52,Broad wave,65,tentative
+MESH:D014135,Tracheal Stenosis,14,Broad first wave,47,Broad wave,59,tentative
+MESH:D006417,Hematuria,14,Late symptom,42,Broad wave,67,tentative
+MESH:C538101,Paine syndrome,14,Broad first wave,39,Early exit,49,tentative
 MESH:D001037,Aphasia,14,Acute early,47,Early exit,54,tentative
 MESH:D014397,Tuberculosis Pulmonary,14,Broad first wave,47,Broad wave,61,tentative
 MESH:D001170,Arthritis Infectious,14,Acute early,49,Early exit,54,tentative
-MESH:D020250,Postoperative Nausea and Vomiting,14,Acute early,73,Early exit,63,tentative
-MESH:D001228,Aspergillosis,14,Broad first wave,39,Late settling,55,tentative
+MESH:D020250,Postoperative Nausea and Vomiting,14,Acute early,73,Early exit,64,tentative
+MESH:D001228,Aspergillosis,14,Broad first wave,39,Late settling,52,tentative
 MESH:D013224,Status Asthmaticus,14,Chronic core,39,Late settling,54,tentative
-MESH:D003092,Colitis,14,Acute early,85,Early exit,73,tentative
-MESH:D004890,Erythema,14,Broad first wave,49,Broad wave,63,tentative
-MESH:D053717,Pneumonia Ventilator-Associated,14,Broad first wave,65,Broad wave,78,tentative
-MESH:D005271,Femur Head Necrosis,14,Chronic core,59,Late settling,91,tentative
-MESH:D013901,Thoracic Outlet Syndrome,14,Chronic core,36,Late settling,48,tentative
-MESH:D000080324,Choroidal Effusions,14,Chronic core,56,Late settling,76,tentative
-MESH:D025981,Hip Injuries,14,Chronic core,57,Late settling,76,tentative
-MESH:D000073296,Noncommunicable Diseases,14,Chronic core,52,Late settling,57,tentative
-MESH:D000013,Congenital Abnormalities,14,Broad first wave,40,Broad wave,57,tentative
-MESH:D002389,Catatonia,14,Broad first wave,35,Early exit,53,tentative
-MESH:D013345,Subarachnoid Hemorrhage,14,Acute early,83,Early exit,84,tentative
-MESH:D013119,Spinal Cord Injuries,14,Chronic core,43,Broad wave,51,tentative
-MESH:D012163,Retinal Detachment,14,Acute early,45,Early exit,56,tentative
-MESH:C000719191,Anthropophobia,14,Chronic core,57,Late settling,52,tentative
-MESH:D008193,Lyme Disease,14,Chronic core,62,Late settling,85,tentative
-MESH:D001929,Brain Edema,14,Acute early,93,Early exit,93,tentative
-MESH:D000361,Agammaglobulinemia,14,Chronic core,53,Late settling,59,tentative
+MESH:D003092,Colitis,14,Acute early,85,Early exit,72,tentative
+MESH:D004890,Erythema,14,Broad first wave,49,Broad wave,64,tentative
+MESH:D053717,Pneumonia Ventilator-Associated,14,Broad first wave,67,Broad wave,78,tentative
+MESH:D005271,Femur Head Necrosis,14,Chronic core,59,Late settling,92,tentative
+MESH:D013901,Thoracic Outlet Syndrome,14,Chronic core,37,Late settling,50,tentative
+MESH:D000080324,Choroidal Effusions,14,Chronic core,56,Late settling,77,tentative
+MESH:D025981,Hip Injuries,14,Chronic core,59,Late settling,77,tentative
+MESH:D000073296,Noncommunicable Diseases,14,Chronic core,52,Late settling,58,tentative
+MESH:D000013,Congenital Abnormalities,14,Broad first wave,40,Broad wave,54,tentative
+MESH:D002389,Catatonia,14,Broad first wave,36,Early exit,52,tentative
+MESH:D013345,Subarachnoid Hemorrhage,14,Acute early,83,Early exit,83,tentative
+MESH:D013119,Spinal Cord Injuries,14,Chronic core,43,Broad wave,52,tentative
+MESH:D012163,Retinal Detachment,14,Acute early,46,Early exit,53,tentative
+MESH:C000719191,Anthropophobia,14,Chronic core,54,Late settling,53,tentative
+MESH:D008193,Lyme Disease,14,Chronic core,66,Late settling,86,tentative
+MESH:D001929,Brain Edema,14,Acute early,93,Early exit,92,tentative
+MESH:D000361,Agammaglobulinemia,14,Chronic core,52,Late settling,60,tentative
 MESH:D011141,Polyuria,13,Chronic core,69,Late settling,75,tentative
-MESH:D059606,Polydipsia,13,Chronic core,45,Late settling,54,tentative
-MESH:C565498,Hypermetabolism due to Defect in Mitochondria,13,Broad first wave,37,Late settling,51,tentative
-MESH:D003139,Common Cold,13,Chronic core,56,Late settling,75,tentative
-MESH:D009443,Neuritis,13,Broad first wave,44,Broad wave,51,tentative
-MESH:D050723,Fractures Bone,13,Chronic core,36,Late settling,55,tentative
-MESH:D008173,Lung Diseases Obstructive,13,Broad first wave,37,Broad wave,56,tentative
+MESH:D059606,Polydipsia,13,Chronic core,44,Late settling,55,tentative
+MESH:C565498,Hypermetabolism due to Defect in Mitochondria,13,Broad first wave,38,Late settling,53,tentative
+MESH:D003139,Common Cold,13,Chronic core,57,Late settling,77,tentative
+MESH:D009443,Neuritis,13,Broad first wave,44,Broad wave,52,tentative
+MESH:D050723,Fractures Bone,13,Chronic core,37,Late settling,56,tentative
+MESH:D008173,Lung Diseases Obstructive,13,Broad first wave,38,Broad wave,55,tentative
 MESH:D020516,Brachial Plexus Neuropathies,13,Acute early,45,Early exit,63,tentative
-MESH:D012804,Sick Sinus Syndrome,13,Broad first wave,35,Early exit,55,tentative
-MESH:D012080,Chronic Kidney Disease-Mineral and Bone Disorder,13,Chronic core,51,Late settling,87,tentative
-MESH:D007806,Language Disorders,13,Broad first wave,36,Broad wave,52,tentative
+MESH:D012804,Sick Sinus Syndrome,13,Broad first wave,37,Early exit,51,tentative
+MESH:D012080,Chronic Kidney Disease-Mineral and Bone Disorder,13,Chronic core,54,Late settling,88,tentative
+MESH:D007806,Language Disorders,13,Broad first wave,37,Broad wave,49,tentative
 MESH:D020961,Lewy Body Disease,13,Broad first wave,44,Late settling,56,tentative
 MESH:D011782,Quadriplegia,13,Acute early,96,Early exit,96,tentative
-MESH:D000067251,Symptom Flare Up,13,Chronic core,50,Late settling,61,tentative
-MESH:D009421,Nervous System Malformations,13,Broad first wave,41,Early exit,54,tentative
-MESH:D011695,IgA Vasculitis,13,Broad first wave,40,Late settling,51,tentative
-MESH:D003668,Pressure Ulcer,13,Late symptom,40,Late settling,69,tentative
-MESH:D053201,Urinary Bladder Overactive,13,Chronic core,59,Late settling,63,tentative
-MESH:D010554,Personality Disorders,13,Broad first wave,37,Broad wave,53,tentative
-MESH:D054318,No-Reflow Phenomenon,13,Chronic core,43,Late settling,77,tentative
+MESH:D000067251,Symptom Flare Up,13,Chronic core,50,Late settling,62,tentative
+MESH:D009421,Nervous System Malformations,13,Broad first wave,41,Early exit,53,tentative
+MESH:D011695,IgA Vasculitis,13,Broad first wave,39,Late settling,50,tentative
+MESH:D003668,Pressure Ulcer,13,Late symptom,39,Late settling,71,tentative
+MESH:D053201,Urinary Bladder Overactive,13,Chronic core,59,Late settling,66,tentative
+MESH:D010554,Personality Disorders,13,Broad first wave,39,Broad wave,51,tentative
+MESH:D054318,No-Reflow Phenomenon,13,Chronic core,44,Late settling,79,tentative
 MESH:D006471,Gastrointestinal Hemorrhage,13,Acute early,70,Early exit,51,tentative
-MESH:D011602,Psychophysiologic Disorders,13,Chronic core,44,Late settling,66,tentative
-MESH:D008796,Metrorrhagia,13,Acute early,69,Broad wave,48,tentative
+MESH:D011602,Psychophysiologic Disorders,13,Chronic core,46,Late settling,68,tentative
+MESH:D008796,Metrorrhagia,13,Acute early,69,Broad wave,47,tentative
 MESH:D009877,Endophthalmitis,13,Acute early,89,Early exit,83,tentative
 MESH:D012166,Retinal Hemorrhage,13,Acute early,76,Early exit,56,tentative
 MESH:D006332,Cardiomegaly,13,Acute early,72,Early exit,60,tentative
-MESH:D015817,Eye Infections,13,Acute early,75,Early exit,76,tentative
-MESH:D055732,Pulmonary Aspergillosis,13,Acute early,89,Early exit,82,tentative
-MESH:D014826,Vocal Cord Paralysis,13,Acute early,45,Broad wave,46,tentative
-MESH:D007562,Creutzfeldt-Jakob Syndrome,13,Chronic core,50,Late settling,74,tentative
-MESH:D001745,Urinary Bladder Diseases,13,Chronic core,74,Late settling,89,tentative
-MESH:D020766,Intracranial Embolism,13,Acute early,58,Early exit,49,tentative
+MESH:D015817,Eye Infections,13,Acute early,74,Early exit,75,tentative
+MESH:D055732,Pulmonary Aspergillosis,13,Acute early,89,Early exit,81,tentative
+MESH:D014826,Vocal Cord Paralysis,13,Acute early,45,Broad wave,45,tentative
+MESH:D007562,Creutzfeldt-Jakob Syndrome,13,Chronic core,51,Late settling,77,tentative
+MESH:D001745,Urinary Bladder Diseases,13,Chronic core,76,Late settling,89,tentative
+MESH:D020766,Intracranial Embolism,13,Acute early,58,Early exit,50,tentative
 MESH:D004684,Leukoencephalitis Acute Hemorrhagic,13,Acute early,94,Early exit,92,tentative
 MESH:D001064,Appendicitis,13,Acute early,99,Early exit,99,tentative
-MESH:D002055,Burnout Professional,13,Chronic core,61,Late settling,76,tentative
-MESH:D015448,Leukemia B-Cell,13,Broad first wave,42,Broad wave,59,tentative
+MESH:D002055,Burnout Professional,13,Chronic core,63,Late settling,78,tentative
+MESH:D015448,Leukemia B-Cell,13,Broad first wave,45,Broad wave,60,tentative
 MESH:D018365,Neoplasm Residual,13,Chronic core,72,Late settling,94,tentative
 MESH:D020294,Myasthenic Syndromes Congenital,13,Acute early,84,Early exit,75,tentative
 MESH:D056587,Cryopyrin-Associated Periodic Syndromes,12,Acute early,68,Early exit,51,tentative
-MESH:D004618,Embolism Air,12,Chronic core,38,Early exit,61,tentative
-MESH:D011681,Pupil Disorders,12,Late symptom,35,Late settling,56,tentative
-MESH:D008218,Lymphocytosis,12,Broad first wave,47,Early exit,64,tentative
-MESH:D020795,Photophobia,12,Broad first wave,34,Broad wave,51,tentative
-MESH:C580065,Episodic Ataxia,12,Chronic core,68,Late settling,78,tentative
-MESH:D000082122,Internal Hernia,12,Late symptom,35,Late settling,62,tentative
-MESH:D003424,Crohn Disease,12,Chronic core,35,Broad wave,53,tentative
+MESH:D004618,Embolism Air,12,Chronic core,37,Early exit,63,tentative
+MESH:D011681,Pupil Disorders,12,Late symptom,36,Late settling,56,tentative
+MESH:D008218,Lymphocytosis,12,Broad first wave,48,Early exit,63,tentative
+MESH:D020795,Photophobia,12,Broad first wave,35,Broad wave,49,tentative
+MESH:C580065,Episodic Ataxia,12,Chronic core,69,Late settling,79,tentative
+MESH:D000082122,Internal Hernia,12,Late symptom,36,Late settling,62,tentative
+MESH:D003424,Crohn Disease,12,Broad first wave,36,Broad wave,50,tentative
 MESH:C000629404,acute flaccid myelitis,12,Acute early,97,Early exit,98,tentative
-MESH:D002559,Cerebrospinal Fluid Rhinorrhea,12,Acute early,42,Broad wave,59,tentative
-MESH:D000089202,Non-Radiographic Axial Spondyloarthritis,12,Acute early,65,Early exit,49,tentative
-MESH:D000090362,Mast Cell Activation Disorders,12,Late symptom,34,Late settling,58,tentative
-MESH:D006338,Heart Neoplasms,12,Chronic core,46,Late settling,66,tentative
-MESH:D051298,Post-Traumatic Headache,12,Broad first wave,40,Early exit,51,tentative
-MESH:D000743,Anemia Hemolytic,12,Acute early,65,Early exit,55,tentative
-MESH:D005155,Facial Nerve Diseases,12,Acute early,68,Early exit,68,tentative
-MESH:D014552,Urinary Tract Infections,12,Chronic core,82,Late settling,92,tentative
-MESH:D015161,Dementia Multi-Infarct,12,Late symptom,35,Late settling,58,tentative
-MESH:D015324,Pyruvate Carboxylase Deficiency Disease,12,Chronic core,64,Late settling,91,tentative
-MESH:D016393,Lymphoma B-Cell,12,Broad first wave,40,Early exit,60,tentative
-MESH:D010900,Pituitary Diseases,12,Broad first wave,34,Late settling,45,tentative
-MESH:D001321,Autistic Disorder,12,Broad first wave,38,Early exit,60,tentative
-MESH:D020330,Bell Palsy,11,Acute early,59,Early exit,67,tentative
-MESH:C535701,Malignant Teratocarcinosarcoma,11,Broad first wave,42,Broad wave,63,tentative
-MESH:D006816,Huntington Disease,11,Chronic core,49,Late settling,90,tentative
-MESH:D003147,Communication Disorders,11,Broad first wave,42,Early exit,58,tentative
+MESH:D002559,Cerebrospinal Fluid Rhinorrhea,12,Acute early,42,Broad wave,57,tentative
+MESH:D000089202,Non-Radiographic Axial Spondyloarthritis,12,Acute early,65,Early exit,48,tentative
+MESH:D000090362,Mast Cell Activation Disorders,12,Late symptom,34,Late settling,60,tentative
+MESH:D006338,Heart Neoplasms,12,Chronic core,47,Late settling,69,tentative
+MESH:D051298,Post-Traumatic Headache,12,Broad first wave,40,Early exit,50,tentative
+MESH:D000743,Anemia Hemolytic,12,Acute early,64,Early exit,54,tentative
+MESH:D005155,Facial Nerve Diseases,12,Acute early,68,Early exit,67,tentative
+MESH:D014552,Urinary Tract Infections,12,Chronic core,83,Late settling,93,tentative
+MESH:D015161,Dementia Multi-Infarct,12,Late symptom,35,Late settling,60,tentative
+MESH:D015324,Pyruvate Carboxylase Deficiency Disease,12,Chronic core,68,Late settling,92,tentative
+MESH:D016393,Lymphoma B-Cell,12,Broad first wave,42,Early exit,59,tentative
+MESH:D010900,Pituitary Diseases,12,Broad first wave,35,Late settling,46,tentative
+MESH:D001321,Autistic Disorder,12,Broad first wave,40,Early exit,56,tentative
+MESH:D020330,Bell Palsy,11,Acute early,59,Early exit,68,tentative
+MESH:C535701,Malignant Teratocarcinosarcoma,11,Broad first wave,44,Broad wave,59,tentative
+MESH:D006816,Huntington Disease,11,Chronic core,53,Late settling,91,tentative
+MESH:D003147,Communication Disorders,11,Broad first wave,42,Early exit,57,tentative
 MESH:D043171,Chromosomal Instability,11,Acute early,88,Early exit,82,tentative
-MESH:D019586,Intracranial Hypertension,11,Acute early,51,Broad wave,47,tentative
+MESH:D019586,Intracranial Hypertension,11,Acute early,51,Broad wave,45,tentative
 MESH:D000083302,Hemorrhagic Stroke,11,Acute early,45,Early exit,51,tentative
-OMIM:165800,165800,11,Broad first wave,53,Early exit,71,tentative
-MESH:D004844,Epistaxis,11,Broad first wave,41,Late settling,49,tentative
-MESH:D020300,Intracranial Hemorrhages,11,Acute early,78,Early exit,75,tentative
-MESH:D014474,Unconsciousness,11,Acute early,61,Early exit,53,tentative
-MESH:D000075902,Clinical Deterioration,11,Chronic core,57,Late settling,63,tentative
-MESH:D065167,Pregnancy Interstitial,11,Late symptom,47,Late settling,72,tentative
-MESH:D056660,Hereditary Autoinflammatory Diseases,11,Chronic core,34,Late settling,48,tentative
-MESH:D015451,Leukemia Lymphocytic Chronic B-Cell,11,Broad first wave,48,Late settling,66,tentative
-MESH:D005157,Facial Pain,11,Chronic core,33,Late settling,57,tentative
-MESH:D014581,Urticaria,11,Acute early,68,Early exit,52,tentative
-MESH:D007680,Kidney Neoplasms,11,Chronic core,64,Late settling,79,tentative
-MESH:D006259,Craniocerebral Trauma,11,Chronic core,52,Late settling,77,tentative
-MESH:D014570,Urologic Diseases,11,Chronic core,73,Late settling,87,tentative
-MESH:D053560,Ichthyosis Bullosa of Siemens,11,Chronic core,64,Late settling,84,tentative
+MESH:D004844,Epistaxis,11,Broad first wave,40,Late settling,49,tentative
+MESH:D020300,Intracranial Hemorrhages,11,Acute early,78,Early exit,74,tentative
+MESH:D014474,Unconsciousness,11,Acute early,61,Early exit,54,tentative
+MESH:D000075902,Clinical Deterioration,11,Chronic core,57,Late settling,64,tentative
+MESH:D065167,Pregnancy Interstitial,11,Late symptom,46,Late settling,74,tentative
+MESH:D056660,Hereditary Autoinflammatory Diseases,11,Chronic core,34,Late settling,53,tentative
+MESH:D015451,Leukemia Lymphocytic Chronic B-Cell,11,Broad first wave,49,Late settling,65,tentative
+MESH:D005157,Facial Pain,11,Late symptom,33,Late settling,60,tentative
+MESH:D014581,Urticaria,11,Acute early,69,Early exit,52,tentative
+MESH:D007680,Kidney Neoplasms,11,Chronic core,66,Late settling,81,tentative
+MESH:D006259,Craniocerebral Trauma,11,Chronic core,53,Late settling,78,tentative
+MESH:D014570,Urologic Diseases,11,Chronic core,76,Late settling,87,tentative
+MESH:D053560,Ichthyosis Bullosa of Siemens,11,Chronic core,65,Late settling,85,tentative
 MESH:D056833,Central Serous Chorioretinopathy,11,Acute early,84,Early exit,73,tentative
-MESH:D000092225,Tuberculosis Extrapulmonary,11,Acute early,54,Early exit,52,tentative
+MESH:D000092225,Tuberculosis Extrapulmonary,11,Acute early,54,Early exit,53,tentative
 MESH:D001928,Brain Diseases Metabolic,11,Acute early,42,Broad wave,45,tentative
-MESH:D059345,Cerebral Small Vessel Diseases,11,Chronic core,46,Late settling,66,tentative
+MESH:D059345,Cerebral Small Vessel Diseases,11,Chronic core,46,Late settling,68,tentative
 MESH:C567425,Alopecia Neurologic Defects and Endocrinopathy Syndrome,11,Broad first wave,48,Broad wave,52,tentative
-MESH:D007027,Hypothalamic Diseases,11,Chronic core,46,Broad wave,60,tentative
-MESH:D000071069,Multiple Chronic Conditions,11,Chronic core,53,Late settling,64,tentative
-MESH:D000085583,Hyperferritinemia,11,Acute early,84,Early exit,83,tentative
-MESH:D007662,Ketosis,11,Broad first wave,56,Early exit,70,tentative
-MESH:D063646,Carcinogenesis,11,Chronic core,61,Late settling,72,tentative
-MESH:D011693,Purpura,11,Acute early,80,Early exit,77,tentative
-MESH:D003638,Deafness,11,Broad first wave,32,Late settling,48,tentative
-MESH:D065626,Non-alcoholic Fatty Liver Disease,10,Broad first wave,37,Broad wave,54,tentative
-MESH:D002305,Cardiac Tamponade,10,Acute early,53,Broad wave,48,tentative
-MESH:D002526,Cerebellar Diseases,10,Chronic core,47,Late settling,69,tentative
-MESH:D006937,Hypercholesterolemia,10,Chronic core,58,Late settling,92,tentative
-MESH:D013035,Spasm,10,Acute early,32,Late settling,47,tentative
-MESH:D012078,Renal Artery Obstruction,10,Broad first wave,34,Broad wave,47,tentative
-MESH:D009404,Nephrotic Syndrome,10,Acute early,65,Early exit,63,tentative
-MESH:D059787,Acute Pain,10,Late symptom,47,Late settling,80,tentative
-MESH:C563010,Neutrophilia Hereditary,10,Broad first wave,37,Early exit,50,tentative
-MESH:D007970,Leukopenia,10,Acute early,81,Early exit,62,tentative
-MESH:D013180,Sprains and Strains,10,Chronic core,48,Late settling,81,tentative
+MESH:D007027,Hypothalamic Diseases,11,Chronic core,48,Broad wave,62,tentative
+MESH:D000071069,Multiple Chronic Conditions,11,Chronic core,53,Late settling,65,tentative
+MESH:D000085583,Hyperferritinemia,11,Acute early,84,Early exit,82,tentative
+MESH:D007662,Ketosis,11,Broad first wave,56,Early exit,68,tentative
+MESH:D063646,Carcinogenesis,11,Chronic core,64,Late settling,72,tentative
+MESH:D011693,Purpura,11,Acute early,80,Early exit,76,tentative
+MESH:D003638,Deafness,11,Broad first wave,34,Late settling,48,tentative
+MESH:D065626,Non-alcoholic Fatty Liver Disease,10,Broad first wave,37,Broad wave,52,tentative
+MESH:D002305,Cardiac Tamponade,10,Acute early,53,Broad wave,47,tentative
+MESH:D002526,Cerebellar Diseases,10,Chronic core,48,Late settling,72,tentative
+MESH:D006937,Hypercholesterolemia,10,Chronic core,62,Late settling,93,tentative
+MESH:D013035,Spasm,10,Acute early,33,Late settling,43,tentative
+MESH:D012078,Renal Artery Obstruction,10,Broad first wave,33,Broad wave,46,tentative
+MESH:D009404,Nephrotic Syndrome,10,Acute early,65,Early exit,64,tentative
+MESH:D059787,Acute Pain,10,Late symptom,44,Late settling,82,tentative
+MESH:C563010,Neutrophilia Hereditary,10,Broad first wave,38,Broad wave,49,tentative
+MESH:D007970,Leukopenia,10,Acute early,81,Early exit,63,tentative
+MESH:D013180,Sprains and Strains,10,Chronic core,51,Late settling,83,tentative
 MESH:D012021,Reflex Abnormal,10,Acute early,93,Early exit,93,tentative
-MESH:C580335,Nonsyndromic Holoprosencephaly,10,Chronic core,49,Late settling,68,tentative
-MESH:D004696,Endocarditis,10,Acute early,35,Broad wave,47,tentative
-MESH:D014693,Ventricular Fibrillation,10,Broad first wave,42,Broad wave,56,tentative
-MESH:D020226,Cavernous Sinus Thrombosis,10,Acute early,56,Early exit,50,tentative
-MESH:D010003,Osteoarthritis,10,Chronic core,69,Late settling,89,tentative
-MESH:D014606,Uveitis Anterior,10,Acute early,45,Early exit,55,tentative
-MESH:D002546,Ischemic Attack Transient,10,Broad first wave,56,Broad wave,67,tentative
-MESH:D011502,Protein-Energy Malnutrition,10,Chronic core,36,Broad wave,51,tentative
-MESH:D005517,Foodborne Diseases,10,Chronic core,55,Late settling,64,tentative
-MESH:D015423,Scleritis,10,Broad first wave,34,Early exit,55,tentative
-MESH:D020338,Vestibular Neuronitis,10,Chronic core,40,Late settling,66,tentative
+MESH:C580335,Nonsyndromic Holoprosencephaly,10,Chronic core,48,Late settling,67,tentative
+MESH:D004696,Endocarditis,10,Acute early,35,Broad wave,45,tentative
+MESH:D014693,Ventricular Fibrillation,10,Broad first wave,43,Broad wave,55,tentative
+MESH:D020226,Cavernous Sinus Thrombosis,10,Acute early,57,Early exit,51,tentative
+MESH:D010003,Osteoarthritis,10,Chronic core,70,Late settling,89,tentative
+MESH:D014606,Uveitis Anterior,10,Acute early,45,Early exit,53,tentative
+MESH:D002546,Ischemic Attack Transient,10,Broad first wave,57,Broad wave,65,tentative
+MESH:D011502,Protein-Energy Malnutrition,10,Chronic core,37,Broad wave,53,tentative
+MESH:D005517,Foodborne Diseases,10,Chronic core,55,Late settling,66,tentative
+MESH:D015423,Scleritis,10,Broad first wave,34,Early exit,54,tentative
+MESH:D020338,Vestibular Neuronitis,10,Chronic core,39,Late settling,67,tentative
 MESH:D000071699,Bilateral Vestibulopathy,10,Acute early,66,Early exit,58,tentative
-MESH:D007565,Jaundice,10,Broad first wave,39,Late settling,53,tentative
-MESH:D008103,Liver Cirrhosis,10,Broad first wave,32,Late settling,51,tentative
-MESH:D012142,Respiratory Tract Neoplasms,10,Chronic core,46,Late settling,67,tentative
-MESH:D006965,Hyperplasia,10,Acute early,45,Early exit,50,tentative
-MESH:D005776,Gaucher Disease,10,Broad first wave,42,Broad wave,60,tentative
+MESH:D007565,Jaundice,10,Broad first wave,39,Late settling,52,tentative
+MESH:D008103,Liver Cirrhosis,10,Broad first wave,34,Late settling,50,tentative
+MESH:D012142,Respiratory Tract Neoplasms,10,Chronic core,47,Late settling,69,tentative
+MESH:D006965,Hyperplasia,10,Acute early,46,Early exit,49,tentative
+MESH:D005776,Gaucher Disease,10,Broad first wave,43,Broad wave,58,tentative
 MESH:D000072657,ST Elevation Myocardial Infarction,10,Acute early,83,Early exit,80,tentative
-MESH:D004314,Down Syndrome,10,Broad first wave,40,Broad wave,60,tentative
-MESH:C562377,Glutamate Monosodium Sensitivity,10,Broad first wave,39,Late settling,53,tentative
-MESH:D004751,Enteritis,10,Broad first wave,41,Late settling,56,tentative
-MESH:C535287,Hunt's syndrome,10,Broad first wave,36,Late settling,52,tentative
-MESH:D000067390,Cold Injury,10,Chronic core,70,Late settling,81,tentative
-MESH:D011843,Radiculopathy,10,Acute early,57,Early exit,47,tentative
-MESH:D066253,Vascular Remodeling,10,Broad first wave,43,Late settling,49,tentative
+MESH:D004314,Down Syndrome,10,Broad first wave,40,Late settling,59,tentative
+MESH:C562377,Glutamate Monosodium Sensitivity,10,Broad first wave,40,Late settling,49,tentative
+MESH:D004751,Enteritis,10,Broad first wave,41,Late settling,55,tentative
+MESH:C535287,Hunt's syndrome,10,Broad first wave,36,Late settling,51,tentative
+MESH:D000067390,Cold Injury,10,Chronic core,71,Late settling,83,tentative
+MESH:D011843,Radiculopathy,10,Acute early,58,Early exit,46,tentative
+MESH:D066253,Vascular Remodeling,10,Broad first wave,43,Late settling,48,tentative
 MESH:D002819,Chorea,10,Acute early,58,Early exit,47,tentative
-MESH:D001766,Blindness,10,Broad first wave,41,Broad wave,52,tentative
-MESH:D003093,Colitis Ulcerative,10,Chronic core,55,Late settling,82,tentative
-OMIM:614963,614963,10,Acute early,38,Early exit,56,tentative
-MESH:D006327,Heart Block,10,Acute early,61,Early exit,53,tentative
+MESH:D001766,Blindness,10,Broad first wave,42,Broad wave,52,tentative
+MESH:D003093,Colitis Ulcerative,10,Chronic core,57,Late settling,83,tentative
+MESH:D006327,Heart Block,10,Acute early,61,Early exit,54,tentative
 MESH:D015163,Superinfection,10,Acute early,54,Late settling,48,tentative
-MESH:D000077342,Post-Lyme Disease Syndrome,10,Chronic core,52,Late settling,67,tentative
-MESH:D009800,Oculocerebrorenal Syndrome,10,Broad first wave,44,Broad wave,58,tentative
-MESH:D000072742,Invasive Fungal Infections,10,Acute early,64,Early exit,53,tentative
-MESH:D006948,Hyperkinesis,10,Chronic core,32,Broad wave,47,tentative
-MESH:D014549,Urinary Incontinence,10,Chronic core,66,Late settling,73,tentative
-MESH:D004535,Ehlers-Danlos Syndrome,10,Chronic core,70,Late settling,89,tentative
-MESH:D011236,Prediabetic State,9,Chronic core,36,Late settling,55,tentative
-MESH:D004828,Epilepsies Partial,9,Broad first wave,43,Broad wave,54,tentative
-MESH:D017682,Myocardial Stunning,9,Acute early,45,Early exit,51,tentative
-MESH:D009408,Nerve Compression Syndromes,9,Acute early,46,Early exit,51,tentative
-MESH:D009449,Neurocirculatory Asthenia,9,Chronic core,47,Late settling,75,tentative
-MESH:C536657,Periodic fever familial autosomal dominant,9,Late symptom,42,Late settling,63,tentative
+MESH:D000077342,Post-Lyme Disease Syndrome,10,Chronic core,53,Late settling,68,tentative
+MESH:D009800,Oculocerebrorenal Syndrome,10,Broad first wave,46,Broad wave,55,tentative
+MESH:D000072742,Invasive Fungal Infections,10,Acute early,64,Early exit,54,tentative
+MESH:D006948,Hyperkinesis,10,Broad first wave,33,Broad wave,46,tentative
+MESH:D014549,Urinary Incontinence,10,Chronic core,67,Late settling,73,tentative
+MESH:D004535,Ehlers-Danlos Syndrome,10,Chronic core,73,Late settling,89,tentative
+MESH:D011236,Prediabetic State,9,Chronic core,36,Late settling,56,tentative
+MESH:D004828,Epilepsies Partial,9,Broad first wave,44,Broad wave,54,tentative
+MESH:D017682,Myocardial Stunning,9,Acute early,45,Early exit,49,tentative
+MESH:D009408,Nerve Compression Syndromes,9,Acute early,47,Early exit,49,tentative
+MESH:D009449,Neurocirculatory Asthenia,9,Chronic core,49,Late settling,77,tentative
+MESH:C536657,Periodic fever familial autosomal dominant,9,Late symptom,43,Late settling,66,tentative
 MESH:D010538,Peritonitis,9,Acute early,54,Early exit,50,tentative
-MESH:D059246,Tachypnea,9,Acute early,42,Broad wave,57,tentative
-MESH:D011596,Psychomotor Disorders,9,Chronic core,52,Late settling,74,tentative
-MESH:C000656945,Mucor infection,9,Broad first wave,36,Early exit,49,tentative
-MESH:D000067562,Late Onset Disorders,9,Broad first wave,34,Broad wave,49,tentative
-MESH:D017096,Prion Diseases,9,Broad first wave,41,Late settling,57,tentative
+MESH:D059246,Tachypnea,9,Acute early,42,Broad wave,55,tentative
+MESH:D011596,Psychomotor Disorders,9,Chronic core,53,Late settling,75,tentative
+MESH:C000656945,Mucor infection,9,Broad first wave,37,Early exit,46,tentative
+MESH:D000067562,Late Onset Disorders,9,Broad first wave,35,Broad wave,46,tentative
+MESH:D017096,Prion Diseases,9,Broad first wave,42,Late settling,54,tentative
 MESH:C564553,Ptosis Hereditary Congenital 2,9,Acute early,48,Broad wave,52,tentative
-MESH:D002341,Carotid Artery Thrombosis,9,Broad first wave,45,Broad wave,54,tentative
-MESH:D020069,Shoulder Pain,9,Broad first wave,35,Broad wave,52,tentative
-MESH:C535509,Erythema elevatum diutinum,9,Broad first wave,38,Late settling,48,tentative
-MESH:D009139,Musculoskeletal Abnormalities,9,Late symptom,42,Late settling,71,tentative
-MESH:D011654,Pulmonary Edema,9,Broad first wave,34,Broad wave,48,tentative
-MESH:D006685,Hoarseness,9,Chronic core,46,Late settling,76,tentative
-MESH:D020295,Brain Stem Neoplasms,9,Acute early,60,Early exit,49,tentative
-MESH:D060737,Reproductive Tract Infections,9,Late symptom,32,Late settling,57,tentative
+MESH:D002341,Carotid Artery Thrombosis,9,Broad first wave,45,Broad wave,56,tentative
+MESH:D020069,Shoulder Pain,9,Broad first wave,35,Broad wave,50,tentative
+MESH:C535509,Erythema elevatum diutinum,9,Broad first wave,38,Late settling,47,tentative
+MESH:D009139,Musculoskeletal Abnormalities,9,Late symptom,41,Late settling,73,tentative
+MESH:D011654,Pulmonary Edema,9,Broad first wave,35,Broad wave,48,tentative
+MESH:D006685,Hoarseness,9,Chronic core,49,Late settling,77,tentative
+MESH:D020295,Brain Stem Neoplasms,9,Acute early,60,Early exit,50,tentative
+MESH:D060737,Reproductive Tract Infections,9,Late symptom,32,Late settling,58,tentative
 MESH:D002292,Carcinoma Renal Cell,9,Acute early,36,Broad wave,50,tentative
-MESH:D011015,Pneumonia Aspiration,9,Broad first wave,43,Early exit,62,tentative
-MESH:C564969,Minicore Myopathy with External Ophthalmoplegia,9,Chronic core,40,Late settling,60,tentative
-MESH:D001982,Bronchial Diseases,9,Acute early,35,Early exit,50,tentative
-MESH:D000137,Acid-Base Imbalance,9,Chronic core,80,Late settling,91,tentative
-MESH:D012001,Hyperacusis,9,Chronic core,53,Late settling,80,tentative
-MESH:D003229,Conjunctival Diseases,9,Acute early,87,Early exit,77,tentative
+MESH:D011015,Pneumonia Aspiration,9,Broad first wave,44,Early exit,61,tentative
+MESH:C564969,Minicore Myopathy with External Ophthalmoplegia,9,Chronic core,41,Late settling,61,tentative
+MESH:D001982,Bronchial Diseases,9,Acute early,36,Early exit,47,tentative
+MESH:D000137,Acid-Base Imbalance,9,Chronic core,81,Late settling,91,tentative
+MESH:D012001,Hyperacusis,9,Chronic core,55,Late settling,81,tentative
+MESH:D003229,Conjunctival Diseases,9,Acute early,86,Early exit,77,tentative
 MESH:D011129,Polyradiculoneuropathy,9,Acute early,88,Early exit,84,tentative
-MESH:D000070625,Brain Injuries Diffuse,9,Acute early,46,Early exit,51,tentative
+MESH:D000070625,Brain Injuries Diffuse,9,Acute early,47,Early exit,50,tentative
 MESH:D055613,Multiple Pulmonary Nodules,9,Acute early,57,Early exit,53,tentative
-MESH:C566924,Cavitary Optic Disc Anomalies,9,Broad first wave,39,Broad wave,51,tentative
-MESH:D004679,Encephalomyelitis,9,Acute early,55,Early exit,50,tentative
-MESH:C538390,Hypertrichosis anterior cervical,9,Chronic core,67,Late settling,87,tentative
-MESH:D017565,Sarcoidosis Pulmonary,9,Chronic core,65,Late settling,87,tentative
-MESH:D056647,Systemic Vasculitis,9,Chronic core,69,Late settling,77,tentative
-MESH:D000090463,Iron Deficiencies,9,Chronic core,61,Late settling,80,tentative
+MESH:C566924,Cavitary Optic Disc Anomalies,9,Broad first wave,39,Broad wave,52,tentative
+MESH:D004679,Encephalomyelitis,9,Acute early,55,Early exit,49,tentative
+MESH:C538390,Hypertrichosis anterior cervical,9,Chronic core,70,Late settling,88,tentative
+MESH:D017565,Sarcoidosis Pulmonary,9,Chronic core,70,Late settling,87,tentative
+MESH:D056647,Systemic Vasculitis,9,Chronic core,71,Late settling,78,tentative
+MESH:D000090463,Iron Deficiencies,9,Chronic core,63,Late settling,82,tentative
 MESH:D018366,Vasculitis Leukocytoclastic Cutaneous,9,Acute early,91,Early exit,92,tentative
-MESH:D000230,Adenocarcinoma,9,Chronic core,56,Late settling,73,tentative
-MESH:D004409,Dyskinesia Drug-Induced,9,Chronic core,65,Late settling,74,tentative
-MESH:D015535,Arthritis Psoriatic,9,Broad first wave,38,Early exit,53,tentative
-MESH:D012148,Restless Legs Syndrome,9,Broad first wave,40,Early exit,60,tentative
-MESH:D011183,Postoperative Complications,9,Chronic core,53,Late settling,67,tentative
-MESH:D011007,Pneumocephalus,9,Broad first wave,35,Early exit,53,tentative
-MESH:D013958,Thyroid Crisis,9,Broad first wave,45,Broad wave,52,tentative
-MESH:D012133,Respiratory Paralysis,9,Broad first wave,39,Broad wave,56,tentative
-MESH:D001752,Blast Crisis,9,Acute early,71,Early exit,63,tentative
-MESH:D048909,Diabetes Complications,9,Chronic core,49,Late settling,74,tentative
-MESH:D014647,Varicose Ulcer,9,Chronic core,31,Late settling,51,tentative
-MESH:D014077,Tooth Erosion,9,Chronic core,56,Late settling,64,tentative
-MESH:D004892,Erythema Multiforme,9,Acute early,87,Early exit,83,tentative
-MESH:D016403,Lymphoma Large B-Cell Diffuse,9,Chronic core,57,Late settling,76,tentative
-MESH:D000783,Aneurysm,9,Broad first wave,38,Late settling,54,tentative
-MESH:D061085,Agenesis of Corpus Callosum,9,Acute early,71,Early exit,63,tentative
-MESH:D052456,Hypoalphalipoproteinemias,9,Chronic core,52,Late settling,63,tentative
-MESH:D006930,Hyperalgesia,8,Chronic core,37,Late settling,62,tentative
-MESH:D004802,Eosinophilia,8,Chronic core,33,Late settling,54,tentative
-MESH:D018476,Hypokinesia,8,Broad first wave,34,Late settling,49,tentative
-MESH:D020427,Peroneal Neuropathies,8,Acute early,47,Early exit,47,tentative
-MESH:C535682,Right ventricle hypoplasia,8,Acute early,43,Broad wave,48,tentative
-MESH:C565715,Diabetes Mellitus Insulin-Dependent 19,8,Broad first wave,42,Broad wave,59,tentative
-MESH:D002972,Cleft Palate,8,Late symptom,34,Late settling,63,tentative
-MESH:D007818,Laryngeal Diseases,8,Broad first wave,41,Late settling,53,tentative
-MESH:D000067877,Autism Spectrum Disorder,8,Chronic core,68,Late settling,76,tentative
-MESH:D020721,Nervous System Autoimmune Disease Experimental,8,Broad first wave,39,Early exit,59,tentative
+MESH:D000230,Adenocarcinoma,9,Chronic core,58,Late settling,74,tentative
+MESH:D004409,Dyskinesia Drug-Induced,9,Chronic core,65,Late settling,76,tentative
+MESH:D015535,Arthritis Psoriatic,9,Broad first wave,39,Early exit,52,tentative
+MESH:D012148,Restless Legs Syndrome,9,Broad first wave,41,Early exit,59,tentative
+MESH:D011183,Postoperative Complications,9,Chronic core,54,Late settling,71,tentative
+MESH:D011007,Pneumocephalus,9,Broad first wave,36,Early exit,52,tentative
+MESH:D013958,Thyroid Crisis,9,Broad first wave,46,Broad wave,51,tentative
+MESH:D012133,Respiratory Paralysis,9,Broad first wave,41,Broad wave,54,tentative
+MESH:D001752,Blast Crisis,9,Acute early,71,Early exit,64,tentative
+MESH:D048909,Diabetes Complications,9,Chronic core,49,Late settling,75,tentative
+MESH:D014647,Varicose Ulcer,9,Broad first wave,30,Late settling,51,tentative
+MESH:D014077,Tooth Erosion,9,Chronic core,56,Late settling,66,tentative
+MESH:D004892,Erythema Multiforme,9,Acute early,87,Early exit,82,tentative
+MESH:D016403,Lymphoma Large B-Cell Diffuse,9,Chronic core,58,Late settling,77,tentative
+MESH:D000783,Aneurysm,9,Broad first wave,38,Late settling,51,tentative
+MESH:D061085,Agenesis of Corpus Callosum,9,Acute early,72,Early exit,64,tentative
+MESH:D052456,Hypoalphalipoproteinemias,9,Chronic core,52,Late settling,62,tentative
+MESH:D006930,Hyperalgesia,8,Chronic core,38,Late settling,65,tentative
+MESH:D004802,Eosinophilia,8,Chronic core,33,Late settling,55,tentative
+MESH:D018476,Hypokinesia,8,Broad first wave,35,Late settling,48,tentative
+MESH:D020427,Peroneal Neuropathies,8,Acute early,48,Early exit,45,tentative
+MESH:C535682,Right ventricle hypoplasia,8,Acute early,44,Broad wave,48,tentative
+MESH:C565715,Diabetes Mellitus Insulin-Dependent 19,8,Broad first wave,43,Broad wave,59,tentative
+MESH:D002972,Cleft Palate,8,Late symptom,34,Late settling,65,tentative
+MESH:D007818,Laryngeal Diseases,8,Broad first wave,42,Late settling,52,tentative
+MESH:D000067877,Autism Spectrum Disorder,8,Chronic core,68,Late settling,75,tentative
+MESH:D020721,Nervous System Autoimmune Disease Experimental,8,Broad first wave,40,Early exit,59,tentative
 MESH:D015864,Panuveitis,8,Acute early,75,Early exit,65,tentative
+MESH:D009260,Nail Diseases,8,Acute early,61,Early exit,56,tentative
 MESH:D001768,Blister,8,Broad first wave,40,Broad wave,51,tentative
-MESH:D019462,Syncope Vasovagal,8,Chronic core,31,Late settling,47,tentative
-MESH:D044542,LEOPARD Syndrome,8,Broad first wave,33,Late settling,46,tentative
-MESH:D001996,Bronchopneumonia,8,Acute early,57,Early exit,51,tentative
-MESH:C000719212,Pathophobia,8,Broad first wave,42,Late settling,60,tentative
-MESH:D016606,Thyroid Nodule,8,Chronic core,51,Late settling,74,tentative
+MESH:D019462,Syncope Vasovagal,8,Chronic core,31,Late settling,46,tentative
+MESH:D044542,LEOPARD Syndrome,8,Broad first wave,33,Late settling,45,tentative
+MESH:D001996,Bronchopneumonia,8,Acute early,57,Early exit,52,tentative
+MESH:C000719212,Pathophobia,8,Broad first wave,44,Late settling,58,tentative
+MESH:D016606,Thyroid Nodule,8,Chronic core,52,Late settling,75,tentative
 MESH:D002539,Cerebral Arterial Diseases,8,Chronic core,39,Late settling,57,tentative
-MESH:C564835,Enhanced S-Cone Syndrome,8,Acute early,56,Early exit,55,tentative
+MESH:C564835,Enhanced S-Cone Syndrome,8,Acute early,57,Early exit,55,tentative
 MESH:D009886,Ophthalmoplegia,8,Acute early,75,Early exit,74,tentative
-MESH:D011248,Pregnancy Complications,8,Chronic core,45,Late settling,70,tentative
+MESH:D011248,Pregnancy Complications,8,Chronic core,47,Late settling,70,tentative
 MESH:D002575,Uterine Cervicitis,8,Acute early,39,Late settling,51,tentative
-MESH:D005878,Gilbert Disease,8,Broad first wave,37,Broad wave,51,tentative
-MESH:D059347,Cardio-Renal Syndrome,8,Broad first wave,44,Broad wave,63,tentative
-MESH:D013167,Spondylitis Ankylosing,8,Broad first wave,32,Broad wave,50,tentative
-MESH:D003681,Dehydration,8,Broad first wave,38,Broad wave,54,tentative
-MESH:D005094,Exophthalmos,8,Acute early,77,Early exit,68,tentative
-MESH:D015354,Vision Low,8,Late symptom,41,Late settling,62,tentative
-MESH:D020886,Somatosensory Disorders,8,Broad first wave,41,Early exit,56,tentative
-MESH:C580162,Hereditary Sensory and Autonomic Neuropathy Type Ie,8,Chronic core,38,Late settling,52,tentative
-MESH:D013736,Testicular Neoplasms,8,Broad first wave,36,Broad wave,52,tentative
-MESH:D010995,Pleural Diseases,8,Broad first wave,36,Late settling,47,tentative
+MESH:D005878,Gilbert Disease,8,Broad first wave,38,Late settling,49,tentative
+MESH:D008599,Menstruation Disturbances,8,Chronic core,39,Late settling,66,tentative
+MESH:D059347,Cardio-Renal Syndrome,8,Broad first wave,45,Broad wave,62,tentative
+MESH:D013167,Spondylitis Ankylosing,8,Broad first wave,33,Broad wave,49,tentative
+MESH:D003681,Dehydration,8,Broad first wave,39,Broad wave,52,tentative
+MESH:D005094,Exophthalmos,8,Acute early,77,Early exit,69,tentative
+MESH:D015354,Vision Low,8,Late symptom,41,Late settling,64,tentative
+MESH:D020886,Somatosensory Disorders,8,Broad first wave,41,Early exit,53,tentative
+MESH:C580162,Hereditary Sensory and Autonomic Neuropathy Type Ie,8,Chronic core,38,Late settling,51,tentative
+MESH:D013736,Testicular Neoplasms,8,Broad first wave,36,Broad wave,50,tentative
+MESH:D010995,Pleural Diseases,8,Broad first wave,37,Late settling,45,tentative
 MESH:D001022,Aortic Valve Insufficiency,8,Broad first wave,35,Late settling,50,tentative
-MESH:C536395,Neonatal herpes,8,Broad first wave,37,Early exit,53,tentative
-MESH:D020323,Tics,8,Broad first wave,40,Late settling,53,tentative
-MESH:D002177,Candidiasis,8,Chronic core,55,Late settling,72,tentative
-MESH:C562390,Humoral Hypercalcemia Of Malignancy,8,Broad first wave,39,Broad wave,56,tentative
-MESH:D012562,Schizophrenia Disorganized,8,Broad first wave,39,Late settling,50,tentative
-MESH:D015821,Eye Infections Fungal,8,Acute early,38,Early exit,51,tentative
+MESH:C536395,Neonatal herpes,8,Broad first wave,38,Early exit,50,tentative
+MESH:D020323,Tics,8,Broad first wave,41,Late settling,52,tentative
+MESH:D002177,Candidiasis,8,Chronic core,57,Late settling,74,tentative
+MESH:C562390,Humoral Hypercalcemia Of Malignancy,8,Broad first wave,40,Broad wave,55,tentative
+MESH:D012562,Schizophrenia Disorganized,8,Broad first wave,38,Late settling,50,tentative
+MESH:D015821,Eye Infections Fungal,8,Acute early,38,Early exit,48,tentative
 MESH:D009127,Muscle Rigidity,8,Acute early,57,Early exit,50,tentative
 MESH:D063766,Pediatric Obesity,8,Acute early,63,Early exit,52,tentative
-MESH:D013290,Streptococcal Infections,8,Chronic core,65,Late settling,81,tentative
-MESH:D001254,Astrocytoma,8,Chronic core,31,Broad wave,45,tentative
-MESH:D051270,Headache Disorders Primary,8,Chronic core,45,Late settling,70,tentative
-MESH:D006406,Hematoma,8,Broad first wave,36,Late settling,46,tentative
-MESH:D005359,Fibrous Dysplasia Polyostotic,8,Chronic core,60,Late settling,79,tentative
-MESH:D020293,Vasculitis Central Nervous System,8,Acute early,61,Early exit,52,tentative
-MESH:D001201,Ascites,8,Acute early,64,Early exit,53,tentative
-MESH:D020522,Lymphoma Mantle-Cell,8,Chronic core,46,Late settling,53,tentative
-MESH:D007018,Hypopituitarism,8,Chronic core,41,Late settling,51,tentative
-MESH:D004715,Endometriosis,8,Chronic core,56,Late settling,86,tentative
-MESH:D008641,Mesenteric Vascular Occlusion,8,Acute early,68,Early exit,54,tentative
-MESH:D007589,Job Syndrome,8,Broad first wave,37,Late settling,52,tentative
-OMIM:163000,163000,8,Broad first wave,42,Broad wave,54,tentative
-MESH:D065886,Neurodevelopmental Disorders,8,Broad first wave,40,Late settling,53,tentative
-MESH:C564133,Ige Responsiveness Atopic,8,Chronic core,61,Late settling,84,tentative
-MESH:D056151,Airway Remodeling,8,Chronic core,59,Late settling,74,tentative
-MESH:D058437,Hypertensive Retinopathy,8,Acute early,48,Broad wave,42,tentative
-MESH:D009120,Muscle Cramp,8,Chronic core,70,Late settling,90,tentative
-MESH:D007593,Joint Instability,8,Chronic core,65,Late settling,86,tentative
-MESH:D003560,Cysts,8,Broad first wave,37,Broad wave,53,tentative
-MESH:C564816,Insulin-Like Growth Factor I Resistance To,8,Acute early,72,Early exit,58,tentative
-MESH:D020803,Encephalitis Herpes Simplex,8,Chronic core,66,Late settling,85,tentative
-MESH:D011697,Purpura Thrombotic Thrombocytopenic,8,Chronic core,42,Late settling,55,tentative
-MESH:D013700,Giant Cell Arteritis,8,Chronic core,52,Late settling,73,tentative
-MESH:D008105,Liver Cirrhosis Biliary,8,Broad first wave,31,Broad wave,49,tentative
+MESH:D013290,Streptococcal Infections,8,Chronic core,66,Late settling,82,tentative
+MESH:D001254,Astrocytoma,8,Chronic core,31,Broad wave,47,tentative
+MESH:D051270,Headache Disorders Primary,8,Chronic core,46,Late settling,69,tentative
+MESH:D006406,Hematoma,8,Broad first wave,35,Late settling,45,tentative
+MESH:D005359,Fibrous Dysplasia Polyostotic,8,Chronic core,61,Late settling,80,tentative
+MESH:D020293,Vasculitis Central Nervous System,8,Acute early,62,Early exit,52,tentative
+MESH:D001201,Ascites,8,Acute early,65,Early exit,53,tentative
+MESH:D020522,Lymphoma Mantle-Cell,8,Chronic core,46,Late settling,55,tentative
+MESH:D007018,Hypopituitarism,8,Chronic core,40,Late settling,48,tentative
+MESH:D004715,Endometriosis,8,Chronic core,57,Late settling,86,tentative
+MESH:D008641,Mesenteric Vascular Occlusion,8,Acute early,69,Early exit,56,tentative
+MESH:D007589,Job Syndrome,8,Broad first wave,37,Late settling,50,tentative
+MESH:D065886,Neurodevelopmental Disorders,8,Broad first wave,41,Late settling,53,tentative
+MESH:C564133,Ige Responsiveness Atopic,8,Chronic core,63,Late settling,85,tentative
+MESH:D056151,Airway Remodeling,8,Chronic core,60,Late settling,74,tentative
+MESH:D058437,Hypertensive Retinopathy,8,Acute early,49,Broad wave,43,tentative
+MESH:D009120,Muscle Cramp,8,Chronic core,74,Late settling,91,tentative
+MESH:D007593,Joint Instability,8,Chronic core,68,Late settling,87,tentative
+MESH:D003560,Cysts,8,Broad first wave,38,Broad wave,53,tentative
+MESH:C564816,Insulin-Like Growth Factor I Resistance To,8,Acute early,72,Early exit,59,tentative
+MESH:D020803,Encephalitis Herpes Simplex,8,Chronic core,68,Late settling,86,tentative
+MESH:D011697,Purpura Thrombotic Thrombocytopenic,8,Chronic core,43,Late settling,55,tentative
+MESH:D013700,Giant Cell Arteritis,8,Chronic core,54,Late settling,74,tentative
+MESH:D008105,Liver Cirrhosis Biliary,8,Broad first wave,31,Broad wave,48,tentative
 MESH:D015470,Leukemia Myeloid Acute,8,Chronic core,34,Late settling,49,tentative
 MESH:D007683,Kidney Tubular Necrosis Acute,8,Acute early,56,Broad wave,51,tentative
-MESH:D007787,Lactose Intolerance,8,Chronic core,55,Late settling,64,tentative
-MESH:D006528,Carcinoma Hepatocellular,8,Chronic core,66,Late settling,84,tentative
-MESH:D000091642,Urogenital Diseases,7,Late symptom,37,Late settling,53,tentative
-MESH:D020178,Sleep Disorders Circadian Rhythm,7,Chronic core,45,Late settling,72,tentative
+MESH:D008275,Magnesium Deficiency,8,Broad first wave,34,Late settling,48,tentative
+MESH:D007787,Lactose Intolerance,8,Chronic core,54,Late settling,63,tentative
+MESH:D006528,Carcinoma Hepatocellular,8,Chronic core,65,Late settling,84,tentative
+MESH:D000091642,Urogenital Diseases,7,Late symptom,36,Late settling,55,tentative
+MESH:D020178,Sleep Disorders Circadian Rhythm,7,Chronic core,45,Late settling,74,tentative
 MESH:D002037,Bundle-Branch Block,7,Acute early,64,Early exit,58,tentative
-MESH:D000069279,Drug Resistant Epilepsy,7,Broad first wave,38,Late settling,52,tentative
-MESH:C580192,Immune Dysregulation Polyendocrinopathy Enteropathy X-Linked Syndrome,7,Chronic core,40,Late settling,57,tentative
+MESH:D000069279,Drug Resistant Epilepsy,7,Broad first wave,38,Late settling,50,tentative
+MESH:C580192,Immune Dysregulation Polyendocrinopathy Enteropathy X-Linked Syndrome,7,Chronic core,39,Late settling,58,tentative
 MESH:C565467,Indifference to Pain Congenital Autosomal Recessive,7,Broad first wave,30,Late settling,44,tentative
 MESH:C000711429,COVID-19 post-intensive care syndrome,7,Acute early,66,Early exit,68,tentative
 MESH:C566379,Laryngotracheal Stenosis Progressive with Short Stature and Arthropathy,7,Acute early,64,Early exit,62,tentative
-MESH:D000690,Amyotrophic Lateral Sclerosis,7,Chronic core,59,Late settling,77,tentative
-MESH:D009901,Optic Nerve Diseases,7,Acute early,46,Early exit,44,tentative
-MESH:D005124,Eye Abnormalities,7,Acute early,35,Broad wave,46,tentative
-MESH:D018879,Ventricular Premature Complexes,7,Chronic core,57,Late settling,77,tentative
-OMIM:612348,612348,7,Acute early,75,Early exit,70,tentative
-MESH:D020363,Limbic Encephalitis,7,Broad first wave,43,Late settling,52,tentative
-MESH:D017541,Aneurysm False,7,Broad first wave,44,Late settling,53,tentative
-MESH:D008478,Mediastinal Emphysema,7,Broad first wave,39,Early exit,55,tentative
-MESH:D013851,Thinness,7,Chronic core,46,Late settling,72,tentative
-MESH:D052016,Mucositis,7,Chronic core,51,Late settling,62,tentative
-MESH:D064752,Atrial Remodeling,7,Chronic core,58,Late settling,75,tentative
-MESH:D001649,Bile Duct Diseases,7,Broad first wave,38,Late settling,49,tentative
-MESH:D009395,Nephritis Interstitial,7,Chronic core,56,Late settling,79,tentative
-MESH:D000077733,Immunoglobulin G4-Related Disease,7,Chronic core,34,Late settling,57,tentative
-MESH:D012652,Self Mutilation,7,Late symptom,37,Late settling,57,tentative
-MESH:D006429,Hemiplegia,7,Broad first wave,36,Broad wave,52,tentative
-MESH:D001988,Bronchiolitis,7,Chronic core,56,Late settling,83,tentative
-MESH:D000092122,Bronchiolitis Obliterans Syndrome,7,Broad first wave,41,Late settling,52,tentative
-MESH:D006620,Hip Fractures,7,Broad first wave,32,Late settling,44,tentative
-MESH:D060426,Anti-N-Methyl-D-Aspartate Receptor Encephalitis,7,Chronic core,62,Late settling,73,tentative
-MESH:D013064,Speech Disorders,7,Chronic core,65,Late settling,87,tentative
-MESH:D009290,Narcolepsy,7,Chronic core,64,Late settling,79,tentative
-MESH:D020433,Trigeminal Nerve Diseases,7,Chronic core,60,Late settling,70,tentative
-MESH:D011020,Pneumonia Pneumocystis,7,Chronic core,38,Late settling,57,tentative
-MESH:C535922,Chemke Oliver Mallek syndrome,7,Broad first wave,35,Late settling,56,tentative
-MESH:C535647,Gas bloat syndrome,7,Chronic core,60,Late settling,83,tentative
-MESH:D001171,Arthritis Juvenile,7,Chronic core,38,Late settling,64,tentative
-MESH:D009260,Nail Diseases,7,Acute early,64,Early exit,58,tentative
-MESH:D006349,Heart Valve Diseases,7,Chronic core,40,Late settling,71,tentative
-MESH:D047928,Premature Birth,7,Broad first wave,56,Late settling,69,tentative
-MESH:D000210,Acute-Phase Reaction,7,Broad first wave,37,Late settling,51,tentative
-MESH:C536875,Arrest of spermatogenesis,7,Chronic core,44,Late settling,65,tentative
-OMIM:300082,300082,7,Chronic core,65,Late settling,87,tentative
-MESH:D020434,Abducens Nerve Diseases,7,Broad first wave,34,Broad wave,52,tentative
+MESH:D000690,Amyotrophic Lateral Sclerosis,7,Chronic core,59,Late settling,78,tentative
+MESH:D009901,Optic Nerve Diseases,7,Acute early,46,Early exit,43,tentative
+MESH:D005124,Eye Abnormalities,7,Acute early,36,Broad wave,42,tentative
+MESH:D018879,Ventricular Premature Complexes,7,Chronic core,57,Late settling,79,tentative
+MESH:D020363,Limbic Encephalitis,7,Broad first wave,44,Late settling,52,tentative
+MESH:D017541,Aneurysm False,7,Broad first wave,44,Late settling,54,tentative
+MESH:D008478,Mediastinal Emphysema,7,Broad first wave,40,Early exit,54,tentative
+MESH:D013851,Thinness,7,Chronic core,47,Late settling,74,tentative
+MESH:D052016,Mucositis,7,Chronic core,51,Late settling,63,tentative
+MESH:D064752,Atrial Remodeling,7,Chronic core,58,Late settling,76,tentative
+MESH:D001649,Bile Duct Diseases,7,Broad first wave,38,Late settling,48,tentative
+MESH:D009395,Nephritis Interstitial,7,Chronic core,57,Late settling,81,tentative
+MESH:D000077733,Immunoglobulin G4-Related Disease,7,Chronic core,34,Late settling,58,tentative
+MESH:D012652,Self Mutilation,7,Late symptom,37,Late settling,59,tentative
+MESH:D006429,Hemiplegia,7,Broad first wave,36,Broad wave,51,tentative
+MESH:D001988,Bronchiolitis,7,Chronic core,59,Late settling,83,tentative
+MESH:D000092122,Bronchiolitis Obliterans Syndrome,7,Broad first wave,42,Late settling,51,tentative
+MESH:D006620,Hip Fractures,7,Broad first wave,32,Late settling,42,tentative
+MESH:D060426,Anti-N-Methyl-D-Aspartate Receptor Encephalitis,7,Chronic core,62,Late settling,75,tentative
+MESH:D013064,Speech Disorders,7,Chronic core,65,Late settling,88,tentative
+MESH:D009290,Narcolepsy,7,Chronic core,65,Late settling,81,tentative
+MESH:D020433,Trigeminal Nerve Diseases,7,Chronic core,61,Late settling,70,tentative
+MESH:D011020,Pneumonia Pneumocystis,7,Chronic core,37,Late settling,58,tentative
+MESH:C535922,Chemke Oliver Mallek syndrome,7,Broad first wave,36,Late settling,55,tentative
+MESH:C535647,Gas bloat syndrome,7,Chronic core,62,Late settling,84,tentative
+MESH:D001171,Arthritis Juvenile,7,Chronic core,39,Late settling,67,tentative
+MESH:D006349,Heart Valve Diseases,7,Chronic core,40,Late settling,72,tentative
+MESH:D047928,Premature Birth,7,Broad first wave,58,Late settling,69,tentative
+MESH:D000210,Acute-Phase Reaction,7,Broad first wave,38,Late settling,51,tentative
+MESH:C536875,Arrest of spermatogenesis,7,Chronic core,44,Late settling,66,tentative
+MESH:D020434,Abducens Nerve Diseases,7,Broad first wave,35,Broad wave,51,tentative
 MESH:D016857,Hypocapnia,7,Acute early,71,Early exit,72,tentative
 MESH:D010259,Paranoid Disorders,7,Acute early,56,Early exit,45,tentative
-MESH:D009101,Multiple Myeloma,7,Chronic core,67,Late settling,84,tentative
+MESH:D009101,Multiple Myeloma,7,Chronic core,69,Late settling,85,tentative
+MESH:D003930,Diabetic Retinopathy,7,Broad first wave,33,Late settling,47,tentative
 MESH:D014390,Tuberculosis Meningeal,7,Acute early,65,Early exit,69,tentative
-MESH:D010264,Paraplegia,7,Acute early,65,Early exit,60,tentative
-MESH:C563475,Paroxysmal Extreme Pain Disorder,7,Acute early,51,Early exit,45,tentative
-MESH:D000071243,Zika Virus Infection,7,Chronic core,35,Late settling,60,tentative
-MESH:D000068099,Trauma and Stressor Related Disorders,7,Broad first wave,34,Early exit,45,tentative
-MESH:D016649,Primary Ovarian Insufficiency,7,Chronic core,37,Late settling,62,tentative
-MESH:D010049,Ovarian Diseases,7,Late symptom,33,Late settling,57,tentative
+MESH:D010264,Paraplegia,7,Acute early,66,Early exit,61,tentative
+MESH:C563475,Paroxysmal Extreme Pain Disorder,7,Acute early,50,Early exit,45,tentative
+MESH:D000071243,Zika Virus Infection,7,Chronic core,36,Late settling,62,tentative
+MESH:D000068099,Trauma and Stressor Related Disorders,7,Broad first wave,34,Early exit,42,tentative
+MESH:D016649,Primary Ovarian Insufficiency,7,Chronic core,38,Late settling,65,tentative
+MESH:D010049,Ovarian Diseases,7,Late symptom,32,Late settling,60,tentative
 MESH:D002549,Diffuse Cerebral Sclerosis of Schilder,7,Acute early,58,Early exit,50,tentative
-OMIM:211750,211750,7,Chronic core,31,Broad wave,46,tentative
-MESH:D000083242,Ischemic Stroke,7,Acute early,63,Early exit,59,tentative
-MESH:D058729,Peripheral Arterial Disease,7,Chronic core,36,Late settling,55,tentative
-MESH:D010038,Otorhinolaryngologic Diseases,7,Chronic core,55,Late settling,75,tentative
+MESH:D000083242,Ischemic Stroke,7,Acute early,63,Early exit,60,tentative
+MESH:D058729,Peripheral Arterial Disease,7,Chronic core,36,Late settling,57,tentative
+MESH:D010038,Otorhinolaryngologic Diseases,7,Chronic core,55,Late settling,76,tentative
 MESH:D058625,End Stage Liver Disease,7,Acute early,55,Early exit,45,tentative
-MESH:D055954,Corneal Endothelial Cell Loss,7,Broad first wave,40,Early exit,56,tentative
-MESH:D014820,Vitiligo,7,Chronic core,56,Late settling,73,tentative
-MESH:D020790,Diabetes Insipidus Neurogenic,7,Late symptom,31,Late settling,52,tentative
+MESH:D055954,Corneal Endothelial Cell Loss,7,Broad first wave,41,Early exit,55,tentative
+MESH:D014820,Vitiligo,7,Chronic core,58,Late settling,74,tentative
+MESH:D020790,Diabetes Insipidus Neurogenic,7,Chronic core,31,Late settling,53,tentative
 MESH:D053578,Opsoclonus-Myoclonus Syndrome,7,Acute early,83,Early exit,83,tentative
-MESH:D005923,Glomerulosclerosis Focal Segmental,7,Acute early,51,Early exit,49,tentative
-MESH:D002446,Celiac Disease,7,Chronic core,34,Late settling,47,tentative
-MESH:D013272,Stomach Diseases,7,Chronic core,63,Late settling,86,tentative
-MESH:D011111,Polymyalgia Rheumatica,7,Chronic core,58,Late settling,75,tentative
-MESH:D009375,Neoplasms Glandular and Epithelial,7,Chronic core,39,Late settling,59,tentative
-MESH:D012421,Rupture,7,Broad first wave,54,Broad wave,57,tentative
-MESH:D038223,Post-Concussion Syndrome,7,Acute early,36,Early exit,51,tentative
-MESH:D010257,Paraneoplastic Syndromes,7,Chronic core,50,Late settling,68,tentative
-MESH:D000068079,Motor Disorders,7,Acute early,61,Early exit,45,tentative
-MESH:C564286,Zinc Deficiency Neonatal due to Low Breast Milk Zinc,7,Chronic core,44,Late settling,72,tentative
-MESH:D054517,Orbital Cellulitis,7,Acute early,47,Broad wave,51,tentative
-MESH:C538361,Reticular dysgenesis,7,Broad first wave,38,Late settling,55,tentative
+MESH:D005923,Glomerulosclerosis Focal Segmental,7,Acute early,52,Early exit,47,tentative
+MESH:D002446,Celiac Disease,7,Chronic core,34,Late settling,46,tentative
+MESH:D013272,Stomach Diseases,7,Chronic core,67,Late settling,87,tentative
+MESH:D011111,Polymyalgia Rheumatica,7,Chronic core,59,Late settling,75,tentative
+MESH:D009375,Neoplasms Glandular and Epithelial,7,Chronic core,40,Late settling,61,tentative
+MESH:D012421,Rupture,7,Broad first wave,54,Broad wave,58,tentative
+MESH:D038223,Post-Concussion Syndrome,7,Acute early,37,Early exit,49,tentative
+MESH:D010257,Paraneoplastic Syndromes,7,Chronic core,52,Late settling,71,tentative
+MESH:D000068079,Motor Disorders,7,Acute early,62,Early exit,44,tentative
+MESH:C564286,Zinc Deficiency Neonatal due to Low Breast Milk Zinc,7,Chronic core,45,Late settling,72,tentative
+MESH:D054517,Orbital Cellulitis,7,Acute early,47,Broad wave,52,tentative
+MESH:C538361,Reticular dysgenesis,7,Broad first wave,39,Late settling,56,tentative
 MESH:D034141,Hypoalbuminemia,7,Acute early,84,Early exit,79,tentative
 MESH:D019559,Capillary Leak Syndrome,7,Acute early,43,Early exit,51,tentative
 MESH:D045888,Ganglion Cysts,7,Chronic core,58,Late settling,82,tentative
-MESH:D020183,Nocturnal Paroxysmal Dystonia,6,Chronic core,38,Late settling,54,tentative
-MESH:C535672,Acute cholinergic dysautonomia,6,Chronic core,38,Late settling,62,tentative
-MESH:D009136,Muscular Dystrophies,6,Broad first wave,38,Broad wave,50,tentative
-MESH:D057215,Body Dysmorphic Disorders,6,Broad first wave,31,Late settling,51,tentative
-MESH:D003807,Dentin Sensitivity,6,Late symptom,32,Late settling,54,tentative
-MESH:C566985,Microphthalmia Syndromic 10,6,Chronic core,52,Late settling,77,tentative
-MESH:D007757,Laboratory Infection,6,Acute early,76,Early exit,67,tentative
-MESH:D012897,Slow Virus Diseases,6,Chronic core,33,Late settling,55,tentative
-MESH:D009477,Hereditary Sensory and Autonomic Neuropathies,6,Broad first wave,35,Late settling,49,tentative
-MESH:D010437,Peptic Ulcer,6,Chronic core,38,Late settling,58,tentative
-MESH:D005134,Eye Neoplasms,6,Acute early,40,Early exit,45,tentative
-MESH:D055744,Invasive Pulmonary Aspergillosis,6,Broad first wave,37,Broad wave,55,tentative
-MESH:D056989,Inferior Wall Myocardial Infarction,6,Chronic core,43,Late settling,66,tentative
-MESH:D011017,Pneumonia Lipid,6,Chronic core,40,Late settling,54,tentative
-MESH:D001658,Biliary Fistula,6,Chronic core,40,Late settling,62,tentative
-MESH:D058426,Neointima,6,Acute early,39,Broad wave,47,tentative
-MESH:C566733,Ciuffo Syndrome,6,Broad first wave,38,Early exit,47,tentative
-MESH:D006969,Hypersensitivity Immediate,6,Chronic core,67,Late settling,87,tentative
-MESH:D008232,Lymphoproliferative Disorders,6,Chronic core,53,Late settling,69,tentative
+MESH:D020183,Nocturnal Paroxysmal Dystonia,6,Chronic core,37,Late settling,56,tentative
+MESH:C535672,Acute cholinergic dysautonomia,6,Chronic core,39,Late settling,64,tentative
+MESH:D009136,Muscular Dystrophies,6,Broad first wave,38,Broad wave,49,tentative
+MESH:D057215,Body Dysmorphic Disorders,6,Broad first wave,32,Late settling,50,tentative
+MESH:D003807,Dentin Sensitivity,6,Chronic core,32,Late settling,55,tentative
+MESH:C566985,Microphthalmia Syndromic 10,6,Chronic core,54,Late settling,80,tentative
+MESH:D007757,Laboratory Infection,6,Acute early,76,Early exit,68,tentative
+MESH:D012897,Slow Virus Diseases,6,Chronic core,33,Late settling,57,tentative
+MESH:D009477,Hereditary Sensory and Autonomic Neuropathies,6,Broad first wave,36,Late settling,48,tentative
+MESH:D010437,Peptic Ulcer,6,Chronic core,39,Late settling,60,tentative
+MESH:D005134,Eye Neoplasms,6,Acute early,40,Early exit,44,tentative
+MESH:D055744,Invasive Pulmonary Aspergillosis,6,Broad first wave,38,Broad wave,54,tentative
+MESH:D056989,Inferior Wall Myocardial Infarction,6,Chronic core,42,Late settling,68,tentative
+MESH:D011017,Pneumonia Lipid,6,Chronic core,40,Late settling,55,tentative
+MESH:D001658,Biliary Fistula,6,Chronic core,39,Late settling,62,tentative
+MESH:D058426,Neointima,6,Acute early,40,Broad wave,47,tentative
+MESH:C566733,Ciuffo Syndrome,6,Broad first wave,37,Early exit,46,tentative
+MESH:D006969,Hypersensitivity Immediate,6,Chronic core,70,Late settling,88,tentative
+MESH:D008232,Lymphoproliferative Disorders,6,Chronic core,54,Late settling,72,tentative
 MESH:C531747,Congenital facial diplegia,6,Acute early,59,Early exit,62,tentative
-MESH:D000755,Anemia Sickle Cell,6,Broad first wave,31,Late settling,44,tentative
-MESH:D005153,Facial Neoplasms,6,Chronic core,51,Late settling,74,tentative
-MESH:D017114,Liver Failure Acute,6,Chronic core,38,Late settling,56,tentative
+MESH:D000755,Anemia Sickle Cell,6,Broad first wave,32,Late settling,43,tentative
+MESH:D005153,Facial Neoplasms,6,Chronic core,52,Late settling,75,tentative
+MESH:D017114,Liver Failure Acute,6,Chronic core,38,Late settling,57,tentative
 MESH:D003639,Hearing Loss Sudden,6,Broad first wave,46,Late settling,54,tentative
-MESH:D020511,Neuromuscular Junction Diseases,6,Acute early,48,Early exit,47,tentative
-MESH:D001282,Atrial Flutter,6,Acute early,37,Broad wave,49,tentative
-MESH:D006315,Hearing Loss Functional,6,Acute early,42,Early exit,54,tentative
-MESH:D019588,Aging Premature,6,Broad first wave,44,Late settling,58,tentative
-MESH:C535724,Dwarfism stiff joint ocular abnormalities,6,Broad first wave,54,Early exit,60,tentative
-MESH:D014262,Tricuspid Valve Insufficiency,6,Chronic core,55,Late settling,71,tentative
-MESH:D001924,Brain Concussion,6,Chronic core,52,Late settling,72,tentative
-MESH:D000160,Vestibulocochlear Nerve Diseases,6,Broad first wave,34,Late settling,44,tentative
-MESH:D044882,Glucose Metabolism Disorders,6,Broad first wave,39,Broad wave,49,tentative
-MESH:D000081015,Ototoxicity,6,Broad first wave,36,Early exit,52,tentative
-MESH:D006356,Heartburn,6,Chronic core,52,Late settling,81,tentative
+MESH:D020511,Neuromuscular Junction Diseases,6,Acute early,48,Early exit,46,tentative
+MESH:D001282,Atrial Flutter,6,Acute early,37,Broad wave,48,tentative
+MESH:D006315,Hearing Loss Functional,6,Acute early,42,Early exit,52,tentative
+MESH:D019588,Aging Premature,6,Broad first wave,46,Late settling,54,tentative
+MESH:C535724,Dwarfism stiff joint ocular abnormalities,6,Broad first wave,55,Early exit,59,tentative
+MESH:D014262,Tricuspid Valve Insufficiency,6,Chronic core,56,Late settling,71,tentative
+MESH:D001924,Brain Concussion,6,Chronic core,52,Late settling,74,tentative
+MESH:D000160,Vestibulocochlear Nerve Diseases,6,Broad first wave,33,Late settling,44,tentative
+MESH:D044882,Glucose Metabolism Disorders,6,Broad first wave,38,Broad wave,50,tentative
+MESH:D000081015,Ototoxicity,6,Broad first wave,37,Early exit,51,tentative
+MESH:D006356,Heartburn,6,Chronic core,53,Late settling,82,tentative
 MESH:D011559,Pseudotumor Cerebri,6,Acute early,83,Early exit,79,tentative
 MESH:D007244,Infectious Mononucleosis,6,Chronic core,39,Late settling,59,tentative
-MESH:D000377,Agnosia,6,Chronic core,35,Late settling,58,tentative
-MESH:D002303,Cardiac Output Low,6,Chronic core,37,Late settling,60,tentative
-MESH:D013896,Thoracic Diseases,6,Chronic core,42,Late settling,57,tentative
-MESH:D015427,Reperfusion Injury,6,Chronic core,37,Late settling,46,tentative
-MESH:D000092442,Kinesiophobia,6,Chronic core,60,Late settling,80,tentative
-MESH:D010198,Pancytopenia,6,Broad first wave,39,Broad wave,56,tentative
-MESH:D012598,Sclerosis,6,Chronic core,41,Late settling,64,tentative
-MESH:D009999,Ossification Heterotopic,6,Broad first wave,33,Early exit,46,tentative
-MESH:C563636,Laryngeal Web Familial,6,Acute early,41,Broad wave,48,tentative
-MESH:C564980,Musk Inability to Smell,6,Broad first wave,42,Broad wave,60,tentative
-MESH:D014029,Tobacco Use Disorder,6,Chronic core,42,Late settling,51,tentative
-MESH:D015179,Colorectal Neoplasms,6,Chronic core,50,Late settling,72,tentative
-MESH:D006996,Hypocalcemia,6,Broad first wave,48,Late settling,60,tentative
+MESH:D000377,Agnosia,6,Chronic core,34,Late settling,60,tentative
+MESH:D002303,Cardiac Output Low,6,Chronic core,38,Late settling,62,tentative
+MESH:D013896,Thoracic Diseases,6,Chronic core,42,Late settling,59,tentative
+MESH:D015427,Reperfusion Injury,6,Chronic core,35,Late settling,45,tentative
+MESH:D000092442,Kinesiophobia,6,Chronic core,63,Late settling,81,tentative
+MESH:D010198,Pancytopenia,6,Broad first wave,39,Broad wave,55,tentative
+MESH:D012598,Sclerosis,6,Chronic core,42,Late settling,64,tentative
+MESH:D009999,Ossification Heterotopic,6,Broad first wave,34,Early exit,44,tentative
+MESH:C563636,Laryngeal Web Familial,6,Acute early,42,Broad wave,47,tentative
+MESH:C564980,Musk Inability to Smell,6,Broad first wave,43,Broad wave,58,tentative
+MESH:D014029,Tobacco Use Disorder,6,Chronic core,41,Late settling,53,tentative
+MESH:D015179,Colorectal Neoplasms,6,Chronic core,49,Late settling,73,tentative
+MESH:D006996,Hypocalcemia,6,Broad first wave,49,Late settling,59,tentative
 MESH:D016472,Motor Neuron Disease,6,Broad first wave,36,Early exit,51,tentative
-MESH:D008599,Menstruation Disturbances,6,Chronic core,43,Late settling,69,tentative
-MESH:D000083262,Embolic Stroke,6,Acute early,58,Early exit,62,tentative
-MESH:D013969,Thyroiditis Suppurative,6,Chronic core,61,Late settling,78,tentative
-MESH:D000341,Affective Disorders Psychotic,6,Broad first wave,30,Early exit,42,tentative
-MESH:D000092223,Hippocampal Sclerosis,6,Broad first wave,35,Broad wave,52,tentative
-MESH:D006105,Granulomatous Disease Chronic,6,Chronic core,37,Broad wave,48,tentative
-MESH:D011928,Raynaud Disease,6,Broad first wave,31,Broad wave,46,tentative
+MESH:D000083262,Embolic Stroke,6,Acute early,58,Early exit,61,tentative
+MESH:D013969,Thyroiditis Suppurative,6,Chronic core,63,Late settling,80,tentative
+MESH:D000341,Affective Disorders Psychotic,6,Broad first wave,31,Early exit,41,tentative
+MESH:D000092223,Hippocampal Sclerosis,6,Broad first wave,37,Broad wave,50,tentative
+MESH:D006105,Granulomatous Disease Chronic,6,Chronic core,38,Late settling,49,tentative
+MESH:D011928,Raynaud Disease,6,Broad first wave,31,Broad wave,43,tentative
 MESH:D006955,Hypernatremia,6,Broad first wave,39,Broad wave,53,tentative
-MESH:D005058,Eunuchism,6,Broad first wave,31,Late settling,46,tentative
-MESH:D000138,Acidosis,6,Chronic core,35,Early exit,46,tentative
-MESH:D013734,Androgen-Insensitivity Syndrome,6,Broad first wave,36,Broad wave,54,tentative
-MESH:D010534,Peritoneal Neoplasms,6,Acute early,54,Early exit,51,tentative
-MESH:C537675,Gaucher-like disease,6,Acute early,57,Early exit,54,tentative
-MESH:D009383,Neoplasms Vascular Tissue,6,Broad first wave,37,Broad wave,51,tentative
-MESH:D006463,Hemolytic-Uremic Syndrome,6,Chronic core,61,Late settling,81,tentative
-MESH:D020234,Gait Ataxia,6,Chronic core,48,Late settling,68,tentative
-MESH:D057112,Corneal Perforation,6,Acute early,60,Early exit,48,tentative
-MESH:D015433,Glomerulonephritis Membranous,6,Broad first wave,39,Broad wave,55,tentative
-MESH:D018358,Neuroendocrine Tumors,6,Chronic core,50,Late settling,74,tentative
-MESH:C538458,Rapidly progressive glomerulonephritis with pulmonary hemorrhage,6,Acute early,67,Early exit,66,tentative
-MESH:D020966,Muscular Disorders Atrophic,6,Chronic core,47,Late settling,62,tentative
-MESH:D013617,Tachycardia Supraventricular,6,Acute early,53,Early exit,50,tentative
-MESH:D017034,Epilepsy Frontal Lobe,6,Chronic core,36,Late settling,52,tentative
-MESH:D020520,Brain Infarction,6,Acute early,63,Early exit,56,tentative
+MESH:D005058,Eunuchism,6,Broad first wave,32,Late settling,47,tentative
+MESH:D000138,Acidosis,6,Chronic core,35,Early exit,45,tentative
+MESH:D013734,Androgen-Insensitivity Syndrome,6,Broad first wave,37,Broad wave,54,tentative
+MESH:D010534,Peritoneal Neoplasms,6,Acute early,54,Early exit,49,tentative
+MESH:C537675,Gaucher-like disease,6,Acute early,57,Early exit,55,tentative
+MESH:D009383,Neoplasms Vascular Tissue,6,Broad first wave,37,Broad wave,49,tentative
+MESH:D006463,Hemolytic-Uremic Syndrome,6,Chronic core,60,Late settling,81,tentative
+MESH:D020234,Gait Ataxia,6,Chronic core,50,Late settling,70,tentative
+MESH:D057112,Corneal Perforation,6,Acute early,60,Early exit,49,tentative
+MESH:D015433,Glomerulonephritis Membranous,6,Broad first wave,40,Broad wave,55,tentative
+MESH:D018358,Neuroendocrine Tumors,6,Chronic core,51,Late settling,76,tentative
+MESH:C538458,Rapidly progressive glomerulonephritis with pulmonary hemorrhage,6,Acute early,68,Early exit,67,tentative
+MESH:D020966,Muscular Disorders Atrophic,6,Chronic core,48,Late settling,63,tentative
+MESH:D013617,Tachycardia Supraventricular,6,Acute early,53,Early exit,48,tentative
+MESH:D017034,Epilepsy Frontal Lobe,6,Chronic core,37,Late settling,54,tentative
+MESH:D020520,Brain Infarction,6,Acute early,64,Early exit,56,tentative
 MESH:C000722979,COVID-19 reinfection,6,Acute early,51,Early exit,51,tentative
-MESH:D003556,Cystitis,6,Chronic core,47,Late settling,60,tentative
-MESH:D053158,Nocturia,6,Chronic core,32,Late settling,51,tentative
+MESH:D003556,Cystitis,6,Chronic core,49,Late settling,61,tentative
+MESH:D053158,Nocturia,6,Chronic core,32,Late settling,53,tentative
 MESH:D005734,Gangrene,6,Acute early,85,Early exit,80,tentative
-MESH:D008268,Macular Degeneration,6,Chronic core,50,Late settling,63,tentative
-MESH:D010182,Pancreatic Diseases,6,Broad first wave,31,Late settling,45,tentative
-MESH:D058926,Intraoperative Awareness,6,Acute early,87,Early exit,84,tentative
-MESH:D007340,Insulinoma,6,Chronic core,49,Late settling,50,tentative
-MESH:D004653,Empyema,6,Acute early,56,Early exit,45,tentative
-MESH:D000006,Abdomen Acute,6,Broad first wave,31,Late settling,49,tentative
+MESH:D008268,Macular Degeneration,6,Chronic core,51,Late settling,64,tentative
+MESH:D010182,Pancreatic Diseases,6,Broad first wave,33,Late settling,48,tentative
+MESH:D058926,Intraoperative Awareness,6,Acute early,87,Early exit,83,tentative
+MESH:D007340,Insulinoma,6,Chronic core,50,Late settling,50,tentative
+MESH:D004653,Empyema,6,Acute early,57,Early exit,46,tentative
+MESH:D000006,Abdomen Acute,6,Broad first wave,32,Late settling,47,tentative
 MESH:D003731,Dental Caries,6,Acute early,37,Broad wave,49,tentative
-OMIM:613882,613882,6,Broad first wave,35,Broad wave,49,tentative
-MESH:D054198,Precursor Cell Lymphoblastic Leukemia-Lymphoma,6,Acute early,40,Broad wave,55,tentative
-MESH:D006461,Hemolysis,6,Broad first wave,40,Late settling,54,tentative
-MESH:C537730,Oculocutaneous albinism type 2,6,Chronic core,39,Late settling,60,tentative
-MESH:D018205,Neoplasms Adipose Tissue,6,Chronic core,52,Late settling,79,tentative
-MESH:C536196,Ehlers-Danlos syndrome type 3,6,Chronic core,68,Late settling,84,tentative
-MESH:D006509,Hepatitis B,6,Chronic core,67,Late settling,83,tentative
-MESH:D020421,Vagus Nerve Diseases,6,Chronic core,58,Late settling,82,tentative
-MESH:D024801,Tauopathies,6,Chronic core,44,Late settling,71,tentative
+MESH:D054198,Precursor Cell Lymphoblastic Leukemia-Lymphoma,6,Acute early,40,Broad wave,54,tentative
+MESH:D006461,Hemolysis,6,Broad first wave,41,Late settling,54,tentative
+MESH:C537730,Oculocutaneous albinism type 2,6,Chronic core,40,Late settling,61,tentative
+MESH:D018205,Neoplasms Adipose Tissue,6,Chronic core,55,Late settling,79,tentative
+MESH:C536196,Ehlers-Danlos syndrome type 3,6,Chronic core,70,Late settling,84,tentative
+MESH:D006509,Hepatitis B,6,Chronic core,68,Late settling,83,tentative
+MESH:D020421,Vagus Nerve Diseases,6,Chronic core,59,Late settling,83,tentative
+MESH:D024801,Tauopathies,6,Chronic core,44,Late settling,73,tentative
 MESH:D000069544,Infectious Encephalitis,5,Acute early,69,Early exit,74,tentative
-MESH:D001025,Aortitis,5,Chronic core,30,Late settling,52,tentative
-MESH:C566109,Storm Syndrome,5,Broad first wave,32,Late settling,44,tentative
-MESH:D014133,Tracheal Diseases,5,Broad first wave,45,Late settling,55,tentative
-MESH:D017379,Hypertrophy Left Ventricular,5,Chronic core,42,Late settling,68,tentative
-MESH:D000419,Albuminuria,5,Chronic core,48,Late settling,71,tentative
-MESH:D012130,Respiratory Hypersensitivity,5,Chronic core,49,Late settling,70,tentative
-MESH:D000070599,Shoulder Injuries,5,Chronic core,38,Late settling,54,tentative
-MESH:D020388,Muscular Dystrophy Duchenne,5,Chronic core,45,Late settling,63,tentative
-MESH:D007938,Leukemia,5,Broad first wave,40,Late settling,54,tentative
-MESH:D003161,Compartment Syndromes,5,Broad first wave,37,Late settling,52,tentative
-MESH:D000310,Adrenal Gland Neoplasms,5,Broad first wave,35,Early exit,48,tentative
-MESH:D006201,Hair Diseases,5,Broad first wave,34,Late settling,49,tentative
-MESH:D000686,Amyloidosis,5,Chronic core,51,Late settling,79,tentative
+MESH:D001025,Aortitis,5,Chronic core,31,Late settling,53,tentative
+MESH:C566109,Storm Syndrome,5,Broad first wave,33,Late settling,42,tentative
+MESH:D014133,Tracheal Diseases,5,Broad first wave,46,Late settling,55,tentative
+MESH:D017379,Hypertrophy Left Ventricular,5,Chronic core,43,Late settling,72,tentative
+MESH:D000419,Albuminuria,5,Chronic core,51,Late settling,73,tentative
+MESH:D012130,Respiratory Hypersensitivity,5,Chronic core,50,Late settling,72,tentative
+MESH:D000070599,Shoulder Injuries,5,Chronic core,38,Late settling,55,tentative
+MESH:D020388,Muscular Dystrophy Duchenne,5,Chronic core,45,Late settling,65,tentative
+MESH:D007938,Leukemia,5,Broad first wave,40,Late settling,53,tentative
+MESH:D003161,Compartment Syndromes,5,Broad first wave,38,Late settling,50,tentative
+MESH:D000310,Adrenal Gland Neoplasms,5,Broad first wave,35,Early exit,46,tentative
+MESH:D006201,Hair Diseases,5,Broad first wave,34,Late settling,48,tentative
+MESH:D000686,Amyloidosis,5,Chronic core,54,Late settling,82,tentative
 MESH:D018549,Cryptogenic Organizing Pneumonia,5,Broad first wave,34,Late settling,46,tentative
-MESH:D008594,Menopause Premature,5,Chronic core,62,Late settling,82,tentative
-MESH:D000079690,Postoperative Cognitive Complications,5,Broad first wave,32,Late settling,46,tentative
+MESH:D008594,Menopause Premature,5,Chronic core,63,Late settling,83,tentative
+MESH:D000079690,Postoperative Cognitive Complications,5,Broad first wave,31,Late settling,45,tentative
 MESH:D010411,Penile Induration,5,Broad first wave,32,Late settling,43,tentative
-MESH:D020159,Citrullinemia,5,Chronic core,54,Late settling,72,tentative
-MESH:D059226,Nociceptive Pain,5,Chronic core,33,Late settling,44,tentative
-MESH:D015834,Cochlear Diseases,5,Broad first wave,36,Broad wave,46,tentative
-MESH:D018877,Sick Building Syndrome,5,Chronic core,52,Late settling,70,tentative
-MESH:D001932,Brain Neoplasms,5,Broad first wave,38,Early exit,49,tentative
-MESH:D054220,Malformations of Cortical Development,5,Broad first wave,39,Broad wave,49,tentative
-MESH:D004433,Earache,5,Broad first wave,39,Late settling,53,tentative
-MESH:D003875,Drug Eruptions,5,Broad first wave,45,Broad wave,53,tentative
-MESH:D020210,Central Cord Syndrome,5,Acute early,32,Broad wave,46,tentative
-MESH:D001991,Bronchitis,5,Chronic core,55,Late settling,72,tentative
-MESH:C536735,Winter Shortland Temple syndrome,5,Broad first wave,37,Broad wave,53,tentative
-MESH:D003015,Clostridium Infections,5,Broad first wave,47,Broad wave,61,tentative
+MESH:D020159,Citrullinemia,5,Chronic core,55,Late settling,74,tentative
+MESH:D059226,Nociceptive Pain,5,Chronic core,33,Late settling,46,tentative
+MESH:D015834,Cochlear Diseases,5,Broad first wave,36,Broad wave,45,tentative
+MESH:D018877,Sick Building Syndrome,5,Chronic core,53,Late settling,71,tentative
+MESH:D001932,Brain Neoplasms,5,Broad first wave,38,Early exit,48,tentative
+MESH:D054220,Malformations of Cortical Development,5,Broad first wave,39,Broad wave,48,tentative
+MESH:D004433,Earache,5,Broad first wave,39,Late settling,51,tentative
+MESH:D003875,Drug Eruptions,5,Broad first wave,46,Broad wave,53,tentative
+MESH:D020210,Central Cord Syndrome,5,Acute early,33,Broad wave,45,tentative
+MESH:D001991,Bronchitis,5,Chronic core,54,Late settling,73,tentative
+MESH:C536735,Winter Shortland Temple syndrome,5,Broad first wave,38,Broad wave,52,tentative
+MESH:D003015,Clostridium Infections,5,Broad first wave,47,Broad wave,60,tentative
 MESH:D002180,Candidiasis Oral,5,Acute early,59,Early exit,52,tentative
 MESH:D059409,Stroke Lacunar,5,Chronic core,43,Late settling,58,tentative
-MESH:C537770,Anorchia,5,Chronic core,55,Late settling,66,tentative
-MESH:C538262,Atrial myxoma familial,5,Broad first wave,34,Early exit,47,tentative
-MESH:D008288,Malaria,5,Broad first wave,34,Late settling,49,tentative
-MESH:C567350,Chromosome 2q32-Q33 Deletion Syndrome,5,Acute early,37,Early exit,47,tentative
-MESH:D000849,Anomia,5,Broad first wave,34,Late settling,47,tentative
+MESH:C537770,Anorchia,5,Chronic core,55,Late settling,67,tentative
+MESH:C538262,Atrial myxoma familial,5,Broad first wave,34,Early exit,46,tentative
+MESH:D008288,Malaria,5,Broad first wave,35,Late settling,49,tentative
+MESH:C567350,Chromosome 2q32-Q33 Deletion Syndrome,5,Acute early,37,Early exit,46,tentative
+MESH:D000849,Anomia,5,Broad first wave,34,Late settling,46,tentative
 MESH:D041781,Jaundice Obstructive,5,Acute early,43,Early exit,47,tentative
-MESH:D020920,Dyssomnias,5,Acute early,52,Early exit,48,tentative
-MESH:C537310,Spinocerebellar ataxia autosomal recessive 4,5,Chronic core,31,Late settling,51,tentative
-MESH:D064706,Vocal Cord Dysfunction,5,Broad first wave,37,Early exit,49,tentative
-MESH:D006042,Goiter,5,Broad first wave,43,Early exit,52,tentative
-MESH:D049970,Graves Ophthalmopathy,5,Chronic core,50,Late settling,66,tentative
-MESH:D017681,Hypereosinophilic Syndrome,5,Acute early,38,Early exit,49,tentative
-MESH:D040921,Stress Disorders Traumatic,5,Chronic core,32,Late settling,47,tentative
-MESH:C000726767,upper airway cough syndrome,5,Chronic core,47,Late settling,66,tentative
-MESH:D003288,Contusions,5,Acute early,33,Broad wave,50,tentative
+MESH:D020920,Dyssomnias,5,Acute early,53,Early exit,48,tentative
+MESH:C537310,Spinocerebellar ataxia autosomal recessive 4,5,Chronic core,31,Late settling,54,tentative
+MESH:D064706,Vocal Cord Dysfunction,5,Broad first wave,37,Early exit,48,tentative
+MESH:D006042,Goiter,5,Broad first wave,43,Early exit,51,tentative
+MESH:D049970,Graves Ophthalmopathy,5,Chronic core,50,Late settling,68,tentative
+MESH:D017681,Hypereosinophilic Syndrome,5,Acute early,37,Early exit,50,tentative
+MESH:D040921,Stress Disorders Traumatic,5,Chronic core,32,Late settling,49,tentative
+MESH:C000726767,upper airway cough syndrome,5,Chronic core,48,Late settling,67,tentative
+MESH:D003288,Contusions,5,Acute early,34,Broad wave,49,tentative
 MESH:D004832,Epilepsy Absence,5,Chronic core,41,Late settling,61,tentative
 MESH:D016710,Yin Deficiency,5,Acute early,42,Early exit,47,tentative
 MESH:D003715,Dengue,5,Chronic core,48,Late settling,72,tentative
-MESH:D005117,Cardiac Complexes Premature,5,Chronic core,55,Late settling,72,tentative
-MESH:D003453,Cryptococcosis,5,Acute early,40,Early exit,47,tentative
-MESH:D003074,Solitary Pulmonary Nodule,5,Broad first wave,34,Early exit,45,tentative
-MESH:D003928,Diabetic Nephropathies,5,Chronic core,59,Late settling,82,tentative
-MESH:D008446,Maxillofacial Injuries,5,Chronic core,40,Late settling,61,tentative
-MESH:D008947,Mixed Connective Tissue Disease,5,Broad first wave,33,Broad wave,48,tentative
-MESH:D018923,Persian Gulf Syndrome,5,Chronic core,61,Late settling,82,tentative
-MESH:D006130,Growth Disorders,5,Broad first wave,30,Late settling,45,tentative
-MESH:D012912,Sneezing,5,Late symptom,38,Late settling,65,tentative
-MESH:D000092129,Platypnea Orthodeoxia Syndrome,5,Chronic core,47,Late settling,65,tentative
-MESH:D003095,Collagen Diseases,5,Chronic core,48,Late settling,63,tentative
-MESH:C535781,Spondylocostal dysostosis autosomal recessive,5,Chronic core,52,Late settling,71,tentative
-MESH:D010494,Pericarditis Constrictive,5,Chronic core,36,Late settling,58,tentative
-MESH:C562768,Hypothyroidism Autoimmune,5,Acute early,61,Early exit,61,tentative
-MESH:D007174,Disruptive Impulse Control and Conduct Disorders,5,Chronic core,58,Late settling,80,tentative
-MESH:D007029,Hypothalamic Neoplasms,5,Chronic core,45,Late settling,64,tentative
-MESH:D001943,Breast Neoplasms,5,Chronic core,43,Late settling,65,tentative
-MESH:D012563,Schizophrenia Paranoid,5,Late symptom,32,Late settling,46,tentative
-MESH:D008269,Macular Edema,5,Broad first wave,36,Early exit,48,tentative
+MESH:D005117,Cardiac Complexes Premature,5,Chronic core,56,Late settling,72,tentative
+MESH:D003453,Cryptococcosis,5,Acute early,40,Early exit,46,tentative
+MESH:D003074,Solitary Pulmonary Nodule,5,Broad first wave,34,Early exit,44,tentative
+MESH:D003928,Diabetic Nephropathies,5,Chronic core,62,Late settling,83,tentative
+MESH:D008446,Maxillofacial Injuries,5,Chronic core,41,Late settling,63,tentative
+MESH:D008947,Mixed Connective Tissue Disease,5,Broad first wave,34,Broad wave,46,tentative
+MESH:D018923,Persian Gulf Syndrome,5,Chronic core,62,Late settling,82,tentative
+MESH:D006130,Growth Disorders,5,Broad first wave,31,Late settling,45,tentative
+MESH:D012912,Sneezing,5,Late symptom,37,Late settling,66,tentative
+MESH:D000092129,Platypnea Orthodeoxia Syndrome,5,Chronic core,48,Late settling,66,tentative
+MESH:D003095,Collagen Diseases,5,Chronic core,50,Late settling,63,tentative
+MESH:C535781,Spondylocostal dysostosis autosomal recessive,5,Chronic core,53,Late settling,72,tentative
+MESH:D010494,Pericarditis Constrictive,5,Chronic core,36,Late settling,60,tentative
+MESH:C562768,Hypothyroidism Autoimmune,5,Acute early,61,Early exit,62,tentative
+MESH:D007174,Disruptive Impulse Control and Conduct Disorders,5,Chronic core,61,Late settling,81,tentative
+MESH:D007029,Hypothalamic Neoplasms,5,Chronic core,46,Late settling,66,tentative
+MESH:D001943,Breast Neoplasms,5,Chronic core,43,Late settling,67,tentative
+MESH:D012563,Schizophrenia Paranoid,5,Late symptom,30,Late settling,49,tentative
+MESH:D008269,Macular Edema,5,Broad first wave,37,Early exit,47,tentative
 MESH:D001855,Bone Marrow Diseases,5,Acute early,69,Early exit,65,tentative
 MESH:D008108,Liver Diseases Alcoholic,5,Chronic core,58,Late settling,72,tentative
-MESH:D000224,Addison Disease,5,Acute early,46,Broad wave,48,tentative
-MESH:D020739,Brain Diseases Metabolic Inborn,5,Broad first wave,40,Late settling,51,tentative
-MESH:D015228,Hypertriglyceridemia,5,Broad first wave,41,Early exit,55,tentative
-MESH:D019150,Neuroaxonal Dystrophies,5,Chronic core,61,Late settling,79,tentative
-MESH:D016491,Peripheral Vascular Diseases,5,Chronic core,55,Late settling,74,tentative
-MESH:D011085,Polycystic Ovary Syndrome,5,Chronic core,46,Late settling,68,tentative
-MESH:D015140,Dementia Vascular,5,Broad first wave,34,Early exit,49,tentative
-MESH:D013009,Somnambulism,5,Broad first wave,37,Broad wave,49,tentative
+MESH:D000224,Addison Disease,5,Acute early,46,Broad wave,47,tentative
+MESH:D020739,Brain Diseases Metabolic Inborn,5,Broad first wave,40,Late settling,50,tentative
+MESH:D015228,Hypertriglyceridemia,5,Broad first wave,41,Early exit,54,tentative
+MESH:D019150,Neuroaxonal Dystrophies,5,Chronic core,62,Late settling,81,tentative
+MESH:D016491,Peripheral Vascular Diseases,5,Chronic core,58,Late settling,76,tentative
+MESH:D011085,Polycystic Ovary Syndrome,5,Chronic core,47,Late settling,70,tentative
+MESH:D015140,Dementia Vascular,5,Broad first wave,34,Early exit,47,tentative
+MESH:D013009,Somnambulism,5,Broad first wave,38,Broad wave,49,tentative
 MESH:C537327,SHORT syndrome,5,Broad first wave,37,Late settling,48,tentative
-MESH:C535817,Pruritic urticarial papules plaques of pregnancy,5,Acute early,70,Early exit,70,tentative
-MESH:C536965,Tomaculous neuropathy,5,Broad first wave,31,Broad wave,44,tentative
-MESH:C566367,Light Fixation Seizure Syndrome,5,Acute early,54,Early exit,45,tentative
-MESH:D012466,Salivary Gland Diseases,5,Broad first wave,32,Broad wave,49,tentative
-MESH:D057774,Post-Exercise Hypotension,5,Chronic core,56,Late settling,73,tentative
-MESH:D007003,Hypoglycemia,5,Broad first wave,28,Late settling,44,tentative
-MESH:D020896,Hypovolemia,5,Chronic core,44,Late settling,55,tentative
+MESH:C535817,Pruritic urticarial papules plaques of pregnancy,5,Acute early,70,Early exit,69,tentative
+MESH:C536965,Tomaculous neuropathy,5,Broad first wave,31,Broad wave,43,tentative
+MESH:C566367,Light Fixation Seizure Syndrome,5,Acute early,55,Early exit,45,tentative
+MESH:D012466,Salivary Gland Diseases,5,Broad first wave,33,Broad wave,48,tentative
+MESH:D057774,Post-Exercise Hypotension,5,Chronic core,57,Late settling,75,tentative
+MESH:D007003,Hypoglycemia,5,Broad first wave,28,Late settling,45,tentative
+MESH:D020896,Hypovolemia,5,Chronic core,45,Late settling,57,tentative
 MESH:D015840,Oculomotor Nerve Diseases,5,Acute early,59,Early exit,55,tentative
-MESH:D010899,Pituitary Apoplexy,5,Acute early,44,Early exit,43,tentative
-MESH:D009362,Neoplasm Metastasis,5,Acute early,54,Broad wave,48,tentative
+MESH:D010899,Pituitary Apoplexy,5,Acute early,45,Early exit,42,tentative
+MESH:D009362,Neoplasm Metastasis,5,Acute early,55,Broad wave,47,tentative
 MESH:D011128,Polyradiculopathy,5,Acute early,64,Early exit,60,tentative
-MESH:D061325,Hereditary Breast and Ovarian Cancer Syndrome,5,Chronic core,35,Late settling,50,tentative
-MESH:D019698,Hepatitis C Chronic,5,Broad first wave,34,Late settling,47,tentative
+MESH:D061325,Hereditary Breast and Ovarian Cancer Syndrome,5,Chronic core,35,Late settling,51,tentative
+MESH:D019698,Hepatitis C Chronic,5,Broad first wave,35,Late settling,46,tentative
 MESH:D016706,Still's Disease Adult-Onset,5,Acute early,46,Broad wave,45,tentative
-MESH:D001260,Ataxia Telangiectasia,5,Broad first wave,32,Late settling,45,tentative
-MESH:D017169,Neoplasms Post-Traumatic,5,Acute early,45,Broad wave,46,tentative
-MESH:D052177,Kidney Diseases Cystic,5,Acute early,51,Early exit,45,tentative
-MESH:D007634,Keratitis,5,Chronic core,31,Late settling,46,tentative
-MESH:D006732,Horner Syndrome,5,Broad first wave,35,Broad wave,50,tentative
-MESH:D000080344,Optic Nerve Hypoplasia,5,Acute early,66,Early exit,56,tentative
-MESH:D000744,Anemia Hemolytic Autoimmune,5,Acute early,55,Early exit,47,tentative
-MESH:D000152,Acne Vulgaris,5,Chronic core,60,Late settling,77,tentative
-MESH:D004830,Epilepsy Tonic-Clonic,5,Chronic core,44,Late settling,55,tentative
-MESH:D003876,Dermatitis Atopic,5,Chronic core,41,Late settling,49,tentative
-MESH:D006944,Hyperglycemic Hyperosmolar Nonketotic Coma,5,Broad first wave,40,Late settling,55,tentative
+MESH:D001260,Ataxia Telangiectasia,5,Broad first wave,32,Late settling,47,tentative
+MESH:D017169,Neoplasms Post-Traumatic,5,Acute early,45,Broad wave,47,tentative
+MESH:D052177,Kidney Diseases Cystic,5,Acute early,51,Early exit,43,tentative
+MESH:D007634,Keratitis,5,Broad first wave,31,Late settling,47,tentative
+MESH:D006732,Horner Syndrome,5,Broad first wave,36,Broad wave,49,tentative
+MESH:D000080344,Optic Nerve Hypoplasia,5,Acute early,67,Early exit,56,tentative
+MESH:D000744,Anemia Hemolytic Autoimmune,5,Acute early,56,Early exit,48,tentative
+MESH:D000152,Acne Vulgaris,5,Chronic core,63,Late settling,78,tentative
+MESH:D004830,Epilepsy Tonic-Clonic,5,Chronic core,44,Late settling,57,tentative
+MESH:D003876,Dermatitis Atopic,5,Chronic core,41,Late settling,51,tentative
+MESH:D006944,Hyperglycemic Hyperosmolar Nonketotic Coma,5,Broad first wave,41,Late settling,54,tentative
 MESH:D011649,Pulmonary Alveolar Proteinosis,5,Broad first wave,38,Late settling,53,tentative
-MESH:D000081207,Primary Immunodeficiency Diseases,5,Broad first wave,38,Early exit,52,tentative
-MESH:D000405,Akinetic Mutism,5,Acute early,46,Broad wave,46,tentative
-MESH:D005756,Gastritis,5,Chronic core,53,Late settling,71,tentative
+MESH:D000081207,Primary Immunodeficiency Diseases,5,Broad first wave,39,Early exit,51,tentative
+MESH:D000405,Akinetic Mutism,5,Acute early,47,Broad wave,45,tentative
+MESH:D005756,Gastritis,5,Chronic core,55,Late settling,74,tentative
 MESH:D054092,Foramen Ovale Patent,5,Acute early,41,Early exit,54,tentative
-MESH:D013922,Thrombocytosis,5,Acute early,41,Broad wave,58,tentative
-MESH:D000080874,Synucleinopathies,5,Chronic core,44,Late settling,64,tentative
+MESH:D013922,Thrombocytosis,5,Acute early,42,Broad wave,57,tentative
+MESH:D000080874,Synucleinopathies,5,Chronic core,44,Late settling,66,tentative
 MESH:D015845,Tonic Pupil,5,Acute early,70,Early exit,59,tentative
-MESH:D000072659,Hypophysitis,5,Chronic core,31,Broad wave,46,tentative
-MESH:D013786,Thalamic Diseases,5,Broad first wave,34,Broad wave,53,tentative
+MESH:D000072659,Hypophysitis,5,Broad first wave,32,Broad wave,45,tentative
+MESH:D013786,Thalamic Diseases,5,Broad first wave,35,Broad wave,52,tentative
 MESH:D001167,Arteritis,5,Broad first wave,38,Late settling,48,tentative
-MESH:C565541,GSD IV Neuromuscular Form Fatal Perinatal,5,Broad first wave,37,Broad wave,51,tentative
-MESH:D010033,Otitis Media,5,Chronic core,46,Late settling,59,tentative
-MESH:C564275,Neutrophil Immunodeficiency Syndrome,5,Chronic core,61,Late settling,80,tentative
-MESH:D019190,Iron Overload,5,Chronic core,56,Late settling,81,tentative
-MESH:D010510,Periodontal Diseases,5,Chronic core,69,Late settling,86,tentative
-MESH:D010518,Periodontitis,5,Chronic core,72,Late settling,83,tentative
-MESH:D001146,Arrhythmia Sinus,5,Chronic core,48,Late settling,73,tentative
-MESH:D004393,Dwarfism Pituitary,5,Chronic core,68,Late settling,83,tentative
-MESH:D006086,Graft vs Host Disease,5,Chronic core,65,Late settling,81,tentative
-MESH:D006566,Herpesviridae Infections,5,Chronic core,57,Late settling,76,tentative
-MESH:D009128,Muscle Spasticity,5,Chronic core,74,Late settling,81,tentative
-MESH:D001528,Behcet Syndrome,5,Chronic core,72,Late settling,85,tentative
-MESH:D056735,Autoimmune Lymphoproliferative Syndrome,5,Chronic core,63,Late settling,87,tentative
-MESH:D003699,Hepatitis D,5,Chronic core,54,Late settling,73,tentative
+MESH:C565541,GSD IV Neuromuscular Form Fatal Perinatal,5,Broad first wave,38,Broad wave,51,tentative
+MESH:D010033,Otitis Media,5,Chronic core,46,Late settling,60,tentative
+MESH:C564275,Neutrophil Immunodeficiency Syndrome,5,Chronic core,64,Late settling,82,tentative
+MESH:D019190,Iron Overload,5,Chronic core,58,Late settling,81,tentative
+MESH:D010510,Periodontal Diseases,5,Chronic core,71,Late settling,86,tentative
+MESH:D010518,Periodontitis,5,Chronic core,74,Late settling,84,tentative
+MESH:D001146,Arrhythmia Sinus,5,Chronic core,50,Late settling,74,tentative
+MESH:D004393,Dwarfism Pituitary,5,Chronic core,71,Late settling,84,tentative
+MESH:D006086,Graft vs Host Disease,5,Chronic core,68,Late settling,81,tentative
+MESH:D006566,Herpesviridae Infections,5,Chronic core,59,Late settling,77,tentative
+MESH:D009128,Muscle Spasticity,5,Chronic core,73,Late settling,81,tentative
+MESH:D001528,Behcet Syndrome,5,Chronic core,73,Late settling,85,tentative
+MESH:D056735,Autoimmune Lymphoproliferative Syndrome,5,Chronic core,64,Late settling,87,tentative
+MESH:D003699,Hepatitis D,5,Chronic core,55,Late settling,74,tentative
