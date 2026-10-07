@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar.jsx';
 import SettingsPanel from './components/SettingsPanel.jsx';
 import RunPanel from './components/RunPanel.jsx';
 import ResultsPanel from './components/ResultsPanel.jsx';
+import ProcessDashboardData from './components/ProcessDashboardData.jsx';
 import { PIPELINES, getPipeline } from './pipelines/registry.js';
 import { getRepoFile, putRepoFile, dispatchWorkflow, findDispatchedRun, getRun, getLatestRun } from './lib/github.js';
 
@@ -216,24 +217,30 @@ export default function App() {
           <>
             <SettingsPanel settings={settings} onChange={setSettings} connected={connected} />
 
-            <RunPanel
-              pipeline={pipeline}
-              file={file}
-              onFile={setFile}
-              options={options}
-              onOptionsChange={setOptions}
-              status={status}
-              logs={logs}
-              runInfo={runInfo}
-              onCommitAndRun={handleCommitAndRun}
-              onLoadLatest={handleLoadLatest}
-              onCheckCurrentRun={handleCheckCurrentRun}
-              onStopWatching={stopPolling}
-              busy={!connected || ['committing', 'dispatching'].includes(status)}
-            />
+            {pipeline.id === 'dashboard-data' ? (
+              <ProcessDashboardData settings={settings} connected={connected} />
+            ) : (
+              <>
+                <RunPanel
+                  pipeline={pipeline}
+                  file={file}
+                  onFile={setFile}
+                  options={options}
+                  onOptionsChange={setOptions}
+                  status={status}
+                  logs={logs}
+                  runInfo={runInfo}
+                  onCommitAndRun={handleCommitAndRun}
+                  onLoadLatest={handleLoadLatest}
+                  onCheckCurrentRun={handleCheckCurrentRun}
+                  onStopWatching={stopPolling}
+                  busy={!connected || ['committing', 'dispatching'].includes(status)}
+                />
 
-            {rows.length > 0 && (
-              <ResultsPanel pipeline={pipeline} rows={rows} resultText={resultText} filename={pipeline.outputPath.split('/').pop()} />
+                {rows.length > 0 && (
+                  <ResultsPanel pipeline={pipeline} rows={rows} resultText={resultText} filename={pipeline.outputPath.split('/').pop()} />
+                )}
+              </>
             )}
           </>
         )}
