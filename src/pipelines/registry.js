@@ -293,6 +293,17 @@ export const PIPELINES = [
     searchableColumns: ['file'],
     defaultSortKey: 'file',
   },
+    {
+    id: 'dashboard-data',
+    label: 'Dashboard data',
+    description:
+      'Rebuild the Long COVID dashboard data (lifepaths, waves, chemicals, categories, networks) from the PubTator records, commit it, and redeploy the site.',
+    workflowFile: 'build-dashboard-data.yml',
+    noUpload: true,
+    inputPath: 'public/data/pubtator_records.jsonl.gz',
+    outputPath: 'public/data/manifest.json',
+    columns: [],
+  },
   {
     id: 'authors',
     label: 'Author network (template)',
@@ -307,17 +318,6 @@ export const PIPELINES = [
     columns: [],
     searchableColumns: [],
     defaultSortKey: null,
-  },
-  {
-    id: 'dashboard-data',
-    label: 'Dashboard data',
-    description:
-      'Rebuild the Long COVID dashboard data (lifepaths, waves, chemicals, categories, networks) from the PubTator records, commit it, and redeploy the site.',
-    workflowFile: 'build-dashboard-data.yml',
-    noUpload: true,
-    inputPath: 'public/data/pubtator_records.jsonl.gz',
-    outputPath: 'public/data/manifest.json',
-    columns: [],
   }
 ];
 
