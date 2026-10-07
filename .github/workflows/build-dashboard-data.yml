@@ -1,7 +1,8 @@
 name: Build dashboard data
 
 # Save as .github/workflows/build-dashboard-data.yml
-# Start it from the Actions tab ("Run workflow") or from public/process.html.
+# Start it with "Run workflow" on the Actions tab or from the Dashboard data panel.
+# Do NOT use "Re-run jobs" on an old run: that repeats the old commit. Start a new run so the latest files are used.
 # Python files expected in scripts/: slim_tags.py, build_dashboard_data.py, add_network_pages.py
 
 on:
@@ -30,7 +31,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  DEPLOY_WORKFLOW: deploy-pages.yml   # must have a workflow_dispatch trigger (see notes)
+  DEPLOY_WORKFLOW: deploy-pages.yml   # must have a workflow_dispatch trigger
+  PYTHONUNBUFFERED: "1"
 
 jobs:
   build:
@@ -38,6 +40,19 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check that the files are there
+        env:
+          SRC: ${{ inputs.source }}
+          SLIM_FIRST: ${{ inputs.slim_first }}
+        run: |
+          echo "Commit: $(git rev-parse --short HEAD) on ${{ github.ref_name }}"
+          missing=0
+          for f in scripts/slim_tags.py scripts/build_dashboard_data.py scripts/add_network_pages.py "$SRC"; do
+            if [ -f "$f" ]; then echo "found   $f ($(du -h "$f" | cut -f1))"; else echo "::error::missing $f"; missing=1; fi
+          done
+          echo "--- scripts/ ---"; ls scripts || true
+          exit $missing
 
       - uses: actions/setup-python@v5
         with:
@@ -51,21 +66,21 @@ jobs:
           SRC: ${{ inputs.source }}
           SLIM_FIRST: ${{ inputs.slim_first }}
         run: |
-          set -euo pipefail
-          test -f "$SRC" || { echo "::error::Input file not found: $SRC"; exit 1; }
+          set -uo pipefail
           mkdir -p work
           if [ "$SLIM_FIRST" = "true" ]; then
-            python scripts/slim_tags.py "$SRC" work/slim.jsonl.gz
+            python scripts/slim_tags.py "$SRC" work/slim.jsonl.gz || { c=$?; echo "::error::slim_tags.py failed with exit code $c"; exit $c; }
           else
             cp "$SRC" work/slim.jsonl.gz
           fi
+          ls -la work
 
       - name: Build the dashboard data
         env:
           MESH: ${{ inputs.mesh_tree }}
           OUT_DIRS: ${{ inputs.out_dirs }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           ARGS=""
           if [ -n "$MESH" ] && [ -f "$MESH" ]; then
             ARGS="--mesh-tree $MESH"
@@ -73,8 +88,8 @@ jobs:
             echo "::warning::No MeSH tree file ('$MESH'), so the categories page is skipped"
           fi
           # build once into a scratch folder, then copy only the generated files into each target folder
-          python scripts/build_dashboard_data.py work/slim.jsonl.gz -o work/out $ARGS
-          python scripts/add_network_pages.py work/slim.jsonl.gz work/out
+          python scripts/build_dashboard_data.py work/slim.jsonl.gz -o work/out $ARGS || { c=$?; echo "::error::build_dashboard_data.py failed with exit code $c"; exit $c; }
+          python scripts/add_network_pages.py work/slim.jsonl.gz work/out || { c=$?; echo "::error::add_network_pages.py failed with exit code $c"; exit $c; }
           for d in $OUT_DIRS; do
             mkdir -p "$d"
             cp -r work/out/. "$d"/
