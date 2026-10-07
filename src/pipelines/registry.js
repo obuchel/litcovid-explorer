@@ -296,6 +296,7 @@ export const PIPELINES = [
     {
     id: 'dashboard-data',
     label: 'Dashboard data',
+    shortLabel: 'Dashboard data',
     description:
       'Rebuild the Long COVID dashboard data (lifepaths, waves, chemicals, categories, networks) from the PubTator records, commit it, and redeploy the site.',
     workflowFile: 'build-dashboard-data.yml',
