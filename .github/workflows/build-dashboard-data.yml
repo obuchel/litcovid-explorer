@@ -17,9 +17,9 @@ on:
       mesh_tree:
         description: MeSH category tree JSON (leave empty to skip the categories page)
         default: public/data/mesh_category_tree_predicted_diseases.json
-      out_dir:
-        description: Folder the dashboard reads its data from
-        default: public/data
+      out_dirs:
+        description: Folders to write the rebuilt data to (space-separated)
+        default: data public/data
 
 permissions:
   contents: write   # commit the rebuilt data
@@ -63,7 +63,7 @@ jobs:
       - name: Build the dashboard data
         env:
           MESH: ${{ inputs.mesh_tree }}
-          OUT: ${{ inputs.out_dir }}
+          OUT_DIRS: ${{ inputs.out_dirs }}
         run: |
           set -euo pipefail
           ARGS=""
@@ -72,19 +72,25 @@ jobs:
           else
             echo "::warning::No MeSH tree file ('$MESH'), so the categories page is skipped"
           fi
-          python scripts/build_dashboard_data.py work/slim.jsonl.gz -o "$OUT" $ARGS
-          python scripts/add_network_pages.py work/slim.jsonl.gz "$OUT"
+          # build once into a scratch folder, then copy only the generated files into each target folder
+          python scripts/build_dashboard_data.py work/slim.jsonl.gz -o work/out $ARGS
+          python scripts/add_network_pages.py work/slim.jsonl.gz work/out
+          for d in $OUT_DIRS; do
+            mkdir -p "$d"
+            cp -r work/out/. "$d"/
+            echo "Wrote the rebuilt data to $d"
+          done
 
       - name: Commit the new data
         env:
-          OUT: ${{ inputs.out_dir }}
+          OUT_DIRS: ${{ inputs.out_dirs }}
         run: |
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add "$OUT"
+          for d in $OUT_DIRS; do git add "$d"; done
           if git diff --cached --quiet; then
-            echo "Nothing changed in $OUT"
+            echo "Nothing changed in $OUT_DIRS"
           else
             git commit -m "Rebuild dashboard data"
             git pull --rebase
