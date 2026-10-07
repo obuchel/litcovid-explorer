@@ -1,0 +1,98 @@
+name: Build dashboard data
+
+# Save as .github/workflows/build-dashboard-data.yml
+# Start it from the Actions tab ("Run workflow") or from public/process.html.
+# Python files expected in scripts/: slim_tags.py, build_dashboard_data.py, add_network_pages.py
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: PubTator file in the repo (raw records, or an already slim file)
+        default: public/data/pubtator_records.jsonl.gz
+      slim_first:
+        description: Run slim_tags.py first (turn off if the file is already slim)
+        type: boolean
+        default: true
+      mesh_tree:
+        description: MeSH category tree JSON (leave empty to skip the categories page)
+        default: public/data/mesh_category_tree_predicted_diseases.json
+      out_dir:
+        description: Folder the dashboard reads its data from
+        default: public/data
+
+permissions:
+  contents: write   # commit the rebuilt data
+  actions: write    # start the deploy workflow afterwards
+
+concurrency:
+  group: build-dashboard-data
+  cancel-in-progress: false
+
+env:
+  DEPLOY_WORKFLOW: deploy-pages.yml   # must have a workflow_dispatch trigger (see notes)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install packages
+        run: pip install numpy scipy scikit-learn
+
+      - name: Slim the tags
+        env:
+          SRC: ${{ inputs.source }}
+          SLIM_FIRST: ${{ inputs.slim_first }}
+        run: |
+          set -euo pipefail
+          test -f "$SRC" || { echo "::error::Input file not found: $SRC"; exit 1; }
+          mkdir -p work
+          if [ "$SLIM_FIRST" = "true" ]; then
+            python scripts/slim_tags.py "$SRC" work/slim.jsonl.gz
+          else
+            cp "$SRC" work/slim.jsonl.gz
+          fi
+
+      - name: Build the dashboard data
+        env:
+          MESH: ${{ inputs.mesh_tree }}
+          OUT: ${{ inputs.out_dir }}
+        run: |
+          set -euo pipefail
+          ARGS=""
+          if [ -n "$MESH" ] && [ -f "$MESH" ]; then
+            ARGS="--mesh-tree $MESH"
+          else
+            echo "::warning::No MeSH tree file ('$MESH'), so the categories page is skipped"
+          fi
+          python scripts/build_dashboard_data.py work/slim.jsonl.gz -o "$OUT" $ARGS
+          python scripts/add_network_pages.py work/slim.jsonl.gz "$OUT"
+
+      - name: Commit the new data
+        env:
+          OUT: ${{ inputs.out_dir }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add "$OUT"
+          if git diff --cached --quiet; then
+            echo "Nothing changed in $OUT"
+          else
+            git commit -m "Rebuild dashboard data"
+            git pull --rebase
+            git push
+          fi
+
+      - name: Redeploy the site
+        continue-on-error: true   # a wrong workflow name here should not fail the build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run "$DEPLOY_WORKFLOW" --repo "${{ github.repository }}"
